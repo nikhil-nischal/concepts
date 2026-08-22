@@ -5,5 +5,6 @@
   - [02. CAP Theorem](HLD/02-cap-theorem.md)
   - [03. Microservices Design Patterns](HLD/03-microservices-design-patterns.md)
   - [05. Scale from Zero to a Million Users](HLD/05-scale-zero-to-million-users.md)
+  - [06. Consistent Hashing](HLD/06-consistent-hashing.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
