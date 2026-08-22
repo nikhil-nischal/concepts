@@ -5,6 +5,31 @@
   <title>SDE 2 Notes</title>
   <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <style>
+    /* tighten the default theme's oversized heading margins */
+    .markdown-section h1 { margin: 0 0 0.5em; }
+    .markdown-section h2 { margin: 1.4em 0 0.5em; padding-top: 0; border-top: none; }
+    .markdown-section h3 { margin: 1em 0 0.4em; }
+    .markdown-section p, .markdown-section ul, .markdown-section ol { margin: 0.4em 0; }
+
+    /* Q&A: give each question room and a visible boundary so they read as separate cards */
+    .markdown-section details {
+      margin: 0.6em 0;
+      padding: 0.7em 1em;
+      border: 1px solid #e6e6e6;
+      border-radius: 6px;
+      background: #fafafa;
+    }
+    .markdown-section details[open] { background: #fff; }
+    .markdown-section details summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    .markdown-section details summary::marker { color: #42b983; }
+    .markdown-section details summary:hover { color: #42b983; }
+    .markdown-section details p:last-child { margin-bottom: 0; }
+  </style>
 </head>
 <body>
   <div id="app"></div>
