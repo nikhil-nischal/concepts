@@ -5,15 +5,23 @@
 - Protocol choice depends on the use case, not preference — chat needs push, video needs speed, pages need simple request/response
 
 ## Key Concepts
-- **Network protocol** — rules two systems agree on so they can talk, even without understanding each other beyond the rules
+
+### What's a network protocol
+- Rules two systems agree on so they can talk, even without understanding each other beyond the rules
+
+### Client-server vs peer-to-peer
 - **Client-server** — client always initiates, server responds (HTTP, FTP, SMTP)
 - **WebSocket** — still client-server, but bidirectional once connected; server can push without being asked
 - **Peer-to-peer** — any node can act as client or server, talks directly to other nodes, no central hop (WebRTC)
+
+### Application layer protocols
 - **HTTP** — connection-oriented, used for web pages; HTTPS = HTTP + encryption
 - **FTP** — two connections: control (stays open) + data (per transfer); data connection is unencrypted → replaced by HTTPS
 - **SMTP** — sends mail, via a Message Transfer Agent (MTA)
 - **IMAP** — reads mail off the server, syncs across devices — modern default
 - **POP3** — downloads mail then deletes from server — mostly deprecated
+
+### Transport layer protocols
 - **TCP** — connection-oriented, packets sequenced + acknowledged, guarantees ordering, reliable but slower
 - **UDP** — no connection, no ordering, no acknowledgement, best-effort delivery, fast
 
