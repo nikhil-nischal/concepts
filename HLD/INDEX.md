@@ -1,0 +1,2 @@
+- [00. Roadmap](00-roadmap.md) — planned topic order for HLD prep
+- [01. Network Protocols](01-network-protocols.md) — client-server vs P2P, HTTP/WebSocket/WebRTC, TCP vs UDP, when to use each

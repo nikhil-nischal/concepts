@@ -1,0 +1,2 @@
+- [HLD](HLD/INDEX.md) — high-level design topics
+- [LLD](LLD/INDEX.md) — low-level design topics
