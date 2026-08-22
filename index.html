@@ -8,7 +8,11 @@
 </head>
 <body>
   <div id="app"></div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script>
+    mermaid.initialize({ startOnLoad: false, theme: 'default' });
+    let mermaidCounter = 0;
+
     window.$docsify = {
       name: 'SDE 2 Notes',
       loadSidebar: true,
@@ -19,12 +23,24 @@
         depth: 4,
         placeholder: 'Search notes...'
       },
-      mermaidConfig: { theme: 'default' }
+      markdown: {
+        renderer: {
+          code(code, lang) {
+            if (lang === 'mermaid') {
+              const id = `mermaid-${mermaidCounter++}`;
+              mermaid.render(id, code).then(({ svg }) => {
+                const el = document.getElementById(`${id}-container`);
+                if (el) el.innerHTML = svg;
+              });
+              return `<div class="mermaid" id="${id}-container"></div>`;
+            }
+            return this.origin.code.apply(this, arguments);
+          }
+        }
+      }
     }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@9.3.0/dist/mermaid.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-mermaid@2/dist/docsify-mermaid.js"></script>
 </body>
 </html>

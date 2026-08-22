@@ -48,20 +48,54 @@ graph LR
 - **Video calling (Google Meet):** WebRTC over UDP — skip the server hop, drop frames instead of retransmitting
 
 ## Interview Q&A
-- **Q:** Is WebSocket peer-to-peer?
-  **A:** No — still client-server, just bidirectional; clients never talk to each other directly.
-- **Q:** Why UDP over TCP for video calls?
-  **A:** Skips ordering/ack/retransmit overhead — a dropped frame is fine, a stalled stream isn't.
-- **Q:** Why WebSocket instead of HTTP for chat?
-  **A:** HTTP can't let the server push without the client polling; WebSocket keeps the channel open both ways.
-- **Q:** Why is WebRTC faster than routing through a server?
-  **A:** Peer-to-peer — data goes directly between machines, no extra hop.
-- **Q:** Why did HTTPS replace FTP for file transfer?
-  **A:** FTP's data connection is unencrypted; HTTPS gives the same transfer with encryption.
-- **Q:** IMAP vs POP3?
-  **A:** POP3 downloads and deletes from server (single device); IMAP syncs and stays on server (multi-device) — IMAP is standard now.
-- **Q:** How does TCP guarantee ordering over an unordered network?
-  **A:** Packets are sequenced and acknowledged individually; missing acks trigger resends, receiver reassembles by sequence number.
+<details>
+<summary>Is WebSocket peer-to-peer?</summary>
+
+No — still client-server, just bidirectional; clients never talk to each other directly.
+
+</details>
+
+<details>
+<summary>Why UDP over TCP for video calls?</summary>
+
+Skips ordering/ack/retransmit overhead — a dropped frame is fine, a stalled stream isn't.
+
+</details>
+
+<details>
+<summary>Why WebSocket instead of HTTP for chat?</summary>
+
+HTTP can't let the server push without the client polling; WebSocket keeps the channel open both ways.
+
+</details>
+
+<details>
+<summary>Why is WebRTC faster than routing through a server?</summary>
+
+Peer-to-peer — data goes directly between machines, no extra hop.
+
+</details>
+
+<details>
+<summary>Why did HTTPS replace FTP for file transfer?</summary>
+
+FTP's data connection is unencrypted; HTTPS gives the same transfer with encryption.
+
+</details>
+
+<details>
+<summary>IMAP vs POP3?</summary>
+
+POP3 downloads and deletes from server (single device); IMAP syncs and stays on server (multi-device) — IMAP is standard now.
+
+</details>
+
+<details>
+<summary>How does TCP guarantee ordering over an unordered network?</summary>
+
+Packets are sequenced and acknowledged individually; missing acks trigger resends, receiver reassembles by sequence number.
+
+</details>
 
 ## Related Topics
 - Feeds into WhatsApp design and rate limiter (WebSocket/HTTP) and autocomplete (HTTP) later in [[00-roadmap]]
