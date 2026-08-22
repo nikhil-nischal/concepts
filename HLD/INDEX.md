@@ -6,3 +6,4 @@
 - [06. Consistent Hashing](06-consistent-hashing.md) — ring hashing, virtual nodes, minimal rebalancing on node add/remove
 - [07. URL Shortener](07-url-shortener.md) — base62 encoding, unique ID generation (Snowflake, Zookeeper ranges), TinyURL design
 - [08. Back-of-the-Envelope Estimation](08-back-of-envelope-estimation.md) — traffic/storage/RAM/server capacity planning, worked Facebook example
+- [09. Design a Key-Value Store](09-key-value-store-dynamodb.md) — DynamoDB-style: partitioning, replication, quorum get/put, vector clocks, gossip, Merkle tree
