@@ -3,5 +3,6 @@
   - [Roadmap](HLD/00-roadmap.md)
   - [01. Network Protocols](HLD/01-network-protocols.md)
   - [02. CAP Theorem](HLD/02-cap-theorem.md)
+  - [03. Microservices Design Patterns](HLD/03-microservices-design-patterns.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
