@@ -2,4 +2,4 @@
 - [01. Network Protocols](01-network-protocols.md) — client-server vs P2P, HTTP/WebSocket/WebRTC, TCP vs UDP, when to use each
 - [02. CAP Theorem](02-cap-theorem.md) — Consistency vs Availability vs Partition Tolerance, why only 2 of 3, CP vs AP
 - [03. Microservices Design Patterns](03-microservices-design-patterns.md) — monolith vs microservices, decomposition, Strangler migration, Saga (distributed transactions), CQRS
-- [04. Scale from Zero to a Million Users](04-scale-zero-to-million-users.md) — load balancer, DB replication, caching, CDN, multi-datacenter routing, message queues, sharding
+- [05. Scale from Zero to a Million Users](05-scale-zero-to-million-users.md) — load balancer, DB replication, caching, CDN, multi-datacenter routing, message queues, sharding

@@ -4,6 +4,6 @@
   - [01. Network Protocols](HLD/01-network-protocols.md)
   - [02. CAP Theorem](HLD/02-cap-theorem.md)
   - [03. Microservices Design Patterns](HLD/03-microservices-design-patterns.md)
-  - [04. Scale from Zero to a Million Users](HLD/04-scale-zero-to-million-users.md)
+  - [05. Scale from Zero to a Million Users](HLD/05-scale-zero-to-million-users.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
