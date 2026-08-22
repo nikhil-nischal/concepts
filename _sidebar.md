@@ -2,5 +2,6 @@
 - HLD
   - [Roadmap](HLD/00-roadmap.md)
   - [01. Network Protocols](HLD/01-network-protocols.md)
+  - [02. CAP Theorem](HLD/02-cap-theorem.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
