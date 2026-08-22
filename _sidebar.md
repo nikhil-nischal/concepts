@@ -7,5 +7,6 @@
   - [05. Scale from Zero to a Million Users](HLD/05-scale-zero-to-million-users.md)
   - [06. Consistent Hashing](HLD/06-consistent-hashing.md)
   - [07. URL Shortener](HLD/07-url-shortener.md)
+  - [08. Back-of-the-Envelope Estimation](HLD/08-back-of-envelope-estimation.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)

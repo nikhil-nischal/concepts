@@ -5,3 +5,4 @@
 - [05. Scale from Zero to a Million Users](05-scale-zero-to-million-users.md) — load balancer, DB replication, caching, CDN, multi-datacenter routing, message queues, sharding
 - [06. Consistent Hashing](06-consistent-hashing.md) — ring hashing, virtual nodes, minimal rebalancing on node add/remove
 - [07. URL Shortener](07-url-shortener.md) — base62 encoding, unique ID generation (Snowflake, Zookeeper ranges), TinyURL design
+- [08. Back-of-the-Envelope Estimation](08-back-of-envelope-estimation.md) — traffic/storage/RAM/server capacity planning, worked Facebook example
