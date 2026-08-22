@@ -17,6 +17,22 @@
 - **TCP** — connection-oriented, packets sequenced + acknowledged, guarantees ordering, reliable but slower
 - **UDP** — no connection, no ordering, no acknowledgement, best-effort delivery, fast
 
+## Diagram
+```mermaid
+graph LR
+  subgraph "Client-Server (HTTP, WebSocket)"
+    C1[Client 1] -->|request| S[Server]
+    S -->|response| C1
+    C2[Client 2] -->|request| S
+    S -->|response| C2
+  end
+  subgraph "Peer-to-Peer (WebRTC)"
+    P1[Peer 1] <-->|direct| P2[Peer 2]
+  end
+```
+- Client-Server: clients never talk to each other, only through the server
+- Peer-to-Peer: nodes talk directly, no server hop
+
 ## Trade-offs / Comparisons
 | Protocol | Layer | Style | Guarantees | Use case |
 |---|---|---|---|---|
