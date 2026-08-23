@@ -9,3 +9,4 @@
 - [09. Design a Key-Value Store](09-key-value-store-dynamodb.md) — DynamoDB-style: partitioning, replication, quorum get/put, vector clocks, gossip, Merkle tree
 - [10. SQL vs NoSQL](10-sql-vs-nosql.md) — structure, nature, scalability, ACID vs BASE, when to use which DB
 - [11. WhatsApp / Chat Application Design](11-whatsapp-system-design.md) — WebSocket vs polling, user mapping/Zookeeper, NoSQL partitioning, offline delivery, presence
+- [12. Design a Rate Limiter](12-rate-limiter.md) — Token Bucket, Leaking Bucket, Fixed/Sliding Window Counter, Sliding Window Log, shared counter store + atomicity
