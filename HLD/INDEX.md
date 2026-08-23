@@ -11,3 +11,4 @@
 - [11. WhatsApp / Chat Application Design](11-whatsapp-system-design.md) — WebSocket vs polling, user mapping/Zookeeper, NoSQL partitioning, offline delivery, presence
 - [12. Design a Rate Limiter](12-rate-limiter.md) — Token Bucket, Leaking Bucket, Fixed/Sliding Window Counter, Sliding Window Log, shared counter store + atomicity
 - [14. Design Idempotent POST API](14-idempotent-post-api.md) — idempotency key, CREATED/COMPLETED status, 409 conflict, mutex/distributed lock for parallel duplicates
+- [15. High Availability & Resilience](15-high-availability-active-passive-active-active.md) — single point of failure, active-passive (primary + replica, DR failover) vs active-active (multi-master, bi-directional sync)
