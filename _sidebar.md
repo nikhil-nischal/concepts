@@ -14,6 +14,7 @@
   - [12. Design a Rate Limiter](HLD/12-rate-limiter.md)
   - [14. Design Idempotent POST API](HLD/14-idempotent-post-api.md)
   - [15. High Availability & Resilience](HLD/15-high-availability-active-passive-active-active.md)
+  - [16. Distributed Messaging Queue](HLD/16-messaging-queue-kafka-rabbitmq.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
 - Frameworks
