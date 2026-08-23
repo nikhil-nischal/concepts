@@ -39,6 +39,45 @@ erDiagram
 - **Graph DB** — data stored as nodes and edges, where edges encode relationships directly (e.g. "Shreyansh — friend of — X"). Used for social networks and recommendation engines, since finding related entities is a direct edge traversal instead of a full-table scan/join like in SQL.
 
 ```mermaid
+classDiagram
+    class KeyValueStore {
+        +string key
+        +opaque_bytes value
+    }
+    note for KeyValueStore "value is opaque - queryable only by key, never by its contents"
+```
+- Key-value: the value is a sealed blob to the DB — no querying into it, only exact-key lookup.
+
+```mermaid
+classDiagram
+    class Document {
+        +string _id
+        +string name
+        +Address address
+    }
+    class Address {
+        +string city
+        +string zip
+    }
+    Document --> Address : embeds (queryable field)
+```
+- Document: same key→value shape as key-value, but fields inside the value (like `address.city`) can be queried directly.
+
+```mermaid
+flowchart TB
+    subgraph Row1["Row: user_1"]
+        A1["name: Alice"]
+        A2["email: a@x.com"]
+    end
+    subgraph Row2["Row: user_2"]
+        B1["name: Bob"]
+        B2["age: 30"]
+        B3["city: Pune"]
+    end
+```
+- Column-wise: each row owns its own set of columns — row `user_1` has 2 columns, row `user_2` has 3 different ones, no shared fixed schema.
+
+```mermaid
 flowchart LR
     S["Shreyansh (node)"] -->|friend of| X["X (node)"]
     S -->|friend of| Y["Y (node)"]
@@ -67,6 +106,17 @@ flowchart LR
 - Data is **relational** with real parent-child dependencies/hierarchy → SQL.
 - **Data integrity is non-negotiable** (can't lose a transaction or serve stale data) — e.g. financial systems → SQL (ACID). NoSQL is built for huge, fast-changing datasets where losing/staling one record among billions is tolerable.
 - Need **high availability + high read/search performance** and can tolerate **some inconsistency** (stale reads okay) → NoSQL.
+
+```mermaid
+flowchart TD
+    Q1{Need flexible, complex joins/queries?} -->|Yes| SQL1[SQL]
+    Q1 -->|No| Q2{Data is relational - real parent-child hierarchy?}
+    Q2 -->|Yes| SQL2[SQL]
+    Q2 -->|No| Q3{Data integrity non-negotiable - no lost transactions, no stale reads?}
+    Q3 -->|Yes| SQL3["SQL (ACID)"]
+    Q3 -->|No| Q4{Need high availability + high read/search perf, staleness tolerable?}
+    Q4 -->|Yes| NoSQL1["NoSQL (BASE)"]
+```
 
 ## Diagram
 ```mermaid

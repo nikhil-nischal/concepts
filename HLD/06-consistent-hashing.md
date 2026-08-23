@@ -58,6 +58,26 @@ flowchart LR
 - More virtual nodes per server → more even split of the ring → more even load distribution.
 - Number of replicas is tunable based on how balanced you need the load to be.
 
+```mermaid
+flowchart LR
+    subgraph Single["1 point per server - uneven arcs"]
+        direction LR
+        SA((A)) -->|small arc| SB((B))
+        SB -->|large arc| SC((C))
+        SC -->|wraps to start| SA
+    end
+    subgraph Multi["3 points per server - balanced arcs"]
+        direction LR
+        MA1((A-v1)) --> MB1((B-v1))
+        MB1 --> MC1((C-v1))
+        MC1 --> MA2((A-v2))
+        MA2 --> MB2((B-v2))
+        MB2 --> MC2((C-v2))
+        MC2 -->|wraps to start| MA1
+    end
+    Single -.->|replicate each server at multiple points| Multi
+```
+
 ## Trade-offs / Comparisons
 - Plain `hash % N`: simple, perfectly even split — but any change to N reshuffles almost all keys.
 - Consistent hashing: slightly more complex (ring + virtual nodes) — but only ~`1/N` of keys move on any add/remove.

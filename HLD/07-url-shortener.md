@@ -15,16 +15,45 @@
   - `62^6` ≈ 56 billion — not enough (need 365 billion).
   - `62^7` ≈ 3.5 trillion — enough. So use 7-character codes.
 
+```mermaid
+flowchart LR
+    T["10M URLs/day x 365 days x 100 years"] --> N["~365 billion URLs to support"]
+    N --> CS["Charset: 0-9 + a-z + A-Z = 62 chars"]
+    CS --> L["Find smallest L where 62^L >= N"]
+    L --> R["62^6 ~56B: not enough"]
+    L --> R2["62^7 ~3.5T: enough -> L = 7"]
+```
+
 ### Why not use a hash function (MD5/SHA1)?
 - MD5 = 128-bit hash → 32 hex characters. SHA1 = 160-bit hash → 40 hex characters.
 - Both produce far more than the 7 characters needed, so you'd have to truncate.
 - Truncating to the first 7 characters causes frequent collisions (different long URLs can share the same prefix) — not usable as-is.
+
+```mermaid
+flowchart TD
+    A[Long URL A] --> H1["MD5 / SHA1 hash"]
+    B[Long URL B] --> H2["MD5 / SHA1 hash"]
+    H1 --> T1["Truncate to 7 chars"]
+    H2 --> T2["Truncate to 7 chars"]
+    T1 --> X{Same prefix?}
+    T2 --> X
+    X -->|Yes - collision| C[Both map to the same short code]
+```
 
 ### Base62 encoding
 - Any decimal number can be converted to another base (e.g. base 62) via repeated division, same as converting decimal → binary/hex.
 - Approach: generate a unique numeric ID first, then encode that ID in base62 to get the short code.
 - Two problems to solve: (1) how to generate a unique ID in a distributed system, (2) the base62 output length varies with the ID's size, so short codes may come out shorter than 7 characters.
 - Length fix: pad shorter outputs to 7 characters (like `=` padding in Base64). Since capacity was sized to `62^7`, encoded IDs never exceed 7 characters, so padding only ever needs to add characters, not truncate.
+
+```mermaid
+flowchart LR
+    ID["Unique numeric ID e.g. 1000"] --> DIV["Repeated division by 62"]
+    DIV --> DIGITS["Base62 digits e.g. g8"]
+    DIGITS --> PAD["Pad to 7 chars"]
+    PAD --> CODE[Short code]
+```
+
 - Redirect flow (the base62 code decoded back to a long URL):
 ```mermaid
 sequenceDiagram
@@ -42,6 +71,15 @@ sequenceDiagram
 - Single DB with auto-increment ID: doesn't scale (10M writes/day is too much for one DB) and is a single point of failure.
 - Ticket server: a centralized auto-increment service that multiple app servers call. Solves the multi-DB sync problem but is itself a single point of failure and a scaling bottleneck.
 - Snowflake ID (Twitter): timestamp bits + machine ID bits + sequence-number bits packed into one ID. Time-based, no central coordinator needed, scales well since each machine generates its own IDs.
+
+```mermaid
+flowchart LR
+    subgraph ID["Single Snowflake ID"]
+        direction LR
+        TS[Timestamp bits] --> MID[Machine ID bits] --> SEQ[Sequence number bits]
+    end
+```
+
 - Zookeeper-based range allocation (preferred for this use case): 
   - Zookeeper divides the full ID space (e.g. 0 to 3.5 trillion) into fixed-size ranges (e.g. 1 million each).
   - Each worker/app server thread is handed one unused range and generates IDs only within it — no coordination needed between servers per-request.
@@ -49,6 +87,18 @@ sequenceDiagram
   - Guarantees uniqueness across all distributed servers with no per-request central bottleneck.
   - Trade-off: a range assigned to a worker that never gets used is "wasted," but since total capacity (3.5 trillion) vastly exceeds the requirement (365 billion), this is an acceptable trade-off.
   - Zookeeper itself is not a unique ID generator — it's a general distributed coordination service; the range-allocation logic is built on top of it.
+
+```mermaid
+flowchart TD
+    ZK["Zookeeper: divides ID space into fixed-size ranges"] --> R1["Range 1 e.g. 0-999,999"]
+    ZK --> R2["Range 2 e.g. 1,000,000-1,999,999"]
+    ZK --> R3["Range 3 ..."]
+    R1 --> W1[Worker 1]
+    R2 --> W2[Worker 2]
+    R3 --> W3[Worker 3]
+    W1 -.->|range exhausted, request next| ZK
+```
+
 - Shorten (write) flow using the range-allocated ID:
 ```mermaid
 sequenceDiagram

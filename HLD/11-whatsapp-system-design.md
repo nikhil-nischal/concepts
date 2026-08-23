@@ -25,9 +25,32 @@
 - Assume 100 chars/message ≈ 100 bytes → storage/day = 2B × 100B = 200GB/day.
 - For N years of chat history retention: 200GB × 365 × N (WhatsApp itself doesn't retain server-side history; Discord/Telegram/Slack/FB Messenger do).
 
+```mermaid
+flowchart LR
+    U["2B total users"] --> D["50M DAU"]
+    D --> M["x40 messages/user/day"]
+    M --> T["~2B messages/day"]
+    T --> S["x100 bytes/message"]
+    S --> G["200GB/day"]
+    G --> R["x365 x N years retention"]
+```
+
 ### Why not peer-to-peer
 - Two users could in theory talk directly if each knows the other's IP (peer-to-peer) — but this doesn't scale and can't support chat history, groups, or offline delivery.
 - Real chat apps use a **client-server architecture**: users never talk directly, everything routes through a chat server, which is responsible for scalability, grouping, chat history, and availability.
+
+```mermaid
+flowchart LR
+    subgraph P2P["Peer-to-peer (not used)"]
+        A1["User A"] <--> B1["User B"]
+    end
+    subgraph CS["Client-server (used)"]
+        A2["User A"] --> S["Chat Server"]
+        B2["User B"] --> S
+        S --> A2
+        S --> B2
+    end
+```
 
 ### Why WebSocket, not plain HTTP
 - HTTP is request-response: client always initiates, server only replies to that specific request. Fine for **sending** a message (client-initiated), but broken for **receiving** — the server would need to initiate a push to the client, which HTTP doesn't support.
@@ -36,6 +59,37 @@
   - **Long polling ("pushing")** — client asks, but the server holds the request open (doesn't reply) until either a message arrives or a threshold (e.g. 1 minute) elapses, then replies and the client immediately re-asks. Fewer round trips than polling, but still blocks a server-side thread/connection per waiting client — not scalable at chat-app volume.
   - **WebSocket** — a bi-directional, persistent connection. One handshake establishes it; after that both client and server can send messages on the same open connection at any time, with no request/response pairing needed. Connection stays open until explicitly closed or the network drops.
 - WebSocket solves both directions, so the chat server uses WebSocket (not HTTP) for the client connection — for both sending and receiving.
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+    rect rgb(240,240,240)
+    Note over C,S: Polling
+    loop every few seconds
+        C->>S: any message for me?
+        S-->>C: no
+    end
+    end
+    rect rgb(235,235,250)
+    Note over C,S: Long polling
+    C->>S: any message for me? (request held open)
+    Note over S: waits until a message arrives or timeout (~1 min)
+    S-->>C: message (or timeout, no message)
+    C->>S: immediately re-ask
+    end
+```
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+    C->>S: WebSocket handshake (upgrade from HTTP)
+    S-->>C: 101 Switching Protocols - connection open
+    Note over C,S: persistent, bi-directional connection
+    C->>S: send message (anytime)
+    S->>C: push message (anytime)
+```
 
 ### Core components
 - **Chat servers** — many instances (CS1, CS2, ...); each client maintains a persistent WebSocket connection to exactly one chat server.
@@ -104,15 +158,65 @@ sequenceDiagram
 - When User 2 comes back online, they go through a **login system** (plain HTTP), which registers a new chat-server assignment with the User Mapping Service.
 - Once connected to its newly assigned chat server, that server checks the NoSQL DB for any unread/undelivered messages for User 2 and pushes them over the fresh WebSocket connection.
 
+```mermaid
+sequenceDiagram
+    participant U1 as User 1
+    participant CS as Chat Server
+    participant UMS as User Mapping Service
+    participant DB as NoSQL DB
+    participant Login as Login Service
+    participant U2 as User 2 (offline)
+
+    U1->>CS: send message (to: User 2)
+    CS->>UMS: which chat server is User 2 on?
+    UMS-->>CS: no entry (offline)
+    CS->>DB: persist message (undelivered)
+
+    Note over U2: later, User 2 comes back online
+    U2->>Login: log in (HTTP)
+    Login->>UMS: register new chat-server assignment
+    U2->>CS: connect via new WebSocket
+    CS->>DB: check unread messages for User 2
+    DB-->>CS: undelivered messages
+    CS->>U2: push over WebSocket
+```
+
 ### Group message flow
 - A **Group Service** (separate from chat servers) owns group management — create/delete/update group, add/remove members — and can use its own DB (SQL or NoSQL, no hard requirement either way).
 - When User 1 sends a message to a group, the receiving chat server asks the Group Service for the group's member list, then asks the User Mapping Service which chat server each member is connected to, and forwards the message to each of those chat servers for delivery.
+
+```mermaid
+sequenceDiagram
+    participant U1 as User 1
+    participant CS as Chat Server
+    participant GS as Group Service
+    participant UMS as User Mapping Service
+    participant CS2 as Chat Server (member 2)
+    participant CS3 as Chat Server (member 3)
+
+    U1->>CS: send message to Group 1
+    CS->>GS: get member list for Group 1
+    GS-->>CS: [User1, User2, User3, User4]
+    CS->>UMS: which chat server is each member on?
+    UMS-->>CS: member -> chat server mapping
+    CS->>CS2: forward message
+    CS->>CS3: forward message
+    CS->>CS: persist message to DB
+```
 
 ### Presence system (online/offline, last seen)
 - A separate **Presence System**, also connected to clients via WebSocket.
 - Each client sends a periodic **heartbeat** (e.g. every few seconds); the presence system records the last-heartbeat time per user.
 - If no heartbeat is received within a threshold (e.g. 1 minute), the user is marked offline (with a last-heartbeat/last-seen timestamp).
 - Why not just reuse the User Mapping/Zookeeper table for this? A momentary connection blip (e.g. a train going through a tunnel) would otherwise cause the status to flicker online/offline/online repeatedly every couple of seconds — poor UX. The heartbeat threshold smooths that out so brief drops don't surface as an offline blip.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Online : heartbeat received
+    Online --> Online : heartbeat received (resets timer)
+    Online --> Offline : no heartbeat within threshold (~1 min)
+    Offline --> Online : heartbeat received again
+```
 
 ## Trade-offs / Comparisons
 | Approach | Mechanism | Scalability |

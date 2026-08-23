@@ -35,6 +35,22 @@ sequenceDiagram
 - Advantage: smooths bursty input into a strictly constant output rate — useful when downstream processing needs a steady load (e.g. Amazon Prime doing constant-cost background processing where daytime traffic is lower than evening/night, so a steady drain rate is an acceptable trade).
 - Disadvantage: a burst of legitimate traffic can't be served faster even if the system has spare capacity, since the outflow rate is fixed no matter what.
 
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant Q as Bucket Queue (fixed capacity)
+    participant S as Backend (constant drain rate)
+
+    C->>Q: request arrives, enqueued
+    C->>Q: burst of requests arrive
+    Note over Q: queue fills toward capacity
+    C->>Q: request arrives while full
+    Q--xC: dropped (bucket full)
+    loop fixed interval
+        Q->>S: leak one request out at constant rate
+    end
+```
+
 ### Fixed Window Counter
 - Divide time into fixed-size windows (e.g. 5-minute windows); each window has its own request counter, reset to 0 at the start of each new window.
 - Each request increments the counter for the current window; once the counter hits the configured limit, further requests in that window are rejected.
@@ -60,11 +76,36 @@ sequenceDiagram
 - On a new request: drop any logged timestamps older than the window, then check if the remaining count is under the limit; if yes, allow and log the new timestamp, else reject.
 - Accurate (no boundary problem) but expensive — storing a timestamp per request (including many that get rejected) consumes significant memory at scale.
 
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant L as Timestamp Log (trailing 1 min)
+
+    Note over L: log = [t-58s, t-40s, t-12s]
+    C->>L: new request at time t
+    L->>L: drop entries older than 1 min (none here)
+    L->>L: count = 3, under limit → allow, log t
+    Note over L: log = [t-40s, t-12s, t]
+    Note over L: 58s later, t-58s and t-40s aged out on next check
+```
+
 ### Sliding Window Counter
 - A hybrid of Fixed Window Counter and Sliding Window Log — approximates a true sliding window without storing every request's timestamp.
 - Keeps a simple counter per fixed window (like Fixed Window Counter), but when checking a new request, blends the current window's count with a **weighted portion of the previous window's count**, based on how much the rolling window overlaps into the previous fixed window.
 - Formula: `estimated_count = current_window_count + previous_window_count × (overlap % of the rolling window into the previous window)`.
 - Much cheaper than Sliding Window Log (just two counters, not a full timestamp log) while avoiding the sharp-boundary burst problem of Fixed Window Counter.
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant W as Sliding Window Counter (limit=5/min)
+
+    Note over W: previous window count = 10, current window count = 0
+    C->>W: request arrives, 10s into current window
+    W->>W: overlap = 10/60 of previous window
+    W->>W: estimated = 0 + 10 × (10/60) ≈ 1.7
+    Note over W: 1.7 < limit 5 → allow, current window count = 1
+```
 
 ### System architecture
 - **Client → Rate Limiter** — the rate limiter sits in front of (or as middleware/gateway before) the actual backend service; it decides allow/reject before the request reaches business logic.

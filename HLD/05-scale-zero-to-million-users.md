@@ -11,9 +11,20 @@
 - Client talks directly to one server that hosts both the application (business logic) and the database on the same machine.
 - Simplest possible setup — works fine for very low traffic, but has no separation of concerns and no redundancy.
 
+```mermaid
+flowchart LR
+    Client --> Server["Single Server (App + DB)"]
+```
+
 ### Stage 2 — Separate database server
 - Split into an application tier (runs only business logic) and a data tier (a separate DB server) — the app server stays in contact with the DB server over the network instead of sharing a machine.
 - Lets each tier be scaled/managed independently going forward.
+
+```mermaid
+flowchart LR
+    Client --> App["App Server"]
+    App --> DB[("DB Server")]
+```
 
 ### Stage 3 — Load balancer + multiple app servers
 - A single app server can only handle a limited number of requests per unit time (e.g. a fixed requests/minute capacity) — beyond that it starts dropping requests.
@@ -35,6 +46,16 @@ flowchart LR
 - One Master DB handles all write operations (create/update/delete); one or more Slave DBs handle read operations, replicating data from the master.
 - If the master fails, one of the slaves is promoted to become the new master (failover) — improves fault tolerance for the DB layer, not just the app layer.
 - Splitting reads and writes this way also spreads load — most systems are read-heavy, so multiple read replicas help scale that.
+
+```mermaid
+flowchart LR
+    App["App Server"] -->|writes| Master[("Master DB")]
+    App -->|reads| Slave1[("Slave DB 1")]
+    App -->|reads| Slave2[("Slave DB 2")]
+    Master -->|replication| Slave1
+    Master -->|replication| Slave2
+    Slave1 -.->|promoted on master failure| Master
+```
 
 ### Stage 5 — Caching
 - App server checks the cache before going to the DB for a read.
@@ -64,10 +85,35 @@ sequenceDiagram
 - Reduces latency significantly for users far from the main data center — a user near the origin gets fast responses either way, but a user on the other side of the world benefits most from CDN edge nodes.
 - CDN content also has its own TTL/expiry, similar to caching.
 
+```mermaid
+sequenceDiagram
+    participant User
+    participant Edge as CDN Edge Node
+    participant Origin as Origin Server
+
+    User->>Edge: request static asset
+    alt asset cached at edge (within TTL)
+        Edge-->>User: serve from edge (fast)
+    else not cached / expired
+        Edge->>Origin: fetch asset
+        Origin-->>Edge: asset
+        Edge-->>User: serve + cache at edge
+    end
+```
+
 ### Stage 7 — Multiple data centers + DNS-based routing
 - Deploy the whole stack (app servers, DB, etc.) in more than one geographic data center, not just one.
 - DNS resolves a domain to the IP of the data center nearest to the requesting user, so requests get routed to the closest data center for lower latency — a request doesn't have to travel across the world to reach a single, distant data center.
 - Failover — if one data center goes down, the load balancer/DNS-level routing sends all traffic to the remaining data center(s) instead of failing requests.
+
+```mermaid
+flowchart TB
+    UserIN["User (India)"] --> DNS["DNS - resolves to nearest DC"]
+    UserJP["User (Japan)"] --> DNS
+    DNS --> DC1["Data Center - India"]
+    DNS --> DC2["Data Center - Japan"]
+    DC1 -.->|failover if DC1 down| DC2
+```
 
 ### Stage 8 — Message queues (async processing)
 - For heavy or non-critical operations on the request path (e.g. sending a notification, sending an email), don't process them synchronously inline with the main request — push them to a message queue instead.
@@ -76,11 +122,31 @@ sequenceDiagram
 - Example tools: RabbitMQ, Kafka.
 - RabbitMQ internals: a Producer sends a message tagged with a Routing Key to an Exchange; each Queue has a Binding Key registered with the exchange; the exchange compares the routing key against each queue's binding key and forwards the message only to queues where they match — this lets one exchange fan a message out to the right subset of queues/consumers.
 
+```mermaid
+flowchart LR
+    P["Producer"] -->|"message, routing key = email"| Exch["Exchange"]
+    Exch -->|"binding key = email matches"| Q1["Queue: Email"]
+    Exch -.->|"binding key = sms, no match"| Q2["Queue: SMS"]
+    Q1 --> C1["Consumer"]
+```
+
 ### Stage 9 — Database scaling: vertical vs horizontal
 - Vertical scaling — increase the capacity (CPU, RAM) of the existing DB server(s) to handle more load, without adding new nodes.
 - Horizontal scaling (sharding) — once a single (even upgraded) DB node isn't enough, add more DB nodes and split data across them. Two ways to shard:
   - Horizontal sharding — split rows across nodes/tables by some key range (e.g. IDs 1–500 in shard 1, 501–1000 in shard 2, etc.).
   - Vertical sharding — split by columns/tables — different logical tables live in different DBs/nodes.
+
+```mermaid
+flowchart TB
+    subgraph Horizontal["Horizontal sharding - split by row range"]
+        H1[("Shard 1: IDs 1-500")]
+        H2[("Shard 2: IDs 501-1000")]
+    end
+    subgraph Vertical["Vertical sharding - split by table"]
+        V1[("DB 1: Users table")]
+        V2[("DB 2: Orders table")]
+    end
+```
 
 ## Trade-offs / Comparisons
 | Aspect | Vertical scaling | Horizontal scaling (sharding) |

@@ -18,6 +18,22 @@
 - **Pub/Sub** — the same message is broadcast to every subscribed queue (via an exchange/routing logic), so it can be processed independently by multiple consumers.
 - Choice depends on the business need: point-to-point when a task should only be done once (e.g. process an order); pub/sub when multiple independent systems all need to react to the same event.
 
+```mermaid
+flowchart TB
+    subgraph PTP["Point-to-point"]
+        P1[Publisher] --> Q1[Queue]
+        Q1 -->|message locked by whichever picks it up| C1[Consumer 1]
+        Q1 -.->|not delivered here too| C2[Consumer 2]
+    end
+
+    subgraph PS["Pub/Sub"]
+        P2[Publisher] --> QA[Queue A]
+        P2 --> QB[Queue B]
+        QA --> C3[Consumer A]
+        QB --> C4[Consumer B]
+    end
+```
+
 ### Kafka architecture
 - **Producer/Publisher** — sends messages; talks to a broker.
 - **Broker** — a running Kafka server; a broker hosts one or more **topics**.
@@ -28,6 +44,17 @@
   - **Different** consumer groups are independent — each can read the same partition from its own offset, since groups don't share progress.
 - **Cluster** — a group of brokers (Kafka servers), each potentially running on a different machine/node.
 - **Zookeeper** — coordinates the brokers: tracks which topic/partition lives on which broker, and helps brokers/consumers discover this metadata for internal communication.
+
+```mermaid
+flowchart TB
+    Producer --> Broker
+    Broker --> TopicA["Topic A"]
+    Broker --> TopicB["Topic B"]
+    TopicA --> P0["Partition 0"]
+    TopicA --> P1["Partition 1"]
+    CG["Consumer Group"] --> Cons1["Consumer 1"] --> P0
+    CG --> Cons2["Consumer 2"] --> P1
+```
 
 ### Message routing to a partition
 - A message has 4 fields: `key`, `value` (the actual payload), `partition`, `topic`. Topic is mandatory; key and partition are optional.
@@ -53,11 +80,25 @@ erDiagram
 - **Committed offset** — a variable (tracked via Zookeeper, per consumer group + topic + partition) recording how far a consumer has successfully processed. E.g. committed offset = 3 means messages 0-3 are done; 4+ are unread.
 - Purpose: if a consumer dies, another consumer in the same group takes over that partition and resumes reading from the last committed offset, instead of reprocessing everything or losing messages.
 
+```mermaid
+flowchart LR
+    m0["0"] --> m1["1"] --> m2["2"] --> m3["3"] --> m4["4"] --> m5["5"]
+    m3 -.->|committed offset = 3| commit(("read & acked"))
+    m4 -.->|unread| pending(("not yet processed"))
+```
+
 ### Replication: leader and follower
 - A topic's partitions can be spread across different brokers (e.g. partition 0 on broker 1, partition 1 on broker 2) — this is how Kafka scales beyond a single machine's storage limit.
 - Each partition has a **leader** copy (on its home broker) and one or more **replica** copies (called **followers**) on other brokers.
 - All reads and writes go through the leader only. Followers continuously sync from the leader by pulling new messages as they arrive.
 - If the leader broker goes down, one of its followers is promoted to become the new leader, so the partition keeps serving traffic without message loss.
+
+```mermaid
+flowchart LR
+    Producer --> Leader["Partition 0 - Leader (Broker 1)"]
+    Leader -->|sync| Follower["Partition 0 - Follower (Broker 2)"]
+    Leader -.->|leader dies -> promoted| Follower
+```
 
 ### Retry and Dead Letter Queue (DLQ)
 - If a consumer fails to process a message (e.g. a malformed/"buggy" message), the committed offset is **not** advanced.
@@ -84,12 +125,34 @@ sequenceDiagram
 - **Kafka is pull-based** — the consumer polls the broker, asking "any new messages?"
 - **RabbitMQ is push-based** — the queue pushes a message to the consumer as soon as it arrives.
 
+```mermaid
+sequenceDiagram
+    participant Kafka as Kafka Broker
+    participant RMQ as RabbitMQ
+    participant Consumer
+
+    loop poll
+        Consumer->>Kafka: any new messages?
+        Kafka-->>Consumer: messages (or none)
+    end
+    Note over RMQ,Consumer: RabbitMQ - no polling
+    RMQ->>Consumer: push message as soon as it arrives
+```
+
 ### RabbitMQ architecture
 - **Producer → Exchange → Queue(s) → Consumer(s)**. The exchange decides which queue(s) a message goes to, based on a **routing key** and a **binding** between exchange and queue.
 - **Exchange types**:
   - **Fan-out** — broadcasts every incoming message to *all* queues bound to that exchange (similar to pub/sub broadcast).
   - **Direct** — routes a message to a queue only if the message's routing key exactly matches the queue's binding key.
   - **Topic** — like direct, but binding keys support wildcards (e.g. `*_123` binding matches `india_123`), giving pattern-based routing.
+
+```mermaid
+flowchart LR
+    Producer --> Exchange
+    Exchange -->|routing key 1| Q1["Queue 1"] --> C1["Consumer 1"]
+    Exchange -->|routing key 2| Q2["Queue 2"] --> C2["Consumer 2"]
+```
+
 - **No offset concept** — unlike Kafka, RabbitMQ doesn't track a committed offset per consumer.
 - **Retry/failure handling** — if a consumer fails to process a message, it's **re-queued** to the back of the queue for another attempt; after a configured number of retries, it's moved to a dead letter queue, same end result as Kafka but via re-queuing instead of offset tracking.
 

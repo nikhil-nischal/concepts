@@ -34,9 +34,44 @@ stateDiagram-v2
 - Naive lookup-then-insert has a race: both requests check the DB, both see "key not present," both proceed to insert and execute — defeating the whole idempotency check.
 - Fix: wrap the check-and-create step in a **critical section** using mutual exclusion (a mutex/lock scoped to the idempotency key) so only one request at a time can pass through the check-then-insert logic for a given key; the second one waits, then sees the key already exists and returns the appropriate response (`200` if completed, `409` if still processing).
 
+```mermaid
+sequenceDiagram
+    participant A as Request A
+    participant B as Request B
+    participant Srv as Server (mutex per key)
+    participant DB
+
+    A->>Srv: POST (Idempotency-Key: K1)
+    Note over Srv: acquires lock for K1
+    B->>Srv: POST (Idempotency-Key: K1)
+    Note over B,Srv: B blocks — lock held by A
+    Srv->>DB: lookup K1
+    DB-->>Srv: not found
+    Srv->>DB: insert K1, execute, mark COMPLETED
+    Note over Srv: releases lock for K1
+    Srv->>DB: lookup K1 (for B)
+    DB-->>Srv: found, status COMPLETED
+    Srv-->>B: 200 (existing result, no re-execution)
+```
+
 ### Scaling the lock across multiple servers
 - With multiple rate-limiter/API server instances (horizontally scaled, possibly across clusters with separate local DBs), an in-process mutex only protects against races *within one server instance* — it doesn't stop two different server instances from racing on the same key.
 - Fix: use a **centralized shared cache** (e.g. Redis) to hold the distributed lock, so all server instances synchronize against the same lock state regardless of which instance handles which request.
+
+```mermaid
+flowchart TB
+    subgraph Local["Local mutex only — broken across instances"]
+        S1["Server Instance 1<br/>local mutex"] -.->|blind to each other| S2["Server Instance 2<br/>local mutex"]
+        S1 --> DB1[("Shared DB")]
+        S2 --> DB1
+    end
+
+    subgraph Shared["Distributed lock — correct"]
+        S3["Server Instance 1"] --> Redis[("Shared Lock Store (Redis)")]
+        S4["Server Instance 2"] --> Redis
+        Redis --> DB2[("Shared DB")]
+    end
+```
 
 ## Trade-offs / Comparisons
 | Scenario | Server behavior | HTTP status |

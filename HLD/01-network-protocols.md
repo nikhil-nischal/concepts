@@ -33,6 +33,25 @@ sequenceDiagram
 - **IMAP** — reads mail off the server, syncs across devices — modern default
 - **POP3** — downloads mail then deletes from server — mostly deprecated
 
+```mermaid
+flowchart LR
+    Client -->|control connection - stays open| Server
+    Client -->|data connection - opened per transfer, closed after| Server
+```
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Mail Server
+    Note over C,S: IMAP — mail stays on server, client syncs
+    C->>S: fetch headers/messages
+    S-->>C: messages (copy, stays on server)
+    Note over C,S: POP3 — mail downloaded then removed
+    C->>S: download messages
+    S-->>C: messages
+    C->>S: delete after download
+```
+
 ### Transport layer protocols
 - **TCP** — connection-oriented, packets sequenced + acknowledged, guarantees ordering, reliable but slower
 - **UDP** — no connection, no ordering, no acknowledgement, best-effort delivery, fast

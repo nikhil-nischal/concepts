@@ -12,6 +12,20 @@
 - If that single DB goes down, both reads and writes fail — the whole application goes down.
 - This is a textbook single point of failure: no five-nines availability, no resilience (no way to "come out of" the failure without manual/lengthy recovery, possibly hours or days).
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant LB as Load Balancer
+    participant App as Microservices
+    participant DB as Primary DB (single node)
+
+    Client->>LB: request
+    LB->>App: route request
+    App->>DB: read/write
+    DB--xApp: DB down (no failover target)
+    App--xClient: request fails
+```
+
 ### Active-Passive architecture
 - Requires at least two data centers (e.g. one in Mumbai, one in Pune), each running the same microservices layer and its own DB.
 - Only one DB is designated **primary** (aka live DB, read-write DB); the other is a **replica**, and its data center is called the **DR (Disaster Recovery) data center**.

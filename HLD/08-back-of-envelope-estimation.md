@@ -24,6 +24,16 @@
 - Formula: `X million users × Y MB = (X × Y) × 10^(6+6) = XY TB` — count total zeros from both factors to find the resulting unit.
 - Data type sizing assumptions: character ≈ 2 bytes (Unicode; ASCII would be 1 byte), long/double ≈ 8 bytes, average image ≈ 300 KB.
 
+```mermaid
+flowchart LR
+    subgraph NUM["Count scale — x1000 each step"]
+        K["Thousand (10^3)"] --> M["Million (10^6)"] --> B["Billion (10^9)"] --> T["Trillion (10^12)"] --> Q["Quadrillion (10^15)"]
+    end
+    subgraph STO["Storage scale — x1000 each step"]
+        KB --> MB --> GB --> TB --> PB
+    end
+```
+
 ### What to compute
 - Three core numbers, computed in this order: number of servers, RAM (cache) needed, storage capacity needed.
 - Finish with a CAP theorem trade-off statement (which two of Consistency/Availability/Partition-tolerance the design favors, and why) — see [02. CAP Theorem](02-cap-theorem.md).
@@ -38,6 +48,14 @@
 - Seconds/day ≈ 86,400, rounded to 100,000 (1 lakh) for easy division.
 - Queries per second ≈ 1.75 billion / 100,000 ≈ 18,000 (18K) QPS.
 
+```mermaid
+flowchart LR
+    U["1B total users"] --> D["DAU = 25% = 250M"]
+    D --> Q["7 queries/user/day (5 reads + 2 writes)"]
+    Q --> TQ["Total = 1.75B queries/day"]
+    TQ --> QPS["÷ ~100K sec/day ≈ 18K QPS"]
+```
+
 ### Storage estimation
 - Assume each DAU makes 2 posts/day, each post = 250 characters.
 - Bytes per post = 250 chars × 2 bytes/char = 500 bytes; 2 posts = 1000 bytes = 1 KB/user/day.
@@ -48,16 +66,39 @@
   - Posts: 2000 × 250 GB ≈ 500 TB total.
   - Images: 2000 × 8 TB ≈ 16 PB total.
 
+```mermaid
+flowchart TD
+    D["250M DAU"] --> P["2 posts/day x 250 chars x 2 bytes = 1KB/user/day"]
+    P --> PS["Post storage/day = 250M x 1KB = 250GB/day"]
+    D --> I["10% upload 1 image/day = 25M images x 300KB"]
+    I --> IS["Image storage/day ≈ 7.5TB, rounded 8TB/day"]
+    PS --> PT["x2000 days ≈ 500TB total (posts)"]
+    IS --> IT["x2000 days ≈ 16PB total (images)"]
+```
+
 ### RAM (cache) estimation
 - Assume caching the last 5 posts per DAU.
 - Per user cache = 5 posts × 500 bytes/post = 2500 bytes ≈ 3 KB (rounded).
 - Total cache RAM = 250 million users × 3 KB = 750 GB.
 - If one machine holds 75 GB of cache RAM → need 750 GB / 75 GB = 10 cache machines.
 
+```mermaid
+flowchart LR
+    C["Cache last 5 posts/user x 500 bytes = 2500B ≈ 3KB/user"] --> T["x 250M users = 750GB total cache"]
+    T --> M["÷ 75GB/machine = 10 cache machines"]
+```
+
 ### Server count estimation
 - Assume a latency target: 95% of requests served within 500 ms.
 - Assume one server has 50 threads, each request takes 500 ms → each thread serves 2 requests/second → one server serves 50 × 2 = 100 requests/second.
 - Servers needed = total QPS / requests-per-server = 18,000 / 100 = 180 application servers.
+
+```mermaid
+flowchart LR
+    L["50 threads/server, 500ms/request"] --> S["2 req/sec/thread → 100 req/sec/server"]
+    QPS["18,000 QPS"] --> N["÷ 100 req/sec/server = 180 servers"]
+    S --> N
+```
 
 ### Final numbers rolled up
 - Application servers: ~180.

@@ -20,10 +20,39 @@
 - Faster CI/deploys per service since each service's codebase is small and independently deployable.
 - Loose coupling (when designed well) — changes in one service don't ripple across unrelated domains.
 
+```mermaid
+flowchart TB
+    subgraph Monolith["Monolith - one deployable unit"]
+        M1[Product]
+        M2[Order Management]
+        M3[Billing]
+        M4[Payment]
+        M5[Account]
+    end
+
+    subgraph Microservices["Microservices - independent deployables"]
+        S1[Product Service]
+        S2[Order Service]
+        S3[Billing Service]
+        S4[Payment Service]
+        S5[Account Service]
+    end
+```
+
 ### Disadvantages of microservices
 - Improper decomposition risk — if services aren't broken apart with proper understanding of the business, they end up not loosely coupled, causing excess inter-service communication/dependency and added latency (a call that took ~1ms within a monolith might take ~10ms over the network between services).
 - Harder monitoring — with services S1, S2, S3 calling each other, a new deploy to one service can silently break its clients (e.g. a changed response schema); figuring out "who broke, where the error lies" gets complex.
 - Transaction management is harder — a monolith with one DB can wrap multi-step logic in a single start/stop transaction; with microservices each service typically has its own DB, so a request spanning 2+ services (e.g. S1 + S2) can't share one DB transaction — if one step fails, you must manually roll back the other service's work instead of relying on a native transaction rollback.
+
+```mermaid
+sequenceDiagram
+    participant S1 as Service 1
+    participant S2 as Service 2
+    participant S3 as Service 3
+    S1->>S2: network call (~10ms)
+    S2->>S3: network call (~10ms)
+    Note over S1,S3: same logic in-process inside a monolith: ~1ms
+```
 
 ### 4 phases of microservices design (each has its own patterns)
 - Decomposition — how to split one large app into smaller services.
@@ -31,6 +60,14 @@
 - Communication — how services talk to each other (e.g. via API, via Events).
 - Integration — how services are pulled into the ecosystem (mentioned; e.g. observability/gateway-related concerns).
 - For a given system you pick one pattern per phase, then combine them — e.g. decomposition pattern X + database pattern Y + communication pattern Z + integration pattern W together define one microservice's design.
+
+```mermaid
+flowchart LR
+    D[Decomposition] -->|pick a pattern| Design[One Microservice's Design]
+    DB[Database] -->|pick a pattern| Design
+    C[Communication] -->|pick a pattern| Design
+    I[Integration] -->|pick a pattern| Design
+```
 
 ### Decomposition patterns
 - Decompose by Business Capability — split services along business functions/capabilities (what the business does), e.g. Order Management, Product Management, Login, Billing, Payment each become their own service.
@@ -40,6 +77,17 @@
   - Domain-driven design: first identify a domain (e.g. "Order Management" is one domain), then break that domain into sub-domains if it has genuinely distinct sub-functionalities.
   - Example: Payment can be split into sub-domains — Forward Payment (making a payment) and Reverse Payment (refunds) — two sub-domains within the same overall Payment domain, potentially becoming two separate microservices.
   - Whether a domain needs sub-domain splitting depends on the domain — some domains (e.g. straightforward Order Management) are fine as one service; others (e.g. Payment with forward + refund flows) naturally have distinct sub-capabilities worth separating.
+
+```mermaid
+flowchart TB
+    App[Online Order Application] --> OM[Order Management]
+    App --> PM[Product Management]
+    App --> L[Login]
+    App --> B[Billing]
+    App --> Pay[Payment]
+    Pay -->|sub-domain| FP[Forward Payment]
+    Pay -->|sub-domain| RP[Reverse Payment / Refunds]
+```
 
 ### Strangler Pattern (migrating monolith → microservices)
 - Named after the strangler fig plant, which gradually grows around and eventually replaces its host tree — same idea for migrating a monolith.
@@ -62,16 +110,58 @@ flowchart LR
 - But Database Per Service introduces 2 new challenges: (1) can't run a SQL JOIN across tables that now live in separate databases; (2) can't wrap a multi-service operation in one native ACID transaction — no built-in distributed transaction across separate DBs.
 - Saga pattern solves challenge (2); CQRS (with a shared read view) addresses challenge (1) for reads.
 
+```mermaid
+flowchart TB
+    subgraph Shared["Shared Database"]
+        SS1[Service A] --> SDB[(One Shared DB)]
+        SS2[Service B] --> SDB
+    end
+    subgraph PerService["Database Per Service"]
+        PS1[Service A] --> PDB1[(Service A DB)]
+        PS2[Service B] --> PDB2[(Service B DB)]
+    end
+```
+
 ### Saga Pattern (distributed transactions)
 - Saga = a sequence of local transactions, one per service; each service performs its own local DB transaction, then publishes an event; the next service listens for that event and performs its own local transaction, and so on down the chain.
 - If a later step fails, the earlier services run a compensating transaction — a new, semantic "undo" operation (e.g. cancel the order, restore the inventory) — since the earlier steps already committed and can't be rolled back at the DB level.
 - Implemented via events (choreography-style): each service both listens for events that trigger its own local transaction, and emits an event when its local transaction completes (success, or failure → triggers compensation upstream) — keeps services decoupled from each other, no central coordinator in this setup.
 - Drawback: coordinating purely through events (each service reacting to others' events) can create circular/cyclic dependencies between services as the chain of listeners grows more complex.
 
+```mermaid
+sequenceDiagram
+    participant O as Order Service
+    participant I as Inventory Service
+    participant P as Payment Service
+    O->>O: local txn: create order
+    O->>I: event: OrderCreated
+    I->>I: local txn: update inventory
+    I->>P: event: InventoryUpdated
+    P->>P: local txn: process payment
+    P--xI: event: PaymentFailed (compensation)
+    I->>I: compensating txn: revert inventory
+    I--xO: event: InventoryReverted (compensation)
+    O->>O: compensating txn: cancel order
+```
+
 ### Fixing Saga's cyclic-dependency drawback: Orchestration vs Choreography
 - The pure event-based Saga above is **choreography** — no central coordinator, each service both listens and emits, so the web of listeners can grow into a cycle as more services join the chain.
 - Fix: **orchestration** — add a central Saga Orchestrator that owns the whole workflow as an explicit sequence and sends direct commands to each service (Order → Inventory → Payment), instead of services chaining off each other's events. Dependencies become one-directional (orchestrator → service), so no cycle can form; failure handling (compensation) is also driven centrally by the orchestrator instead of each service having to know which upstream service to notify.
 - Trade-off: orchestration adds a new component (and a potential single point of failure/bottleneck) but keeps the flow easy to reason about; choreography stays decoupled but only scales safely for short, simple chains.
+
+```mermaid
+flowchart LR
+    subgraph Choreography["Choreography - no coordinator"]
+        C1[Order] -->|event| C2[Inventory]
+        C2 -->|event| C3[Payment]
+        C3 -.->|event, chain can cycle back| C1
+    end
+    subgraph Orchestration["Orchestration - central coordinator"]
+        Orc[Saga Orchestrator] -->|command| O1[Order]
+        Orc -->|command| O2[Inventory]
+        Orc -->|command| O3[Payment]
+    end
+```
 
 ### CQRS — Command Query Responsibility Segregation
 - Splits the write path (Command) from the read path (Query) for a system spanning multiple per-service databases.
@@ -117,19 +207,25 @@ flowchart LR
 
 ## Diagram
 ```mermaid
-sequenceDiagram
-    participant O as Order Service
-    participant I as Inventory Service
-    participant P as Payment Service
-    O->>O: local txn: create order
-    O->>I: event: OrderCreated
-    I->>I: local txn: update inventory
-    I->>P: event: InventoryUpdated
-    P->>P: local txn: process payment
-    P--xI: event: PaymentFailed (compensation)
-    I->>I: compensating txn: revert inventory
-    I--xO: event: InventoryReverted (compensation)
-    O->>O: compensating txn: cancel order
+flowchart TB
+    Client --> Gateway
+
+    Gateway --> Order[Order Service]
+    Gateway --> Inventory[Inventory Service]
+    Gateway --> Payment[Payment Service]
+
+    Order --> ODB[(Order DB)]
+    Inventory --> IDB[(Inventory DB)]
+    Payment --> PDB[(Payment DB)]
+
+    Order -->|Saga event| Inventory
+    Inventory -->|Saga event| Payment
+
+    ODB -->|change event| View[(CQRS Read View)]
+    IDB -->|change event| View
+    PDB -->|change event| View
+
+    Query[Read Query] --> View
 ```
 
 ## Interview Q&A

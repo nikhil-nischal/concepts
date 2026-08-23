@@ -21,6 +21,15 @@
 - Fix: virtual nodes — each physical server is placed at multiple random points on the ring, spreading its share of traffic instead of owning one contiguous hot arc.
 - See [06. Consistent Hashing](06-consistent-hashing.md) for the full mechanism.
 
+```mermaid
+flowchart LR
+    K["key hash = 45"] -.->|falls in range| S1["S1 owns 1-50"]
+    S1 --> S2["S2 owns 51-100"]
+    S2 --> S3["S3 owns 101-150"]
+    S3 --> S4["S4 owns 151-200"]
+    S4 --> S1
+```
+
 ### 2. Replication (decentralization)
 - Problem: if the single server owning a key's range goes down, that key becomes unavailable.
 - Fix: replicate each key to N servers (N = replication factor, default 3, configurable).
@@ -29,6 +38,13 @@
 - The clockwise walk isn't strictly sequential — it can skip virtual-node duplicates of the same physical server, and can prefer servers in different data centers (so a single data center failure doesn't lose all replicas).
 - Preference list — per key-range list of servers: coordinator first, then the replica-holding servers. Every server in the ring learns every range's preference list (propagated via gossip protocol).
 
+```mermaid
+flowchart TD
+    PL["Preference list (range 1-50): [S1, S2, S3]"] -.->|known to all nodes via gossip| Coord
+    Coord["S1 - Coordinator (writes locally)"] --> R1["S2 - Replica"]
+    Coord --> R2["S3 - Replica"]
+```
+
 ### 3. Get / Put operations
 - Load balancer types:
   - Generic load balancer: request can land on any node; that node checks the preference list, and if it isn't the coordinator, hops the request to the actual coordinator (or to the next live server in the list if the coordinator is down). Simple to implement, but adds hop latency.
@@ -36,6 +52,16 @@
 - Put request flow: coordinator writes locally, then asynchronously sends the write to N-1 replicas from the preference list. The client gets a success response once **W** (write quorum) replicas have acknowledged — W is configurable, doesn't require waiting for all N-1.
 - Get request flow: coordinator asks all replicas in the preference list for their copy of the key, and returns success once **R** (read quorum) replicas have responded — R is configurable, doesn't require waiting for all replicas.
 - Quorum consistency rule: **R + W > N** — tuning R and W trades off read vs. write latency/durability while keeping enough overlap to catch the latest write.
+
+```mermaid
+flowchart LR
+    subgraph Generic["Generic load balancer"]
+        C1[Client] --> N1["Any node"] -.->|"not coordinator, hop"| Coord1["Coordinator"]
+    end
+    subgraph Aware["Partition-aware load balancer"]
+        C2[Client] --> Coord2["Coordinator (routed directly)"]
+    end
+```
 
 ### 4. Data versioning (handles conflicting replicas)
 - Network partitions/failures can cause different replicas to end up with different values for the same key, because writes routed to different coordinators (when the "real" coordinator is temporarily down) don't always propagate to every replica.
@@ -58,6 +84,14 @@ flowchart TD
 - Periodically (e.g. every second), each server sends a heartbeat to random peers, containing its liveness plus metadata like which key range it owns.
 - Gossip propagates this info transitively so all servers eventually learn about each other, without a central registry.
 - A server is marked down only when **more than one** peer independently notices its heartbeat/counter has gone stale — a single missed heartbeat isn't enough (avoids false positives from one flaky link).
+
+```mermaid
+flowchart LR
+    S1["Server 1"] -->|heartbeat + range info| S2["Server 2 (random peer)"]
+    S2 -->|propagates| S3["Server 3 (random peer)"]
+    S3 -->|propagates| S4["Server 4 (random peer)"]
+    S1 -.->|next round, different random peer| S4
+```
 
 ### 6. Merkle tree (efficient replica sync / anti-entropy)
 - Problem: checking whether a replica has the latest data for every key in a large range (potentially millions of keys) is expensive if done key-by-key.
