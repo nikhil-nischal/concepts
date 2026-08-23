@@ -1,0 +1,1 @@
+- [01. HLD Interview Answering Framework](01-hld-answering-framework.md) — meta framework for structuring any HLD answer, worked via a key-value store mock interview

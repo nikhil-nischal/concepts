@@ -11,3 +11,5 @@
   - [09. Design a Key-Value Store](HLD/09-key-value-store-dynamodb.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
+- Frameworks
+  - [01. HLD Interview Answering Framework](Frameworks/01-hld-answering-framework.md)
