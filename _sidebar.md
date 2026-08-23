@@ -12,6 +12,7 @@
   - [10. SQL vs NoSQL](HLD/10-sql-vs-nosql.md)
   - [11. WhatsApp / Chat Application Design](HLD/11-whatsapp-system-design.md)
   - [12. Design a Rate Limiter](HLD/12-rate-limiter.md)
+  - [14. Design Idempotent POST API](HLD/14-idempotent-post-api.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
 - Frameworks
