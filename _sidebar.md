@@ -10,6 +10,7 @@
   - [08. Back-of-the-Envelope Estimation](HLD/08-back-of-envelope-estimation.md)
   - [09. Design a Key-Value Store](HLD/09-key-value-store-dynamodb.md)
   - [10. SQL vs NoSQL](HLD/10-sql-vs-nosql.md)
+  - [11. WhatsApp / Chat Application Design](HLD/11-whatsapp-system-design.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
 - Frameworks
