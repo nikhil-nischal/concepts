@@ -15,6 +15,7 @@
   - [14. Design Idempotent POST API](HLD/14-idempotent-post-api.md)
   - [15. High Availability & Resilience](HLD/15-high-availability-active-passive-active-active.md)
   - [16. Distributed Messaging Queue](HLD/16-messaging-queue-kafka-rabbitmq.md)
+  - [17. Proxy vs Reverse Proxy](HLD/17-proxy-vs-reverse-proxy.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
 - Frameworks
