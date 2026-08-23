@@ -7,3 +7,4 @@
 - [07. URL Shortener](07-url-shortener.md) — base62 encoding, unique ID generation (Snowflake, Zookeeper ranges), TinyURL design
 - [08. Back-of-the-Envelope Estimation](08-back-of-envelope-estimation.md) — traffic/storage/RAM/server capacity planning, worked Facebook example
 - [09. Design a Key-Value Store](09-key-value-store-dynamodb.md) — DynamoDB-style: partitioning, replication, quorum get/put, vector clocks, gossip, Merkle tree
+- [10. SQL vs NoSQL](10-sql-vs-nosql.md) — structure, nature, scalability, ACID vs BASE, when to use which DB

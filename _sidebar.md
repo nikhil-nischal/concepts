@@ -9,6 +9,7 @@
   - [07. URL Shortener](HLD/07-url-shortener.md)
   - [08. Back-of-the-Envelope Estimation](HLD/08-back-of-envelope-estimation.md)
   - [09. Design a Key-Value Store](HLD/09-key-value-store-dynamodb.md)
+  - [10. SQL vs NoSQL](HLD/10-sql-vs-nosql.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
 - Frameworks
