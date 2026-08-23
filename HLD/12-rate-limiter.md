@@ -15,6 +15,20 @@
 - If a refill would push the token count above capacity, the extra tokens simply **overflow** (are discarded) — the bucket never exceeds capacity.
 - Naturally supports short bursts (up to the full bucket capacity can be spent instantly) while still enforcing a long-run average rate via refills.
 
+```mermaid
+sequenceDiagram
+    participant R as Request
+    participant B as Bucket (capacity=4)
+
+    Note over B: tokens = 4
+    R->>B: request arrives
+    B->>B: consume 1 token (tokens = 3)
+    Note over B: after 1 min, refill worker adds +2
+    B->>B: tokens = 3 + 2 → capped at 4 (1 token discarded, overflow)
+    R->>B: request arrives
+    B->>B: consume 1 token (tokens = 3)
+```
+
 ### Leaking Bucket
 - Simple: incoming requests fill a fixed-capacity bucket (a queue); the bucket "leaks" (processes) requests out at a **constant, fixed rate**, regardless of how fast they came in.
 - If the bucket is already full when a new request arrives, that request is dropped.
@@ -25,6 +39,20 @@
 - Divide time into fixed-size windows (e.g. 5-minute windows); each window has its own request counter, reset to 0 at the start of each new window.
 - Each request increments the counter for the current window; once the counter hits the configured limit, further requests in that window are rejected.
 - Simple to implement, but has a **boundary problem**: since the counter resets sharply at each window edge, a client can send the full limit right at the end of one window and again right at the start of the next — allowing up to 2× the intended limit within a short real time-span that straddles the boundary.
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant W as Window Counter (limit=3/min)
+
+    Note over W: Window N — counter = 0
+    C->>W: 3 requests, late in window N
+    W->>W: counter = 3 (limit reached)
+    Note over W: Window N+1 begins — counter resets to 0
+    C->>W: 3 requests, early in window N+1
+    W->>W: counter = 3 (limit reached again)
+    Note over W: 6 requests allowed within seconds — 2x the intended 3/min rate
+```
 
 ### Sliding Window Log
 - Fixes the fixed-window boundary problem by tracking an actual rolling window instead of discrete resets.

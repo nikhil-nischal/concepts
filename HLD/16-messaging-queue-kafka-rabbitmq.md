@@ -36,6 +36,18 @@
   2. Else if `partition` is explicitly set → send directly to that partition.
   3. Else → round-robin across the topic's partitions.
 
+```mermaid
+erDiagram
+    MESSAGE {
+        string key "optional, hashed to pick partition"
+        bytes value "the actual payload"
+        string topic "mandatory"
+        int partition "optional, explicit override"
+    }
+    TOPIC ||--|{ PARTITION : contains
+    PARTITION ||--o{ MESSAGE : stores
+```
+
 ### Offsets and committed offset
 - **Offset** — a per-partition index marking each message's position (0, 1, 2, ...).
 - **Committed offset** — a variable (tracked via Zookeeper, per consumer group + topic + partition) recording how far a consumer has successfully processed. E.g. committed offset = 3 means messages 0-3 are done; 4+ are unread.
@@ -52,6 +64,21 @@
 - The topic/partition can be configured with a retry limit (e.g. retry 3-4 times); each retry re-reads from the same un-advanced offset.
 - Once retries are exhausted, the message is moved to a separate **failure queue / Dead Letter Queue (DLQ)**, and the committed offset advances past it so processing can continue with subsequent messages.
 - Messages in the DLQ can later be manually inspected, fixed, and re-injected into the working partition.
+
+```mermaid
+sequenceDiagram
+    participant Consumer
+    participant Partition
+    participant Zookeeper
+
+    Consumer->>Partition: read message at offset 7
+    Partition-->>Consumer: message (buggy)
+    Consumer->>Consumer: processing fails, retry (1/3)
+    Consumer->>Partition: retry read offset 7
+    Consumer->>Consumer: fails again... retries exhausted
+    Consumer->>Zookeeper: commit offset = 7 (skip)
+    Consumer->>Partition: move message to Dead Letter Queue
+```
 
 ### Kafka's pull model vs RabbitMQ's push model
 - **Kafka is pull-based** — the consumer polls the broker, asking "any new messages?"
@@ -98,21 +125,6 @@ flowchart LR
 
     B1 --> CG1["Consumer Group A - Consumer 1"]
     B2 --> CG2["Consumer Group A - Consumer 2"]
-```
-
-```mermaid
-sequenceDiagram
-    participant Consumer
-    participant Partition
-    participant Zookeeper
-
-    Consumer->>Partition: read message at offset 7
-    Partition-->>Consumer: message (buggy)
-    Consumer->>Consumer: processing fails, retry (1/3)
-    Consumer->>Partition: retry read offset 7
-    Consumer->>Consumer: fails again... retries exhausted
-    Consumer->>Zookeeper: commit offset = 7 (skip)
-    Consumer->>Partition: move message to Dead Letter Queue
 ```
 
 ## Interview Q&A

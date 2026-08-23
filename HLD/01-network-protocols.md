@@ -14,6 +14,18 @@
 - **WebSocket** — still client-server, but bidirectional once connected; server can push without being asked
 - **Peer-to-peer** — any node can act as client or server, talks directly to other nodes, no central hop (WebRTC)
 
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+    C->>S: HTTP request
+    S-->>C: HTTP response (only after a request)
+    Note over C,S: WebSocket — after one handshake, either side can send anytime
+    C->>S: connect (handshake)
+    S-->>C: connection open
+    S->>C: push new message (server-initiated, no request needed)
+```
+
 ### Application layer protocols
 - **HTTP** — connection-oriented, used for web pages; HTTPS = HTTP + encryption
 - **FTP** — two connections: control (stays open) + data (per transfer); data connection is unencrypted → replaced by HTTPS
@@ -24,6 +36,20 @@
 ### Transport layer protocols
 - **TCP** — connection-oriented, packets sequenced + acknowledged, guarantees ordering, reliable but slower
 - **UDP** — no connection, no ordering, no acknowledgement, best-effort delivery, fast
+
+```mermaid
+sequenceDiagram
+    participant A as Sender
+    participant B as Receiver
+    Note over A,B: TCP — connection setup, then sequenced + acked
+    A->>B: SYN
+    B-->>A: SYN-ACK
+    A->>B: ACK
+    A->>B: data packet (seq 1)
+    B-->>A: ack (seq 1)
+    Note over A,B: UDP — no handshake, no ack, fire and forget
+    A->>B: datagram (no seq, no ack)
+```
 
 ## Diagram
 ```mermaid

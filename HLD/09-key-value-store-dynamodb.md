@@ -45,6 +45,14 @@
 - Conflict resolution happens client-side (e.g. "last write wins," or app-specific merge logic) — the client resolves and issues a new put, whose vector clock supersedes and merges the conflicting ones; that merged version then propagates back to all replicas.
 - This is the mechanism behind "eventual consistency": a get right after a conflict may return stale/conflicting data, but repeated gets after reconciliation converge to the latest state.
 
+```mermaid
+flowchart TD
+    A["S1:2 — 'cart'"] --> B["S1:2, S2:1 — 'carm' (concurrent write on S2)"]
+    A --> C["S1:2, S3:1 — 'carr' (concurrent write on S3)"]
+    B -.->|client resolves + merges on next put| D["S1:3, S2:1, S3:1 — merged value"]
+    C -.->|client resolves + merges on next put| D
+```
+
 ### 5. Gossip protocol (cluster membership)
 - Every server maintains a membership list of every other server's last-known status.
 - Periodically (e.g. every second), each server sends a heartbeat to random peers, containing its liveness plus metadata like which key range it owns.
@@ -57,6 +65,17 @@
 - To check sync status: compare root hashes between coordinator and replica. Equal → entire range is in sync, no further check needed.
 - If root hashes differ, recurse into the mismatched subtree (compare children, then their children, ...) until the specific out-of-sync key(s) are found — avoids scanning the whole range.
 - This turns "verify millions of keys" into a small number of hash comparisons (logarithmic in key count).
+
+```mermaid
+flowchart TD
+    Root["Root hash"]
+    Root --> H1["Hash(left subtree)"]
+    Root --> H2["Hash(right subtree)"]
+    H1 --> K1["hash(key1 value)"]
+    H1 --> K2["hash(key2 value)"]
+    H2 --> K3["hash(key3 value)"]
+    H2 --> K4["hash(key4 value)"]
+```
 
 ## Trade-offs / Comparisons
 | Concern | Choice made | Why |

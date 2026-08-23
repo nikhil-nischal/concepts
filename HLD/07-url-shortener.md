@@ -25,6 +25,18 @@
 - Approach: generate a unique numeric ID first, then encode that ID in base62 to get the short code.
 - Two problems to solve: (1) how to generate a unique ID in a distributed system, (2) the base62 output length varies with the ID's size, so short codes may come out shorter than 7 characters.
 - Length fix: pad shorter outputs to 7 characters (like `=` padding in Base64). Since capacity was sized to `62^7`, encoded IDs never exceed 7 characters, so padding only ever needs to add characters, not truncate.
+- Redirect flow (the base62 code decoded back to a long URL):
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant S as TinyURL Server
+    participant DB as DB
+
+    U->>S: GET /{shortUrl}
+    S->>DB: lookup short_url
+    DB-->>S: long_url
+    S-->>U: 302 redirect to long_url
+```
 
 ### Unique ID generation in a distributed system
 - Single DB with auto-increment ID: doesn't scale (10M writes/day is too much for one DB) and is a single point of failure.
@@ -37,6 +49,21 @@
   - Guarantees uniqueness across all distributed servers with no per-request central bottleneck.
   - Trade-off: a range assigned to a worker that never gets used is "wasted," but since total capacity (3.5 trillion) vastly exceeds the requirement (365 billion), this is an acceptable trade-off.
   - Zookeeper itself is not a unique ID generator — it's a general distributed coordination service; the range-allocation logic is built on top of it.
+- Shorten (write) flow using the range-allocated ID:
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant S as TinyURL Server
+    participant ZK as Zookeeper
+    participant DB as DB
+
+    U->>S: POST /shorten {longUrl}
+    S->>S: get next ID from its assigned range (ask ZK only when range is exhausted)
+    S->>S: base62-encode ID, pad to 7 chars
+    S->>DB: store (short_url, long_url)
+    S-->>U: shortUrl
+    Note over S,ZK: ZK contacted only on range exhaustion, not per-request
+```
 
 ## Trade-offs / Comparisons
 | Approach | Verdict |

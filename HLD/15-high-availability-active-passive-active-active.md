@@ -21,11 +21,29 @@
 - Sync is **one-directional**: primary → replicas.
 - **Failover**: if the primary DB goes down, the application layer switches traffic to the DR data center's DB and promotes it to primary (read-write); once the original DB recovers, it's demoted back to replica/read-only. This is how active-passive avoids SPOF and achieves resilience.
 
+```mermaid
+sequenceDiagram
+    participant App as Application
+    participant Primary as Primary DB (Mumbai)
+    participant Replica as Replica DB (DR, Pune)
+
+    App->>Primary: write / read
+    Primary--xApp: timeout (DB down)
+    App->>Replica: promote to primary
+    Note over Replica: now primary / read-write
+    App->>Replica: write / read (post-failover)
+```
+
 ### Active-Active architecture
 - Requires DBs that **support multi-master** replication (e.g. Cassandra and most NoSQL stores) — more than one live/primary DB can exist and accept writes simultaneously. Traditional Oracle/MySQL/Postgres do not support this.
 - Every data center's DB is primary/live; all of them can serve both reads and writes for requests routed to them.
 - Sync is **bi-directional** between all data centers' DBs (vs. one-directional in active-passive).
 - Whichever data center a request lands on (via the load balancer), that data center's own DB handles it fully — no cross-datacenter hop needed for writes, unlike active-passive.
+
+```mermaid
+flowchart LR
+    DB1[(DC1 - Mumbai - Primary/Live)] <-->|bi-directional sync| DB2[(DC2 - Pune - Primary/Live)]
+```
 
 ## Trade-offs / Comparisons
 | Aspect | Active-Passive | Active-Active |

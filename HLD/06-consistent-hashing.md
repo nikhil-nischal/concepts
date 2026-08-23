@@ -16,6 +16,23 @@
 - Example: DB with 3 partitions, `id % 3` decides the partition. Add a 4th partition → now `id % 4` — nearly every key maps to a different partition than before, forcing a full data reshuffle (rebalancing) even though only one node changed.
 - This is expensive at scale (millions of DB entries, or live traffic on a load balancer) — not acceptable to move almost everything for one node change.
 
+```mermaid
+flowchart LR
+    subgraph Before["id % 3 (3 partitions)"]
+        direction LR
+        K1a["id=1"] --> P1a[Partition 0]
+        K2a["id=2"] --> P2a[Partition 1]
+        K3a["id=3"] --> P3a[Partition 2]
+    end
+    subgraph After["id % 4 (partition added)"]
+        direction LR
+        K1b["id=1"] --> P1b[Partition 1]
+        K2b["id=2"] --> P2b[Partition 2]
+        K3b["id=3"] --> P3b[Partition 3]
+    end
+    Before -.->|add 1 partition, modulo shifts for nearly every key| After
+```
+
 ### Consistent hashing — the idea
 - Arrange the hash output space as a ring (circle), e.g. values 0 to some max, wrapping back to 0.
 - Hash each server onto a random point on the ring (using the same hash function).
@@ -24,6 +41,16 @@
 - When a server is added: it only takes over the keys between itself and the previous server (counter-clockwise neighbor) — every other key stays put.
 - When a server is removed: only the keys it was holding move to the next server clockwise — everyone else is unaffected.
 - Net effect: adding/removing one node only remaps roughly `1/N` of the keys, not all of them.
+
+```mermaid
+flowchart LR
+    S1((Server A)) -->|clockwise arc| S2((Server B))
+    S2 -->|clockwise arc| S3((Server C))
+    S3 -->|clockwise arc| S4((Server D))
+    S4 -->|clockwise arc, wraps to start| S1
+    K["Key X"] -.->|walk clockwise, first server found| S4
+```
+*(mermaid has no native circular layout — this cycle of arrows stands in for the ring; the wrap-around edge from D back to A closes it.)*
 
 ### Virtual nodes
 - Placing each physical server at just one random ring point can lead to uneven key distribution (some servers get a much bigger arc than others).
@@ -45,12 +72,17 @@
 - Virtual nodes example: instead of placing S1 once, place it at several random points on the ring (aliased as S1 at each) so its share of the ring isn't just one lucky/unlucky arc.
 
 ## Diagram
+Full ring with virtual nodes — each physical server (A, B, C) placed at multiple
+points around the ring so no single server owns one unlucky/lucky large arc:
 ```mermaid
-graph LR
-    K1[Key hashed to point] -->|walk clockwise| S1((Server A))
-    S1 --- S2((Server B))
-    S2 --- S3((Server C))
-    S3 --- S1
+flowchart LR
+    A1((A-v1)) --> B1((B-v1))
+    B1 --> A2((A-v2))
+    A2 --> C1((C-v1))
+    C1 --> B2((B-v2))
+    B2 --> A3((A-v3))
+    A3 --> C2((C-v2))
+    C2 -->|wraps to start| A1
 ```
 
 ## Interview Q&A

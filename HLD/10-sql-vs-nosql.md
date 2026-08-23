@@ -16,12 +16,35 @@
 - Scalability — scales **vertically** (bigger RAM, more storage on one machine) far more naturally than horizontally; horizontal sharding (by row or column) is possible but not well-supported by SQL.
 - Property — follows **ACID**: Atomicity, Consistency, Isolation, Durability. Core purpose of ACID is guaranteeing data integrity/consistency after every transaction.
 
+```mermaid
+erDiagram
+    DEPARTMENT ||--o{ EMPLOYEE : has
+    DEPARTMENT {
+        int dept_id PK
+        string name
+    }
+    EMPLOYEE {
+        int emp_id PK
+        string name
+        int dept_id FK
+    }
+```
+- Predetermined schema (columns/types fixed up front) plus a real foreign-key relation between tables — and a given employee's row plus its related department row both live on the same server (concentrated nature).
+
 ### NoSQL
 - NoSQL = non-relational / "not only SQL". Four structural sub-types:
 - **Key-value DB** — key maps to an opaque value (string, int, JSON). You can only query/search by key, never by value contents → very fast lookups. Example: DynamoDB.
 - **Document DB** — also key → value (JSON/XML), but unlike key-value DBs you *can* query on fields inside the value, not just the key. Example: MongoDB.
 - **Column-wise DB** — key maps to a dynamic list of (column, value) pairs. Different keys ("rows") can have different numbers/sets of columns — no fixed schema across rows.
 - **Graph DB** — data stored as nodes and edges, where edges encode relationships directly (e.g. "Shreyansh — friend of — X"). Used for social networks and recommendation engines, since finding related entities is a direct edge traversal instead of a full-table scan/join like in SQL.
+
+```mermaid
+flowchart LR
+    S["Shreyansh (node)"] -->|friend of| X["X (node)"]
+    S -->|friend of| Y["Y (node)"]
+    X -->|friend of| Z["Z (node)"]
+```
+- Relationships are direct edges — "friends of Shreyansh" is a one-hop traversal, no join/scan like SQL's PK/FK lookup requires.
 - Nature — **distributed**: data for one logical dataset (e.g. a users table) is spread across many nodes/servers by design, not concentrated on one.
 - Scalability — scales **horizontally**: add more nodes and spread the growing dataset across them, instead of growing one machine.
 - Property — follows **BASE**, not ACID:
@@ -47,12 +70,22 @@
 
 ## Diagram
 ```mermaid
-flowchart LR
-    S["Shreyansh (node)"] -->|friend of| X["X (node)"]
-    S -->|friend of| Y["Y (node)"]
-    X -->|friend of| Z["Z (node)"]
+flowchart TB
+    subgraph SQLBOX["SQL — concentrated, vertical scaling"]
+        Srv[("Single Server")]
+        Srv --> Emp["Employee table row"]
+        Srv --> Dept["Department table row (FK-joined)"]
+    end
+    subgraph NOSQLBOX["NoSQL — distributed, horizontal scaling"]
+        N1[("Node 1")]
+        N2[("Node 2")]
+        N3[("Node 3")]
+        N1 -.replicate/sync.-> N2
+        N2 -.replicate/sync.-> N3
+    end
 ```
-- Graph DB: relationships are stored as direct edges, so finding "friends of Shreyansh" is a direct traversal — no full scan/join like SQL's primary-key/foreign-key lookup requires.
+- SQL: one entity's full data (across related tables) stays on one server — grow that server (vertical) to scale.
+- NoSQL: data for a dataset is spread across nodes by design — add more nodes (horizontal) to scale, with async replication driving eventual consistency.
 
 ## Interview Q&A
 <details>

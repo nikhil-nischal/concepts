@@ -20,6 +20,24 @@
 - To stay Consistent during the partition, the unreachable node must refuse to answer until it re-syncs → breaks Availability.
 - So under a partition you're forced to sacrifice either C or A — you cannot have all three simultaneously.
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant India as India Node
+    participant USA as USA Node
+
+    Client->>India: write x = 6
+    India--xUSA: replication blocked (partition)
+    Note over India,USA: network partition in effect
+
+    Client->>USA: read x
+    alt AP choice
+        USA-->>Client: x = 2 (stale, still answers)
+    else CP choice
+        USA-->>Client: refuse / error (won't risk stale data)
+    end
+```
+
 ### The three achievable combinations
 - AP (Availability + Partition Tolerance) — give up Consistency. All nodes keep responding even during a partition, but may return stale/different data. System is "eventually consistent" — the out-of-sync node catches up once the partition heals.
 - CP (Consistency + Partition Tolerance) — give up Availability. During a partition, the node that can't confirm it has the latest data refuses to respond (or fails the request) rather than risk returning stale data.

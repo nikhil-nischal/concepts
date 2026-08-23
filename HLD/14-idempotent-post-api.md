@@ -21,6 +21,14 @@
   - **Key found, status `COMPLETED`** → this is a duplicate of a request that already finished successfully. Don't redo the operation — just return the same success response (e.g. `HTTP 200`) with the already-stored result.
   - **Key found, status `CREATED` (still in progress)** → the original request for this key hasn't finished yet (still processing, or timed out on the client side but the server is still working). Reject the duplicate with `HTTP 409 Conflict` — "same request already in flight, don't retry yet."
 
+```mermaid
+stateDiagram-v2
+    [*] --> CREATED : key not found, insert row
+    CREATED --> COMPLETED : business logic succeeds
+    CREATED --> CREATED : duplicate arrives while in flight (409 Conflict)
+    COMPLETED --> COMPLETED : duplicate arrives after completion (200, return stored result)
+```
+
 ### Handling parallel duplicate requests (race on the same key)
 - Two identical requests (same idempotency key) can arrive at the server at almost the exact same time — e.g. a slow network causes the client to fire a duplicate before the first response comes back.
 - Naive lookup-then-insert has a race: both requests check the DB, both see "key not present," both proceed to insert and execute — defeating the whole idempotency check.

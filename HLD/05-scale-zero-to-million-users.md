@@ -20,6 +20,17 @@
 - Add multiple app servers behind a Load Balancer; the client now talks to the load balancer, which decides which app server to forward each request to.
 - Load balancer also adds a security/privacy layer — app servers are no longer directly exposed to the internet, only the load balancer is.
 
+```mermaid
+flowchart LR
+    Client --> LB["Load Balancer"]
+    LB --> A1["App Server 1"]
+    LB --> A2["App Server 2"]
+    LB --> A3["App Server 3"]
+    A1 --> DB[("Database")]
+    A2 --> DB
+    A3 --> DB
+```
+
 ### Stage 4 — Database replication (Master-Slave)
 - One Master DB handles all write operations (create/update/delete); one or more Slave DBs handle read operations, replicating data from the master.
 - If the master fails, one of the slaves is promoted to become the new master (failover) — improves fault tolerance for the DB layer, not just the app layer.
@@ -30,6 +41,23 @@
 - Cache hit — data found in cache, returned immediately, DB not touched.
 - Cache miss — data not in cache, app server has to fetch from the DB (and typically populate the cache for next time).
 - TTL (Time To Live) — how long a cached entry is kept before it's considered stale and needs to be refreshed from the DB.
+
+```mermaid
+sequenceDiagram
+    participant App as App Server
+    participant Cache
+    participant DB
+
+    App->>Cache: GET key
+    alt cache hit
+        Cache-->>App: cached value
+    else cache miss
+        Cache--xApp: miss
+        App->>DB: query
+        DB-->>App: result
+        App->>Cache: SET key (TTL)
+    end
+```
 
 ### Stage 6 — CDN (Content Delivery Network)
 - Serves static content (e.g. images, assets) from a server node geographically close to the requesting user, instead of always hitting the origin server.

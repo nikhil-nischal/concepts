@@ -59,11 +59,44 @@
 - Group message table: `group_id, user (sender), message, timestamp, message_id`.
   - Partition key = `group_id` — all of a group's messages land in the same partition for ordering; `message_id` again provides in-partition sequencing.
 
+```mermaid
+erDiagram
+    ONE_TO_ONE_MESSAGE {
+        string message_id PK "orders within partition only"
+        string from PK "partition key (from,to)"
+        string to PK "partition key (from,to)"
+        string message
+        timestamp timestamp
+    }
+    GROUP_MESSAGE {
+        string group_id PK "partition key"
+        string message_id PK "orders within partition"
+        string user "sender"
+        string message
+        timestamp timestamp
+    }
+```
+
 ### 1:1 send flow (happy path — both users online)
 - User 1 (connected to Chat Server 100 via WebSocket) sends "send message to User 2: hello".
 - Chat Server 100 asks the User Mapping Service which chat server User 2 is connected to (e.g. Chat Server 101).
 - Chat Server 100 forwards the message to Chat Server 101, which delivers it to User 2 over User 2's WebSocket connection.
 - The message is also written to the DB (chat history) in parallel.
+
+```mermaid
+sequenceDiagram
+    participant U1 as User 1
+    participant CS1 as Chat Server 100
+    participant UMS as User Mapping Service
+    participant CS2 as Chat Server 101
+    participant U2 as User 2
+    U1->>CS1: send message (to: User2, "hello")
+    CS1->>UMS: which chat server is User2 on?
+    UMS-->>CS1: Chat Server 101
+    CS1->>CS2: forward message
+    CS2->>U2: deliver over WebSocket
+    CS1->>CS1: persist message to NoSQL DB
+```
 
 ### Offline delivery flow
 - If User 2's chat server is down or their connection drops, the User Mapping Service has no entry for User 2 (offline).
@@ -115,21 +148,6 @@ flowchart TB
     Login --> UMS
     Client1 -- WebSocket heartbeat --> Presence["Presence System"]
     CS1 --> Group["Group Service"]
-```
-
-```mermaid
-sequenceDiagram
-    participant U1 as User 1
-    participant CS1 as Chat Server 100
-    participant UMS as User Mapping Service
-    participant CS2 as Chat Server 101
-    participant U2 as User 2
-    U1->>CS1: send message (to: User2, "hello")
-    CS1->>UMS: which chat server is User2 on?
-    UMS-->>CS1: Chat Server 101
-    CS1->>CS2: forward message
-    CS2->>U2: deliver over WebSocket
-    CS1->>CS1: persist message to NoSQL DB
 ```
 
 ## Interview Q&A

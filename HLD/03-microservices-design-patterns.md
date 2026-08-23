@@ -48,6 +48,13 @@
 - Route a small % of (low-risk) traffic to the new microservice first, monitor and fix bugs found; as confidence grows, slowly increase the % of traffic sent to the new service.
 - Over time the monolith's share of that responsibility shrinks toward zero until it's fully "strangled"/replaced by the microservice — no risky big-bang cutover.
 
+```mermaid
+flowchart LR
+    C[Client Traffic] -->|majority %| M[Monolith]
+    C -->|small %, growing over time| MS[New Microservice]
+    M -.->|shrinking responsibility| MS
+```
+
 ### Database Per Service (context for Saga & CQRS)
 - Two DB approaches for microservices: Shared Database (all services read/write one common DB) vs Database Per Service (each service owns its own DB; no service directly touches another service's DB).
 - Shared DB problems: can't scale one service's data independently — scaling means scaling the entire shared DB even if only one service's data volume is the bottleneck; a schema/table change can impact every service that uses that DB (data-level coupling).
@@ -61,12 +68,26 @@
 - Implemented via events (choreography-style): each service both listens for events that trigger its own local transaction, and emits an event when its local transaction completes (success, or failure → triggers compensation upstream) — keeps services decoupled from each other, no central coordinator in this setup.
 - Drawback: coordinating purely through events (each service reacting to others' events) can create circular/cyclic dependencies between services as the chain of listeners grows more complex.
 
+### Fixing Saga's cyclic-dependency drawback: Orchestration vs Choreography
+- The pure event-based Saga above is **choreography** — no central coordinator, each service both listens and emits, so the web of listeners can grow into a cycle as more services join the chain.
+- Fix: **orchestration** — add a central Saga Orchestrator that owns the whole workflow as an explicit sequence and sends direct commands to each service (Order → Inventory → Payment), instead of services chaining off each other's events. Dependencies become one-directional (orchestrator → service), so no cycle can form; failure handling (compensation) is also driven centrally by the orchestrator instead of each service having to know which upstream service to notify.
+- Trade-off: orchestration adds a new component (and a potential single point of failure/bottleneck) but keeps the flow easy to reason about; choreography stays decoupled but only scales safely for short, simple chains.
+
 ### CQRS — Command Query Responsibility Segregation
 - Splits the write path (Command) from the read path (Query) for a system spanning multiple per-service databases.
 - Command side — writes (create/update/delete) go through each service's own database as normal, same as Database Per Service — each service's table stays its own source of truth.
 - Query side — a separate, denormalized "view"/history database is maintained that already combines the relevant data from multiple services' tables, so reads don't need a cross-database JOIN.
 - The view database is kept in sync with each service's write-side DB via events (same mechanism as Saga) — whenever a service's underlying data changes (create/update/delete), an event updates the shared read view.
 - Net effect: avoids the "can't JOIN across separate per-service DBs" problem, and lets read and write workloads scale/be optimized independently.
+
+```mermaid
+flowchart LR
+    C["Write / Command"] --> S1DB[("Service 1 DB")]
+    C --> S2DB[("Service 2 DB")]
+    S1DB -->|event on change| V[("Shared Read View / History DB")]
+    S2DB -->|event on change| V
+    Q["Read / Query"] --> V
+```
 
 ## Trade-offs / Comparisons
 | Aspect | Monolithic | Microservices |
@@ -109,15 +130,6 @@ sequenceDiagram
     I->>I: compensating txn: revert inventory
     I--xO: event: InventoryReverted (compensation)
     O->>O: compensating txn: cancel order
-```
-
-```mermaid
-flowchart LR
-    C["Write / Command"] --> S1DB[("Service 1 DB")]
-    C --> S2DB[("Service 2 DB")]
-    S1DB -->|event on change| V[("Shared Read View / History DB")]
-    S2DB -->|event on change| V
-    Q["Read / Query"] --> V
 ```
 
 ## Interview Q&A
@@ -202,6 +214,13 @@ Since each service listens for and emits events independently, the web of event 
 <summary>What problem does CQRS solve in a Database Per Service setup, and how?</summary>
 
 It solves the inability to JOIN across separate per-service databases for reads. CQRS keeps writes (Commands) going through each service's own DB as normal, but maintains a separate denormalized read view (Query side) that already combines the needed data — kept in sync via events whenever the underlying service data changes — so reads just query the view instead of joining across DBs.
+
+</details>
+
+<details>
+<summary>How do you fix the cyclic-dependency drawback of a pure event-driven (choreography) Saga?</summary>
+
+Switch to orchestration: introduce a central Saga Orchestrator that explicitly sequences the workflow and sends direct commands to each service, rather than services reacting to each other's events. This makes dependencies one-directional (orchestrator → service) so no cycle can form, at the cost of adding a coordinator component. Choreography is still fine for short, simple event chains.
 
 </details>
 
