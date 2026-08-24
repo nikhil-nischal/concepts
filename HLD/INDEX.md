@@ -17,3 +17,4 @@
 - [18. Load Balancer & Algorithms](18-load-balancer-algorithms.md) — L4 vs L7, static (round robin, weighted round robin, IP hash) vs dynamic (least connection, weighted least connection, least response time/TTFB)
 - [19. Distributed Cache & Caching Strategies](19-caching-strategies.md) — distributed caching via consistent hashing, cache-aside, read-through, write-around, write-through, write-back
 - [20. Distributed Transactions](20-distributed-transactions.md) — ACID recap, Two-Phase Commit, Three-Phase Commit, Saga pattern (compensating transactions)
+- [21. Database Indexing](21-database-indexing.md) — data pages vs data blocks, B/B+ Tree mechanics, clustered vs non-clustered index, page splitting, indexing overhead

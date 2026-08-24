@@ -19,6 +19,7 @@
   - [18. Load Balancer & Algorithms](HLD/18-load-balancer-algorithms.md)
   - [19. Distributed Cache & Caching Strategies](HLD/19-caching-strategies.md)
   - [20. Distributed Transactions](HLD/20-distributed-transactions.md)
+  - [21. Database Indexing](HLD/21-database-indexing.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
   - [00a. What is LLD](LLD/00a-what-is-lld.md)
