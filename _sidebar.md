@@ -18,8 +18,8 @@
   - [17. Proxy vs Reverse Proxy](HLD/17-proxy-vs-reverse-proxy.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
-  - [01. What is LLD](LLD/01-what-is-lld.md)
-  - [02. Java Interfaces](LLD/02-java-interfaces.md)
-  - [03. SOLID Principles](LLD/03-solid-principles.md)
+  - [00a. What is LLD](LLD/00a-what-is-lld.md)
+  - [00b. Java Interfaces](LLD/00b-java-interfaces.md)
+  - [01. SOLID Principles](LLD/01-solid-principles.md)
 - Frameworks
   - [01. HLD Interview Answering Framework](Frameworks/01-hld-answering-framework.md)

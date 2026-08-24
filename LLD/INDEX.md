@@ -1,4 +1,4 @@
 - [00. Roadmap](00-roadmap.md) — planned topic order for LLD prep
-- [01. What is LLD](01-what-is-lld.md) — LLD vs HLD, creational/structural/behavioral patterns, is-a vs has-a
-- [02. Java Interfaces](02-java-interfaces.md) — static/default methods, achieving multiple inheritance
-- [03. SOLID Principles](03-solid-principles.md) — SRP, OCP, LSP, ISP, DIP with examples
+- [00a. What is LLD](00a-what-is-lld.md) — LLD vs HLD, creational/structural/behavioral patterns, is-a vs has-a
+- [00b. Java Interfaces](00b-java-interfaces.md) — static/default methods, achieving multiple inheritance
+- [01. SOLID Principles](01-solid-principles.md) — SRP, OCP, LSP, ISP, DIP with examples

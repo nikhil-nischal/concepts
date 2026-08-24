@@ -9,7 +9,7 @@
 - Interfaces can contain: abstract methods, static constants, static
   methods, and (since Java 8) default methods.
 - Prerequisite context for LLD: interfaces are the mechanism behind ISP and
-  DIP in [[LLD/03-solid-principles]], and behind achieving multiple
+  DIP in [[LLD/01-solid-principles]], and behind achieving multiple
   inheritance of type in Java.
 
 ## Key Concepts
@@ -227,7 +227,7 @@ interface and the JVM runs it directly, same as in a class.
 </details>
 
 ## Related Topics
-- [[LLD/03-solid-principles]] — Interface Segregation and Dependency
+- [[LLD/01-solid-principles]] — Interface Segregation and Dependency
   Inversion both rely on interfaces as the abstraction mechanism.
-- [[LLD/01-what-is-lld]] — is-a relationship (inheritance) vs implementing
+- [[LLD/00a-what-is-lld]] — is-a relationship (inheritance) vs implementing
   an interface.
