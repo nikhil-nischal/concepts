@@ -15,3 +15,4 @@
 - [16. Distributed Messaging Queue](16-messaging-queue-kafka-rabbitmq.md) — Kafka (topic/partition/offset/broker/cluster/zookeeper, leader-follower) vs RabbitMQ (exchange/routing key, push-based), retry + DLQ
 - [17. Proxy vs Reverse Proxy](17-proxy-vs-reverse-proxy.md) — forward proxy vs reverse proxy, CDN as reverse proxy, proxy vs VPN vs load balancer vs firewall
 - [18. Load Balancer & Algorithms](18-load-balancer-algorithms.md) — L4 vs L7, static (round robin, weighted round robin, IP hash) vs dynamic (least connection, weighted least connection, least response time/TTFB)
+- [19. Distributed Cache & Caching Strategies](19-caching-strategies.md) — distributed caching via consistent hashing, cache-aside, read-through, write-around, write-through, write-back
