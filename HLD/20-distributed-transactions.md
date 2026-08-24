@@ -33,7 +33,7 @@ sequenceDiagram
 
 ### Two-Phase Commit (2PC)
 - Introduces a **transaction coordinator** that talks to all **participants** (the microservices/DBs involved) and drives two phases: **prepare (voting)** and **commit (decision)**.
-- **Phase 1 (prepare/voting):** coordinator sends the operation to every participant; each applies its change, locks the row, but does **not** commit yet — then replies "OK" (prepared) or "No".
+- **Phase 1 (prepare/voting):** also serves as an **availability check** — the coordinator confirms every participant is up and able to respond before any commit is considered; coordinator sends the operation to every participant, each applies its change, locks the row, but does **not** commit yet — then replies "OK" (prepared) or "No". A participant that's down or unreachable simply times out here, so this phase doubles as verifying all participants are alive.
 - **Phase 2 (commit/decision):** if **all** participants said OK, coordinator sends **commit** to everyone; if **any** said No, coordinator sends **abort** to everyone. Both coordinator and each participant write every step to a durable **log file** before acting, so a recovering node can check what it last did.
 
 ```mermaid
@@ -81,7 +81,7 @@ flowchart TB
 
 ### Three-Phase Commit (3PC)
 - Fixes 2PC's blocking problem by splitting phase 2 (commit/decision) into two sub-phases: **pre-commit** and **commit**.
-- **Phase 1 (prepare)** — identical to 2PC: coordinator asks "are you prepared?", participants apply changes and reply OK/No.
+- **Phase 1 (prepare)** — identical to 2PC, including the **availability check**: coordinator asks "are you prepared?", participants apply changes and reply OK/No — a participant that's down never replies, which is how the coordinator learns it can't proceed.
 - **Phase 2 (pre-commit)** — coordinator makes its decision (commit or abort) and **shares that decision** with every participant ahead of time — not an instruction to act yet, just information, logged durably by both sides.
 - **Phase 3 (commit)** — coordinator tells participants to actually commit (or abort); participants that already know the pre-commit decision can act independently if the coordinator disappears here.
 
