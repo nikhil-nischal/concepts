@@ -3,3 +3,4 @@
 - [00b. Java Interfaces](00b-java-interfaces.md) — static/default methods, achieving multiple inheritance
 - [01. SOLID Principles](01-solid-principles.md) — SRP, OCP, LSP, ISP, DIP with examples
 - [01.1. LSP with Solution](01.1-lsp-solution.md) — fixing an LSP violation via inheritance restructuring
+- [02. Strategy Design Pattern](02-strategy-design-pattern.md) — composition over inheritance via a swappable strategy interface
