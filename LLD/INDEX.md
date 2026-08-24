@@ -4,3 +4,4 @@
 - [01. SOLID Principles](01-solid-principles.md) — SRP, OCP, LSP, ISP, DIP with examples
 - [01.1. LSP with Solution](01.1-lsp-solution.md) — fixing an LSP violation via inheritance restructuring
 - [02. Strategy Design Pattern](02-strategy-design-pattern.md) — composition over inheritance via a swappable strategy interface
+- [03. Observer Design Pattern](03-observer-design-pattern.md) — auto-notify subscribers on state change, constructor-injected observers

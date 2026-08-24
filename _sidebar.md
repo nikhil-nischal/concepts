@@ -23,5 +23,6 @@
   - [01. SOLID Principles](LLD/01-solid-principles.md)
   - [01.1. LSP with Solution](LLD/01.1-lsp-solution.md)
   - [02. Strategy Design Pattern](LLD/02-strategy-design-pattern.md)
+  - [03. Observer Design Pattern](LLD/03-observer-design-pattern.md)
 - Frameworks
   - [01. HLD Interview Answering Framework](Frameworks/01-hld-answering-framework.md)
