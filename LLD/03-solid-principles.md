@@ -268,5 +268,7 @@ callers relying on Bike's contract — that's an LSP violation.
 ## Related Topics
 - [[LLD/01-what-is-lld]] — LLD categories (creational/structural/behavioral)
   that these principles underpin.
+- [[LLD/02-java-interfaces]] — interfaces are the mechanism ISP and DIP
+  rely on.
 - Design patterns (Factory, Decorator, Strategy, etc.) — many directly
   implement one or more SOLID principles.
