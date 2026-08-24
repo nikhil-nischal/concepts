@@ -1,1 +1,2 @@
 - [00. Roadmap](00-roadmap.md) — planned topic order for LLD prep
+- [01. What is LLD](01-what-is-lld.md) — LLD vs HLD, creational/structural/behavioral patterns, is-a vs has-a

@@ -18,5 +18,6 @@
   - [17. Proxy vs Reverse Proxy](HLD/17-proxy-vs-reverse-proxy.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
+  - [01. What is LLD](LLD/01-what-is-lld.md)
 - Frameworks
   - [01. HLD Interview Answering Framework](Frameworks/01-hld-answering-framework.md)
