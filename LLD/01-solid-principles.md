@@ -84,6 +84,7 @@ classDiagram
   guarantees (e.g. the child's overridden method doesn't actually turn on
   the engine, or throws/does something unexpected), callers relying on the
   parent's contract break — this is what LSP forbids.
+- Concrete violation + fix walkthrough: [[LLD/01.1-lsp-solution]].
 
 ```mermaid
 classDiagram

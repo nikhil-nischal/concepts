@@ -21,5 +21,6 @@
   - [00a. What is LLD](LLD/00a-what-is-lld.md)
   - [00b. Java Interfaces](LLD/00b-java-interfaces.md)
   - [01. SOLID Principles](LLD/01-solid-principles.md)
+  - [01.1. LSP with Solution](LLD/01.1-lsp-solution.md)
 - Frameworks
   - [01. HLD Interview Answering Framework](Frameworks/01-hld-answering-framework.md)

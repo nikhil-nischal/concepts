@@ -2,3 +2,4 @@
 - [00a. What is LLD](00a-what-is-lld.md) — LLD vs HLD, creational/structural/behavioral patterns, is-a vs has-a
 - [00b. Java Interfaces](00b-java-interfaces.md) — static/default methods, achieving multiple inheritance
 - [01. SOLID Principles](01-solid-principles.md) — SRP, OCP, LSP, ISP, DIP with examples
+- [01.1. LSP with Solution](01.1-lsp-solution.md) — fixing an LSP violation via inheritance restructuring
