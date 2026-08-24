@@ -20,5 +20,6 @@
   - [Roadmap](LLD/00-roadmap.md)
   - [01. What is LLD](LLD/01-what-is-lld.md)
   - [02. SOLID Principles](LLD/02-solid-principles.md)
+  - [02a. Java Interfaces](LLD/02a-java-interfaces.md)
 - Frameworks
   - [01. HLD Interview Answering Framework](Frameworks/01-hld-answering-framework.md)
