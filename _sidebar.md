@@ -16,6 +16,7 @@
   - [15. High Availability & Resilience](HLD/15-high-availability-active-passive-active-active.md)
   - [16. Distributed Messaging Queue](HLD/16-messaging-queue-kafka-rabbitmq.md)
   - [17. Proxy vs Reverse Proxy](HLD/17-proxy-vs-reverse-proxy.md)
+  - [18. Load Balancer & Algorithms](HLD/18-load-balancer-algorithms.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
   - [00a. What is LLD](LLD/00a-what-is-lld.md)
