@@ -70,15 +70,11 @@ classDiagram
   lets every implementer get it for free without forcing each one to add
   its own implementation.
 
-```mermaid
-sequenceDiagram
-    participant Dog
-    participant Cat
-    participant Animal as Animal interface (default run())
-    Dog->>Animal: run() [not overridden]
-    Animal-->>Dog: shared default implementation runs
-    Cat->>Animal: run() [not overridden]
-    Animal-->>Cat: shared default implementation runs
+```java
+Dog dog = new Dog();
+Cat cat = new Cat();
+dog.run(); // not overridden -> runs Animal interface's default run()
+cat.run(); // not overridden -> runs Animal interface's default run()
 ```
 
 ### Achieving multiple inheritance via interfaces
