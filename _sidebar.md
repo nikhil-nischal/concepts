@@ -27,6 +27,7 @@
   - [26. JWT (JSON Web Token)](HLD/26-jwt.md)
   - [28. API Gateway](HLD/28-api-gateway.md)
   - [29. Service Mesh](HLD/29-service-mesh.md)
+  - [30. DNS (Domain Name System)](HLD/30-dns.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
   - [00a. What is LLD](LLD/00a-what-is-lld.md)
