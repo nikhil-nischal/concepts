@@ -21,6 +21,7 @@
   - [20. Distributed Transactions](HLD/20-distributed-transactions.md)
   - [21. Database Indexing](HLD/21-database-indexing.md)
   - [22. Concurrency Control](HLD/22-concurrency-control.md)
+  - [23. Two Phase Locking (2PL)](HLD/23-two-phase-locking.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
   - [00a. What is LLD](LLD/00a-what-is-lld.md)

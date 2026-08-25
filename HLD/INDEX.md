@@ -19,3 +19,4 @@
 - [20. Distributed Transactions](20-distributed-transactions.md) — ACID recap, Two-Phase Commit, Three-Phase Commit, Saga pattern (compensating transactions)
 - [21. Database Indexing](21-database-indexing.md) — data pages vs data blocks, B/B+ Tree mechanics, clustered vs non-clustered index, page splitting, indexing overhead
 - [22. Concurrency Control](22-concurrency-control.md) — shared/exclusive locks, isolation levels (dirty/non-repeatable/phantom reads), optimistic (versioning) vs pessimistic (locking, deadlock) concurrency control
+- [23. Two Phase Locking (2PL)](23-two-phase-locking.md) — growing/shrinking phase, Basic/Conservative/Strong Strict 2PL, deadlock (WFG, wait-die, wound-wait) and cascading aborts
