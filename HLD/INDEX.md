@@ -22,3 +22,4 @@
 - [23. Two Phase Locking (2PL)](23-two-phase-locking.md) — growing/shrinking phase, Basic/Conservative/Strong Strict 2PL, deadlock (WFG, wait-die, wound-wait) and cascading aborts
 - [24. OAuth 2.0](24-oauth-2.md) — 4 actors, authorization code grant flow, access/refresh tokens, CSRF protection via state, implicit/password/client-credentials grants
 - [25. Symmetric & Asymmetric Encryption](25-symmetric-asymmetric-encryption.md) — AES internals (state array, key expansion, rounds), Diffie-Hellman key exchange, digital signatures (auth + integrity)
+- [26. JWT (JSON Web Token)](26-jwt.md) — JWT vs session ID, token structure (header/payload/signature), SSO, invalidation challenges, JWE, JWK exploit
