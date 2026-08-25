@@ -27,3 +27,4 @@
 - [29. Service Mesh](29-service-mesh.md) — sidecar proxy pattern, data plane vs control plane, Istio (Envoy/Galley/Pilot/Citadel), circuit breaker, retries, canary deployment, telemetry
 - [30. DNS (Domain Name System)](30-dns.md) — domain hierarchy, A/CNAME records, recursive vs iterative resolution, root/TLD/authoritative servers, registrar chain, DNS zones
 - [31. Dividing a Monolith into Microservices (DDD)](31-monolith-to-microservices-ddd.md) — event storming, bounded context, distributed monolith anti-pattern, Amazon Prime Video case study
+- [32. Common Web Attacks: CSRF, XSS, CORS, SQL Injection](32-web-attacks-csrf-xss-cors-sqli.md) — attack mechanisms and mitigations (CSRF tokens, output escaping, origin whitelisting, parameterized queries)
