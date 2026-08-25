@@ -1,7 +1,12 @@
 # Notes
 
-Study notes organized by subject (HLD, LLD, ...). Use the sidebar to
-navigate.
+Study notes organized by subject. Use the sidebar to navigate, or jump in via
+the [index](INDEX.md):
+
+- [HLD](HLD/INDEX.md) — high-level design topics
+- [LLD](LLD/INDEX.md) — low-level design topics
+- [AI](AI/INDEX.md) — AI/LLM concepts and terminology
+- [Frameworks](Frameworks/INDEX.md) — meta/baseline frameworks for interview answering
 
 - Edit any `.md` file and refresh the browser — no build step, changes show
   immediately.
