@@ -29,10 +29,28 @@
     .markdown-section details summary::marker { color: #42b983; }
     .markdown-section details summary:hover { color: #42b983; }
     .markdown-section details p:last-child { margin-bottom: 0; }
+
+    .markdown-section mark { background: #fff3a3; padding: 0 2px; }
+
+    #edit-toggle {
+      position: fixed; bottom: 20px; right: 20px; z-index: 10;
+      background: #42b983; color: #fff; border: none; border-radius: 20px;
+      padding: 10px 16px; font-size: 14px; cursor: pointer;
+    }
+    #edit-toolbar { display: flex; gap: 8px; margin-bottom: 10px; }
+    #edit-toolbar button {
+      padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px;
+      background: #fff; cursor: pointer;
+    }
+    #raw-editor {
+      width: 100%; min-height: 60vh; font-family: monospace; font-size: 14px;
+      padding: 10px; box-sizing: border-box;
+    }
   </style>
 </head>
 <body>
   <div id="app"></div>
+  <button id="edit-toggle">Edit</button>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script>
     mermaid.initialize({ startOnLoad: false, theme: 'default' });
@@ -62,10 +80,74 @@
             return this.origin.code.apply(this, arguments);
           }
         }
-      }
+      },
+      plugins: [
+        function (hook, vm) {
+          hook.doneEach(function () {
+            window.__currentFile = vm.route.file;
+          });
+        }
+      ]
     }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script>
+    const editBtn = document.getElementById('edit-toggle');
+    let editing = false;
+
+    function wrap(before, after) {
+      const ta = document.getElementById('raw-editor');
+      const { selectionStart: s, selectionEnd: e, value } = ta;
+      ta.value = value.slice(0, s) + before + value.slice(s, e) + after + value.slice(e);
+      ta.focus();
+      ta.selectionStart = s + before.length;
+      ta.selectionEnd = e + before.length;
+    }
+
+    editBtn.addEventListener('click', async () => {
+      const section = document.querySelector('.markdown-section');
+      if (editing) {
+        section.innerHTML = section.dataset.rendered;
+        editing = false;
+        editBtn.textContent = 'Edit';
+        return;
+      }
+      const file = window.__currentFile;
+      if (!file) return;
+      const text = await (await fetch(file)).text();
+
+      section.dataset.rendered = section.innerHTML;
+      section.innerHTML = '';
+
+      const toolbar = document.createElement('div');
+      toolbar.id = 'edit-toolbar';
+      toolbar.innerHTML = `
+        <button id="btn-bold"><b>B</b></button>
+        <button id="btn-mark">Highlight</button>
+        <button id="btn-save">Save</button>
+        <button id="btn-cancel">Cancel</button>
+      `;
+      const ta = document.createElement('textarea');
+      ta.id = 'raw-editor';
+      ta.value = text;
+      section.appendChild(toolbar);
+      section.appendChild(ta);
+
+      document.getElementById('btn-bold').onclick = () => wrap('**', '**');
+      document.getElementById('btn-mark').onclick = () => wrap('<mark>', '</mark>');
+      document.getElementById('btn-cancel').onclick = () => editBtn.click();
+      document.getElementById('btn-save').onclick = async () => {
+        await fetch('/api/save', {
+          method: 'POST',
+          body: JSON.stringify({ path: file, content: ta.value })
+        });
+        location.reload();
+      };
+
+      editing = true;
+      editBtn.textContent = 'Close editor';
+    });
+  </script>
 </body>
 </html>
