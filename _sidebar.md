@@ -25,6 +25,7 @@
   - [24. OAuth 2.0](HLD/24-oauth-2.md)
   - [25. Symmetric & Asymmetric Encryption](HLD/25-symmetric-asymmetric-encryption.md)
   - [26. JWT (JSON Web Token)](HLD/26-jwt.md)
+  - [28. API Gateway](HLD/28-api-gateway.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
   - [00a. What is LLD](LLD/00a-what-is-lld.md)
