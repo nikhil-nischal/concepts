@@ -1,7 +1,7 @@
-# SDE 2 Notes
+# Notes
 
-Study notes for SDE 2 interview prep, organized by subject (HLD, LLD, ...).
-Use the sidebar to navigate.
+Study notes organized by subject (HLD, LLD, ...). Use the sidebar to
+navigate.
 
 - Edit any `.md` file and refresh the browser — no build step, changes show
   immediately.
