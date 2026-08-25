@@ -1,3 +1,4 @@
 - [HLD](HLD/INDEX.md) — high-level design topics
 - [LLD](LLD/INDEX.md) — low-level design topics
+- [AI](AI/INDEX.md) — AI/LLM concepts and terminology
 - [Frameworks](Frameworks/INDEX.md) — meta/baseline frameworks for interview answering

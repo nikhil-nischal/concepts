@@ -1,0 +1,1 @@
+- [01. 20 AI Concepts Explained in 40 Minutes](01-20-ai-concepts-explained.md) — glossary tour: LLM, tokenization, vectors, attention, RAG, MCP, agents, RLHF, and more
