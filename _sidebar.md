@@ -23,6 +23,7 @@
   - [22. Concurrency Control](HLD/22-concurrency-control.md)
   - [23. Two Phase Locking (2PL)](HLD/23-two-phase-locking.md)
   - [24. OAuth 2.0](HLD/24-oauth-2.md)
+  - [25. Symmetric & Asymmetric Encryption](HLD/25-symmetric-asymmetric-encryption.md)
 - LLD
   - [Roadmap](LLD/00-roadmap.md)
   - [00a. What is LLD](LLD/00a-what-is-lld.md)
