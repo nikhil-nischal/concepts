@@ -169,6 +169,42 @@ flowchart LR
   (number of cache servers × number of services). Jump hashing is a
   newer approach that improves on both.
 
+### This note vs. a distributed key-value store ([09a](09a-key-value-store-dynamodb.md))
+- Easy to conflate the two — both are distributed hash-map-like systems,
+  but they solve different problems.
+
+| Aspect | Distributed cache (this note — Redis/Memcached) | Distributed KV store ([09a](09a-key-value-store-dynamodb.md) — DynamoDB/Cassandra) |
+|---|---|---|
+| Primary goal | Speed | Durable storage |
+| Source of truth | The database behind it | The KV store itself |
+| Data loss on crash | Usually acceptable | Not acceptable |
+| Storage | Mostly memory | Disk + memory |
+| Latency | Extremely low (sub-ms to a few ms) | Low, but higher than cache |
+| Eviction | LRU/LFU/TTL important | Usually not needed |
+| Persistence | Optional | Mandatory |
+| Consistency | Often relaxed | Carefully designed |
+| Capacity | Limited by RAM | Much larger |
+| Interview focus | Hash map, LRU/LFU, TTL, cache invalidation, consistent hashing, replication | Partitioning, consistent hashing, replication, quorum (N/R/W), vector clocks, gossip protocol, Merkle trees, read repair, hinted handoff |
+
+```mermaid
+flowchart LR
+    subgraph Cache["Distributed cache (this note)"]
+        direction LR
+        C1[Client] --> R[Redis / Memcached]
+        R -.->|cache miss| DB1[(MySQL — source of truth)]
+    end
+    subgraph KVStore["Distributed KV store (09a)"]
+        direction LR
+        C2[Client] --> KV[(DynamoDB / Cassandra — source of truth)]
+    end
+```
+
+- If the cache dies: rebuild from the database, no major business impact.
+- If the KV store dies: the data is gone — a major incident.
+- Fastest interview shortcut: interviewer says "this sits in front of
+  MySQL" → distributed cache. Interviewer says "this stores the actual
+  data" → distributed key-value store.
+
 ## Example / Walkthrough
 - Start with one service + one cache, backed by hash table + LRU (DLL) —
   prove the single-node design before distributing.

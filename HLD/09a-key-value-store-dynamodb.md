@@ -119,6 +119,42 @@ flowchart TD
 | Read/write success criteria | Quorum (R, W) instead of waiting for all N replicas | R + W > N gives consistency guarantees without full-replica latency |
 | Conflict handling | Vector clocks + client-side resolution instead of server-side locking | Keeps writes available during partitions; defers resolution to read time |
 
+### This note vs. a distributed cache ([09](09-key-value-store.md))
+- Easy to conflate the two — both are distributed hash-map-like systems,
+  but they solve different problems.
+
+| Aspect | Distributed KV store (this note — DynamoDB/Cassandra) | Distributed cache ([09](09-key-value-store.md) — Redis/Memcached) |
+|---|---|---|
+| Primary goal | Durable storage | Speed |
+| Source of truth | The KV store itself | The database behind it |
+| Data loss on crash | Not acceptable | Usually acceptable |
+| Storage | Disk + memory | Mostly memory |
+| Latency | Low, but higher than cache | Extremely low (sub-ms to a few ms) |
+| Eviction | Usually not needed | LRU/LFU/TTL important |
+| Persistence | Mandatory | Optional |
+| Consistency | Carefully designed | Often relaxed |
+| Capacity | Much larger | Limited by RAM |
+| Interview focus | Partitioning, consistent hashing, replication, quorum (N/R/W), vector clocks, gossip protocol, Merkle trees, read repair, hinted handoff | Hash map, LRU/LFU, TTL, cache invalidation, consistent hashing, replication |
+
+```mermaid
+flowchart LR
+    subgraph KVStore["Distributed KV store (this note)"]
+        direction LR
+        C2[Client] --> KV[(DynamoDB / Cassandra — source of truth)]
+    end
+    subgraph Cache["Distributed cache (09)"]
+        direction LR
+        C1[Client] --> R[Redis / Memcached]
+        R -.->|cache miss| DB1[(MySQL — source of truth)]
+    end
+```
+
+- If this store dies: the data is gone — a major incident.
+- If a cache dies instead: rebuild from the database, no major business impact.
+- Fastest interview shortcut: interviewer says "this stores the actual
+  data" → distributed key-value store. Interviewer says "this sits in
+  front of MySQL" → distributed cache.
+
 ## Example / Walkthrough
 - Ring with S1 (1–50), S2 (51–100), S3 (101–150), S4 (151–200).
 - Key "car" hashes to 45 → falls in S1's range → S1 is coordinator, stores `key1 = car`.
