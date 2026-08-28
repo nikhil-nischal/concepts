@@ -37,6 +37,17 @@ classDiagram
     Observable ..> Observer : calls update() on each, on state change
 ```
 
+```java
+interface Observer {
+    void update();
+}
+interface Observable {
+    void add(Observer observer);
+    void remove(Observer observer);
+    void notifyObservers();
+}
+```
+
 ### Design choice: what to pass into update()
 - Option A — pass nothing into `update()`: observer just learns "something
   changed" and has to call back into the observable (e.g. `getData()`) to
@@ -78,6 +89,47 @@ classDiagram
     TVDisplay --> WeatherStation : holds ref via constructor injection
 ```
 
+```java
+class WeatherStation implements Observable {
+    private final List<Observer> observers = new ArrayList<>();
+    private int temperature;
+
+    public void add(Observer observer) { observers.add(observer); }
+    public void remove(Observer observer) { observers.remove(observer); }
+    public void notifyObservers() {
+        for (Observer o : observers) o.update();
+    }
+    void setData(int newTemp) {
+        this.temperature = newTemp;
+        notifyObservers();
+    }
+    int getData() { return temperature; }
+}
+
+interface Display extends Observer {}
+
+class MobileDisplay implements Display {
+    private final WeatherStation station;
+    MobileDisplay(WeatherStation station) { // constructor injection — no instanceof needed
+        this.station = station;
+        station.add(this);
+    }
+    public void update() {
+        System.out.println("Mobile display: " + station.getData());
+    }
+}
+class TVDisplay implements Display {
+    private final WeatherStation station;
+    TVDisplay(WeatherStation station) {
+        this.station = station;
+        station.add(this);
+    }
+    public void update() {
+        System.out.println("TV display: " + station.getData());
+    }
+}
+```
+
 ## Example / Walkthrough
 ### Example 1 — WeatherStation
 - `WeatherStation` is the Observable, holds current temperature data.
@@ -103,6 +155,58 @@ classDiagram
     positive value (out-of-stock → back-in-stock).
   - Setting stock again while already in-stock does **not** re-trigger
     notifications — avoids spamming subscribers on every restock update.
+
+```java
+class StoreObservable implements Observable {
+    private final List<Observer> observers = new ArrayList<>();
+    private int stock = 0;
+
+    public void add(Observer observer) { observers.add(observer); }
+    public void remove(Observer observer) { observers.remove(observer); }
+    public void notifyObservers() {
+        for (Observer o : observers) o.update();
+    }
+    void setStock(int newStock) {
+        boolean wasOutOfStock = (stock == 0);
+        this.stock = newStock;
+        if (wasOutOfStock && newStock > 0) { // only notify on 0 -> in-stock transition
+            notifyObservers();
+        }
+    }
+}
+
+class EmailAlertObserver implements Observer {
+    private final String email;
+    private final StoreObservable store;
+    EmailAlertObserver(String email, StoreObservable store) {
+        this.email = email;
+        this.store = store;
+        store.add(this);
+    }
+    public void update() {
+        System.out.println("Email sent to " + email + ": item back in stock");
+    }
+}
+class MobileAlertObserver implements Observer {
+    private final String mobile;
+    private final StoreObservable store;
+    MobileAlertObserver(String mobile, StoreObservable store) {
+        this.mobile = mobile;
+        this.store = store;
+        store.add(this);
+    }
+    public void update() {
+        System.out.println("SMS sent to " + mobile + ": item back in stock");
+    }
+}
+
+// usage
+StoreObservable iPhoneStore = new StoreObservable();
+new EmailAlertObserver("a@x.com", iPhoneStore);
+new MobileAlertObserver("+1-555-0100", iPhoneStore);
+iPhoneStore.setStock(20); // 0 -> 20, notifies both
+iPhoneStore.setStock(15); // already in-stock, no notification
+```
 
 ```mermaid
 sequenceDiagram
