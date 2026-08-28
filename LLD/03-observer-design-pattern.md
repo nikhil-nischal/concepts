@@ -20,6 +20,9 @@
   calls `update()` on each).
 - Notification fires on any state change — value going up or down — not
   just one direction.
+- Relationship between them is **has-a** (composition), not is-a
+  (inheritance) — the observable *has-a* list of observers it holds and
+  calls into, it doesn't extend or get extended by them.
 
 ```mermaid
 classDiagram
