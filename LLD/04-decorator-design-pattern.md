@@ -98,7 +98,7 @@ class Mushroom extends ToppingDecorator {
 }
 ```
 
-### Relationship: is-a, not just has-a
+### Relationship: both is-a and has-a
 - `ToppingDecorator` extends the same abstract type (`Pizza`) as the
   concrete pizzas it decorates — that is-a relationship is what lets a
   decorator be handed anywhere a `Pizza` is expected, including as the
