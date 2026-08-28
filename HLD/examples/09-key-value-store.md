@@ -81,7 +81,7 @@ flowchart LR
   each server owns the arc of keys between it and its counter-clockwise
   neighbor. Adding/removing one server only reshuffles that server's slice
   of the ring, not the whole keyspace. Full mechanics in
-  [06. Consistent Hashing](06-consistent-hashing.md).
+  [06. Consistent Hashing](../concepts/06-consistent-hashing.md).
 
 ```mermaid
 flowchart LR
@@ -329,11 +329,11 @@ services). Jump hashing is a newer approach that addresses both issues.
 </details>
 
 ## Related Topics
-- [06. Consistent Hashing](06-consistent-hashing.md) — full ring/virtual-node
+- [06. Consistent Hashing](../concepts/06-consistent-hashing.md) — full ring/virtual-node
   mechanics used for cache server selection here
-- [19. Distributed Cache & Caching Strategies](19-caching-strategies.md) —
+- [19. Distributed Cache & Caching Strategies](../concepts/19-caching-strategies.md) —
   cache-aside/read-through/write-through patterns, complementary to this
   system-design walkthrough
-- [15. High Availability & Resilience](15-high-availability-active-passive-active-active.md)
+- [15. High Availability & Resilience](../concepts/15-high-availability-active-passive-active-active.md)
   — active-passive/active-active parallels the primary + read-replica
   tradeoff here

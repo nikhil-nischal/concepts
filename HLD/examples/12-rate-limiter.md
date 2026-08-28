@@ -189,5 +189,5 @@ Under concurrent requests (including from multiple rate-limiter instances), a no
 </details>
 
 ## Related Topics
-- [10. SQL vs NoSQL](10-sql-vs-nosql.md) — the shared counter store here is typically a fast key-value cache (Redis), same category as key-value NoSQL stores
+- [10. SQL vs NoSQL](../concepts/10-sql-vs-nosql.md) — the shared counter store here is typically a fast key-value cache (Redis), same category as key-value NoSQL stores
 - [11. WhatsApp / Chat Application Design](11-whatsapp-system-design.md) — another system relying on a centralized, low-latency shared store (User Mapping Service) that all instances must consult

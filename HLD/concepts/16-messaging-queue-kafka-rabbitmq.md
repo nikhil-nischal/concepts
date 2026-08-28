@@ -255,5 +255,5 @@ Add more brokers to the cluster and spread a topic's partitions across them (e.g
 </details>
 
 ## Related Topics
-- [09. Design a Key-Value Store](09-key-value-store-dynamodb.md) — leader/replica and gossip-style sync concepts parallel Kafka's leader/follower partition replication
+- [09. Design a Key-Value Store](../examples/09a-key-value-store-dynamodb.md) — leader/replica and gossip-style sync concepts parallel Kafka's leader/follower partition replication
 - [15. High Availability & Resilience](15-high-availability-active-passive-active-active.md) — leader/follower failover here is the same active-passive-style pattern applied at the partition level

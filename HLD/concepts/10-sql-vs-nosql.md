@@ -15,6 +15,7 @@
 - Nature — **concentrated/centralized**: for a given entity (e.g. one employee), all of that entity's data across all tables lives on one server. Not split across servers by table or by column.
 - Scalability — scales **vertically** (bigger RAM, more storage on one machine) far more naturally than horizontally; horizontal sharding (by row or column) is possible but not well-supported by SQL.
 - Property — follows **ACID**: Atomicity, Consistency, Isolation, Durability. Core purpose of ACID is guaranteeing data integrity/consistency after every transaction.
+- Examples: MySQL, PostgreSQL, Oracle DB, Microsoft SQL Server.
 
 ```mermaid
 erDiagram
@@ -108,13 +109,13 @@ flowchart LR
 - Need **high availability + high read/search performance** and can tolerate **some inconsistency** (stale reads okay) → NoSQL.
 
 ```mermaid
-flowchart TD
-    Q1{Need flexible, complex joins/queries?} -->|Yes| SQL1[SQL]
-    Q1 -->|No| Q2{Data is relational - real parent-child hierarchy?}
+flowchart LR
+    Q1{Complex joins?} -->|Yes| SQL1[SQL]
+    Q1 -->|No| Q2{Relational hierarchy?}
     Q2 -->|Yes| SQL2[SQL]
-    Q2 -->|No| Q3{Data integrity non-negotiable - no lost transactions, no stale reads?}
+    Q2 -->|No| Q3{Integrity non-negotiable?}
     Q3 -->|Yes| SQL3["SQL (ACID)"]
-    Q3 -->|No| Q4{Need high availability + high read/search perf, staleness tolerable?}
+    Q3 -->|No| Q4{Need availability + perf?}
     Q4 -->|Yes| NoSQL1["NoSQL (BASE)"]
 ```
 
@@ -195,5 +196,5 @@ Relationships are stored directly as edges between nodes, so finding related ent
 </details>
 
 ## Related Topics
-- [09. Design a Key-Value Store](09-key-value-store-dynamodb.md) — DynamoDB as a key-value NoSQL DB; vector clocks and replication referenced here for BASE's "safe state"
+- [09. Design a Key-Value Store](../examples/09a-key-value-store-dynamodb.md) — DynamoDB as a key-value NoSQL DB; vector clocks and replication referenced here for BASE's "safe state"
 - [02. CAP Theorem](02-cap-theorem.md) — ties into NoSQL's eventual consistency / availability trade-off

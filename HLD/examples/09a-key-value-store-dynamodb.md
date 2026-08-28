@@ -19,7 +19,7 @@
 - A key is hashed to a number; whichever server's range contains that number stores the key.
 - Hot-key problem: if traffic skews toward one range, that server gets overloaded.
 - Fix: virtual nodes — each physical server is placed at multiple random points on the ring, spreading its share of traffic instead of owning one contiguous hot arc.
-- See [06. Consistent Hashing](06-consistent-hashing.md) for the full mechanism.
+- See [06. Consistent Hashing](../concepts/06-consistent-hashing.md) for the full mechanism.
 
 ```mermaid
 flowchart LR
@@ -258,6 +258,6 @@ Comparing millions of keys individually is expensive. A Merkle tree lets two rep
 </details>
 
 ## Related Topics
-- [06. Consistent Hashing](06-consistent-hashing.md) — the partitioning mechanism this design is built on
-- [02. CAP Theorem](02-cap-theorem.md) — the AP trade-off underlying eventual consistency here
-- [08. Back-of-the-Envelope Estimation](08-back-of-envelope-estimation.md) — capacity planning approach applicable to sizing this system
+- [06. Consistent Hashing](../concepts/06-consistent-hashing.md) — the partitioning mechanism this design is built on
+- [02. CAP Theorem](../concepts/02-cap-theorem.md) — the AP trade-off underlying eventual consistency here
+- [08. Back-of-the-Envelope Estimation](../concepts/08-back-of-envelope-estimation.md) — capacity planning approach applicable to sizing this system

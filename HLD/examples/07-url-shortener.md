@@ -200,5 +200,5 @@ Small numeric IDs encode to fewer than 7 base62 characters (e.g. ID 16 → "g"),
 </details>
 
 ## Related Topics
-- [05. Scale from Zero to a Million Users](05-scale-zero-to-million-users.md) — load balancer, DB, caching building blocks reused here
-- [06. Consistent Hashing](06-consistent-hashing.md) — alternative approach to distributing load/keys across servers
+- [05. Scale from Zero to a Million Users](../concepts/05-scale-zero-to-million-users.md) — load balancer, DB, caching building blocks reused here
+- [06. Consistent Hashing](../concepts/06-consistent-hashing.md) — alternative approach to distributing load/keys across servers

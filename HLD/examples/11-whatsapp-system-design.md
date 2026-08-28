@@ -3,7 +3,7 @@
 ## Overview
 - Design a chat application (WhatsApp, Discord, Telegram, Slack, FB Messenger) — a very common HLD interview question.
 - Walks the full flow: requirement gathering → back-of-the-envelope → protocol choice (why WebSocket) → core architecture (chat server, user mapping/Zookeeper, DB) → 1:1 flow, offline flow, group flow → presence (online/offline/last-seen).
-- Builds directly on earlier notes: [08. Back-of-the-Envelope Estimation](08-back-of-envelope-estimation.md), [09. Design a Key-Value Store](09-key-value-store-dynamodb.md) (Zookeeper, partitioning), [10. SQL vs NoSQL](10-sql-vs-nosql.md) (DB choice reasoning).
+- Builds directly on earlier notes: [08. Back-of-the-Envelope Estimation](../concepts/08-back-of-envelope-estimation.md), [09. Design a Key-Value Store](09a-key-value-store-dynamodb.md) (Zookeeper, partitioning), [10. SQL vs NoSQL](../concepts/10-sql-vs-nosql.md) (DB choice reasoning).
 
 ## Key Concepts
 
@@ -93,22 +93,22 @@ sequenceDiagram
 
 ### Core components
 - **Chat servers** — many instances (CS1, CS2, ...); each client maintains a persistent WebSocket connection to exactly one chat server.
-- **User Mapping Service** (a Zookeeper-backed coordinator, same role as in [09. Key-Value Store](09-key-value-store-dynamodb.md)) — maintains a live table of `user → which chat server they're currently connected to`.
+- **User Mapping Service** (a Zookeeper-backed coordinator, same role as in [09. Key-Value Store](09a-key-value-store-dynamodb.md)) — maintains a live table of `user → which chat server they're currently connected to`.
   - When a client comes online, the mapping service assigns it a chat server (e.g. nearest by geography) and records the mapping.
   - When a client's connection drops (or the chat server goes down), that entry is removed.
   - Other chat servers query this service to find where to route a message for a given recipient.
 - **DB layer** — chosen as NoSQL (reasoning below), stores chat history for reads (open a chat, scroll history, search) and persists messages so they survive server restarts / offline recipients.
 
 ### Choosing the database: SQL vs NoSQL
-- Apply the same lens as [10. SQL vs NoSQL](10-sql-vs-nosql.md): look at the actual read/write operations first.
+- Apply the same lens as [10. SQL vs NoSQL](../concepts/10-sql-vs-nosql.md): look at the actual read/write operations first.
 - Reads: a user's 1:1 chat history, a group's chat history, group member details, user profile — no complex multi-table joins needed.
 - Writes: send message, update profile picture — simple writes.
 - Two hints point to NoSQL: (1) no complex joins in the query patterns, and (2) need low-latency search across a huge, ever-growing dataset (billions of messages/day, searching years of history) plus high availability and horizontal scalability — NoSQL's core strengths.
-- Real-world precedent: Discord and Facebook-scale chat systems use Cassandra (a **column-wise** NoSQL DB, one of the [4 NoSQL structural types](10-sql-vs-nosql.md)).
+- Real-world precedent: Discord and Facebook-scale chat systems use Cassandra (a **column-wise** NoSQL DB, one of the [4 NoSQL structural types](../concepts/10-sql-vs-nosql.md)).
 
 ### Data modeling for 1:1 and group messages (NoSQL)
 - 1:1 message table: `message_id, from, to, message, timestamp`.
-  - Partition key = `(from, to)` pair — routes a given conversation consistently to one partition/node (horizontal sharding across nodes, per [06. Consistent Hashing](06-consistent-hashing.md)).
+  - Partition key = `(from, to)` pair — routes a given conversation consistently to one partition/node (horizontal sharding across nodes, per [06. Consistent Hashing](../concepts/06-consistent-hashing.md)).
   - `message_id` is used only for **ordering within a partition** (a conversation), not as a global ID — NoSQL has no built-in auto-increment. Generate it from a timestamp or a local (per-partition) ID generator; no need for a global ID generator (e.g. Snowflake) since IDs only need to be unique/ordered *within* their own partition, and the same ID value can legitimately repeat across different partitions.
 - Group message table: `group_id, user (sender), message, timestamp, message_id`.
   - Partition key = `group_id` — all of a group's messages land in the same partition for ordering; `message_id` again provides in-partition sequencing.
@@ -312,7 +312,7 @@ The mapping table reflects raw connection state, which can flicker rapidly durin
 </details>
 
 ## Related Topics
-- [08. Back-of-the-Envelope Estimation](08-back-of-envelope-estimation.md) — traffic/storage math method used here
-- [09. Design a Key-Value Store](09-key-value-store-dynamodb.md) — Zookeeper's coordinator role, partitioning
-- [10. SQL vs NoSQL](10-sql-vs-nosql.md) — DB-choice reasoning applied to the chat message store
-- [06. Consistent Hashing](06-consistent-hashing.md) — horizontal sharding of message data across nodes
+- [08. Back-of-the-Envelope Estimation](../concepts/08-back-of-envelope-estimation.md) — traffic/storage math method used here
+- [09. Design a Key-Value Store](09a-key-value-store-dynamodb.md) — Zookeeper's coordinator role, partitioning
+- [10. SQL vs NoSQL](../concepts/10-sql-vs-nosql.md) — DB-choice reasoning applied to the chat message store
+- [06. Consistent Hashing](../concepts/06-consistent-hashing.md) — horizontal sharding of message data across nodes

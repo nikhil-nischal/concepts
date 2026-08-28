@@ -157,5 +157,5 @@ Full resource utilization — every data center's DB actively serves both reads 
 </details>
 
 ## Related Topics
-- [09. Design a Key-Value Store](09-key-value-store-dynamodb.md) — replication, quorum writes, and conflict resolution (vector clocks) are the same class of problem as active-active sync conflicts here
+- [09. Design a Key-Value Store](../examples/09a-key-value-store-dynamodb.md) — replication, quorum writes, and conflict resolution (vector clocks) are the same class of problem as active-active sync conflicts here
 - [10. SQL vs NoSQL](10-sql-vs-nosql.md) — multi-master support (NoSQL/Cassandra) vs single-master RDBMS (Oracle/MySQL/Postgres) is a direct driver of active-passive vs active-active choice

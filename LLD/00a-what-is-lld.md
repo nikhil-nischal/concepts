@@ -46,6 +46,7 @@ flowchart LR
 ```mermaid
 flowchart TB
     subgraph Creational["Creational — object creation"]
+        direction TB
         C1[Singleton]
         C2[Builder]
         C3[Factory / Abstract Factory]
@@ -53,6 +54,7 @@ flowchart TB
         C5[Prototype]
     end
     subgraph Structural["Structural — object arrangement (skeleton)"]
+        direction TB
         S1[Decorator]
         S2[Proxy]
         S3[Composite]
@@ -62,6 +64,7 @@ flowchart TB
         S7[Flyweight]
     end
     subgraph Behavioral["Behavioral — object interaction/coordination"]
+        direction TB
         B1[How skeleton behaves:<br/>direct call vs orchestrator]
     end
     Creational --> Structural --> Behavioral

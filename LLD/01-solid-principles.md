@@ -39,6 +39,29 @@ flowchart LR
     end
 ```
 
+```java
+// Bad — 3 reasons to change in one class
+class Invoice {
+    Product product;
+    double calculateTotal() { return product.getPrice() * quantity; }
+    void printInvoice() { System.out.println(this); }
+    void saveToDB() { db.save(this); }
+}
+
+// Good — one reason to change per class
+class Invoice {
+    Product product;
+    double calculateTotal() { return product.getPrice() * quantity; }
+}
+class InvoicePrinter {
+    void print(Invoice invoice) { System.out.println(invoice); }
+}
+class InvoiceRepository {
+    void saveToDB(Invoice invoice) { db.save(invoice); }
+    void saveToFile(Invoice invoice) { file.write(invoice); }
+}
+```
+
 ### Open/Closed Principle (OCP)
 - Classes should be open for extension, but closed for modification —
   add new behavior by extending, not by editing existing, already-live code.
@@ -71,6 +94,31 @@ classDiagram
     Notification <|.. SMSNotification : new, added without touching existing classes
 ```
 
+```java
+// Bad — every new channel edits this class
+class NotificationService {
+    void send(String type, String message) {
+        if (type.equals("EMAIL")) { /* send email */ }
+        else if (type.equals("FILE")) { /* write to file */ }
+        // new channel -> another else-if, risks breaking existing ones
+    }
+}
+
+// Good — new channel = new class, existing code untouched
+interface Notification {
+    void send(String message);
+}
+class EmailNotification implements Notification {
+    public void send(String message) { /* send email */ }
+}
+class FileNotification implements Notification {
+    public void send(String message) { /* write to file */ }
+}
+class SMSNotification implements Notification { // added later, nothing above changed
+    public void send(String message) { /* send sms */ }
+}
+```
+
 ### Liskov Substitution Principle (LSP)
 - Objects of a superclass should be replaceable with objects of a subclass
   without breaking the application's correctness — output can differ, but
@@ -101,6 +149,22 @@ classDiagram
     }
     note for Motorcycle "Substituting Motorcycle for Bike\nmust not break callers of turnOnEngine()"
 ```
+
+```java
+class Bike {
+    void turnOnEngine() { System.out.println("Engine on"); }
+}
+class Motorcycle extends Bike {
+    @Override
+    void turnOnEngine() { System.out.println("Engine on, higher RPM"); } // honors contract
+}
+class Bicycle extends Bike { // violation: Bicycle has no engine at all
+    @Override
+    void turnOnEngine() { throw new UnsupportedOperationException(); } // breaks callers expecting Bike
+}
+```
+- Full violation + compile-time-safe fix (splitting the hierarchy instead of
+  throwing): [[LLD/01.1-lsp-solution]].
 
 ### Interface Segregation Principle (ISP)
 - Don't force a class to implement methods it doesn't need — split large
@@ -137,6 +201,38 @@ classDiagram
     ChefInterface <|.. Chef
 ```
 
+```java
+// Bad — fat interface forces irrelevant methods
+interface RestaurantEmployee {
+    void takeOrder();
+    void cookFood();
+    void serveFood();
+    void washDishes();
+}
+class Waiter implements RestaurantEmployee {
+    public void takeOrder() { /* ... */ }
+    public void serveFood() { /* ... */ }
+    public void cookFood() { throw new UnsupportedOperationException(); } // not a waiter's job
+    public void washDishes() { throw new UnsupportedOperationException(); }
+}
+
+// Good — split by role
+interface Waiter {
+    void takeOrder();
+    void serveFood();
+}
+interface Chef {
+    void cookFood();
+}
+class WaiterImpl implements Waiter {
+    public void takeOrder() { /* ... */ }
+    public void serveFood() { /* ... */ }
+}
+class ChefImpl implements Chef {
+    public void cookFood() { /* ... */ }
+}
+```
+
 ### Dependency Inversion Principle (DIP)
 - High-level modules shouldn't depend on low-level concrete classes —
   both should depend on abstractions (interfaces).
@@ -170,6 +266,38 @@ classDiagram
     Keyboard <|.. WiredKeyboard
     Mouse <|.. WirelessMouse
     Mouse <|.. BluetoothMouse : injected via constructor
+```
+
+```java
+// Bad — Laptop depends on concrete classes directly
+class Laptop {
+    private WiredKeyboard keyboard = new WiredKeyboard();
+    private WiredMouse mouse = new WiredMouse();
+    // swapping in a BluetoothMouse means editing this class
+}
+
+// Good — Laptop depends on abstractions, concrete impl injected
+interface Keyboard { void type(); }
+interface Mouse { void click(); }
+
+class WiredKeyboard implements Keyboard {
+    public void type() { /* ... */ }
+}
+class WirelessMouse implements Mouse {
+    public void click() { /* ... */ }
+}
+class BluetoothMouse implements Mouse {
+    public void click() { /* ... */ }
+}
+
+class Laptop {
+    private final Keyboard keyboard;
+    private final Mouse mouse;
+    Laptop(Keyboard keyboard, Mouse mouse) { // constructor injection
+        this.keyboard = keyboard;
+        this.mouse = mouse;
+    }
+}
 ```
 
 ## Trade-offs / Comparisons

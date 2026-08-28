@@ -1,4 +1,5 @@
 # Mastering Java Interfaces: Static & Default Methods, Multiple Inheritance
+https://www.youtube.com/watch?v=PpxzFint1IA
 
 ## Overview
 - Java classes cannot extend more than one class — a `SmartPhone` can't
@@ -11,6 +12,7 @@
 - Prerequisite context for LLD: interfaces are the mechanism behind ISP and
   DIP in [[LLD/01-solid-principles]], and behind achieving multiple
   inheritance of type in Java.
+- In Java, an abstract method is a method that is declared without a body (implementation). It specifies what a method should do, but not how it should do it.
 
 ## Key Concepts
 ### Interface members and their implicit modifiers
@@ -152,6 +154,80 @@ classDiagram
   `smartPhone.takePhoto()`, `smartPhone.recordVideo()`,
   `smartPhone.makeCall()` etc. all work since `SmartPhone` implements every
   abstract method from all three interfaces itself.
+
+```java
+public interface Animal {
+    int MAX_AGE = 150; // implicitly public static final
+
+    void eat(); // implicitly public abstract
+
+    static void info() { // must have a body, not inherited
+        System.out.println("This is an Animal interface");
+    }
+
+    default void run() { // Java 8+, inherited, override optional
+        System.out.println("Animal is running");
+    }
+}
+
+public class Dog implements Animal {
+    @Override
+    public void eat() {
+        System.out.println("Dog is eating");
+    }
+}
+
+public class Cat implements Animal {
+    @Override
+    public void eat() {
+        System.out.println("Cat is eating");
+    }
+}
+```
+
+```java
+Dog dog = new Dog();
+Cat cat = new Cat();
+
+Animal.MAX_AGE;   // works
+Dog.MAX_AGE;      // also works — constants are inherited
+Animal.info();    // works — call via interface name
+// Dog.info();    // compile error — static methods aren't inherited
+dog.run();         // "Animal is running" — default method, not overridden
+cat.run();         // "Animal is running"
+```
+
+```java
+public interface MusicPlayer {
+    void playMusic();
+    void stopMusic();
+}
+
+public interface Phone {
+    void makeCall();
+    void endCall();
+}
+
+public interface Camera {
+    void takePhoto();
+    void recordVideo();
+}
+
+public class SmartPhone implements MusicPlayer, Phone, Camera {
+    @Override
+    public void playMusic() { System.out.println("Playing music"); }
+    @Override
+    public void stopMusic() { System.out.println("Stopping music"); }
+    @Override
+    public void makeCall() { System.out.println("Making call"); }
+    @Override
+    public void endCall() { System.out.println("Ending call"); }
+    @Override
+    public void takePhoto() { System.out.println("Taking photo"); }
+    @Override
+    public void recordVideo() { System.out.println("Recording video"); }
+}
+```
 
 ## Diagram
 ```mermaid
