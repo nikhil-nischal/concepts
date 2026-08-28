@@ -25,7 +25,7 @@
   calls into, it doesn't extend or get extended by them.
 
 ```mermaid
-flowchart LR
+flowchart TB
     subgraph IsA["is-a (inheritance) — NOT this pattern"]
         Parent["Parent class"] -->|extends| Child["Child class"]
     end
