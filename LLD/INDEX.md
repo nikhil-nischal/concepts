@@ -5,3 +5,4 @@
 - [01.1. LSP with Solution](01.1-lsp-solution.md) — fixing an LSP violation via inheritance restructuring
 - [02. Strategy Design Pattern](02-strategy-design-pattern.md) — composition over inheritance via a swappable strategy interface
 - [03. Observer Design Pattern](03-observer-design-pattern.md) — auto-notify subscribers on state change, constructor-injected observers
+- [04. Decorator Design Pattern](04-decorator-design-pattern.md) — add features by wrapping at runtime instead of subclassing per combination
