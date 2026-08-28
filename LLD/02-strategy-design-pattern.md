@@ -40,6 +40,24 @@ classDiagram
     note for Vehicle "Capability defined in base class\n= only works if children need it as-is"
 ```
 
+```java
+class Vehicle {
+    void drive() { System.out.println("normal drive capability"); }
+}
+class PassengerVehicle extends Vehicle {} // fine with the base capability as-is
+class OffRoadVehicle extends Vehicle {
+    @Override
+    void drive() { System.out.println("special drive capability"); }
+}
+class SportsVehicle extends Vehicle {
+    @Override
+    void drive() { System.out.println("sports drive capability"); }
+}
+// if a future GoodsVehicle also needs "sports drive capability", that logic
+// gets copy-pasted into its override too — Vehicle can't hold it (not every
+// child wants it), so there's no shared place to put it
+```
+
 ### The strategy pattern fix
 - Pull the varying capability out into its own interface (e.g.
   `DriveStrategy`) with one method (e.g. `drive()`).
@@ -91,6 +109,40 @@ classDiagram
     Vehicle <|-- OffRoadVehicle
     Vehicle <|-- SportsVehicle
     Vehicle <|-- GoodsVehicle
+```
+
+```java
+interface DriveStrategy {
+    void drive();
+}
+class NormalDriveStrategy implements DriveStrategy {
+    public void drive() { System.out.println("normal drive capability"); }
+}
+class SpecialDriveStrategy implements DriveStrategy {
+    public void drive() { System.out.println("special drive capability"); }
+}
+class SportsDriveStrategy implements DriveStrategy {
+    public void drive() { System.out.println("sports drive capability"); }
+}
+
+class Vehicle {
+    private final DriveStrategy driveStrategy;
+    Vehicle(DriveStrategy driveStrategy) { this.driveStrategy = driveStrategy; } // constructor injection
+    void drive() { driveStrategy.drive(); } // delegates, doesn't care which concrete strategy
+}
+
+class PassengerVehicle extends Vehicle {
+    PassengerVehicle() { super(new NormalDriveStrategy()); }
+}
+class OffRoadVehicle extends Vehicle {
+    OffRoadVehicle() { super(new SpecialDriveStrategy()); }
+}
+class SportsVehicle extends Vehicle {
+    SportsVehicle() { super(new SportsDriveStrategy()); }
+}
+class GoodsVehicle extends Vehicle {
+    GoodsVehicle() { super(new NormalDriveStrategy()); } // reuses existing strategy, no new code
+}
 ```
 
 ## Trade-offs / Comparisons
