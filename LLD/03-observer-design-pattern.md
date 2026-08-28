@@ -102,6 +102,17 @@ classDiagram
     TVDisplay --> WeatherStation : holds ref via constructor injection
 ```
 
+## Example / Walkthrough
+### Example 1 — WeatherStation
+- `WeatherStation` is the Observable, holds current temperature data.
+- `TVDisplay` and `MobileDisplay` are concrete Observers, both implement a
+  `Display` interface with `update()`.
+- Each display registers itself with the `WeatherStation`.
+- `WeatherStation.setData(newTemperature)` sets the new temperature and
+  calls `notifyObservers()`.
+- Every registered display's `update()` fires, each pulling the current
+  temperature via its constructor-injected `WeatherStation` reference.
+
 ```java
 class WeatherStation implements Observable {
     private final List<Observer> observers = new ArrayList<>();
@@ -142,17 +153,6 @@ class TVDisplay implements Display {
     }
 }
 ```
-
-## Example / Walkthrough
-### Example 1 — WeatherStation
-- `WeatherStation` is the Observable, holds current temperature data.
-- `TVDisplay` and `MobileDisplay` are concrete Observers, both implement a
-  `Display` interface with `update()`.
-- Each display registers itself with the `WeatherStation`.
-- `WeatherStation.setData(newTemperature)` sets the new temperature and
-  calls `notifyObservers()`.
-- Every registered display's `update()` fires, each pulling the current
-  temperature via its constructor-injected `WeatherStation` reference.
 
 ### Example 2 — out-of-stock notification (interview-style)
 - `StoreObservable` (Observable) maintains the list of subscribed
