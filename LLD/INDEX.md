@@ -7,3 +7,4 @@
 - [03. Observer Design Pattern](03-observer-design-pattern.md) — auto-notify subscribers on state change, constructor-injected observers
 - [04. Decorator Design Pattern](04-decorator-design-pattern.md) — add features by wrapping at runtime instead of subclassing per combination
 - [14. LLD of BookMyShow](14-bookmyshow-lld.md) — movie ticket booking class design + optimistic locking for concurrent seat booking
+- [15. Null Object Pattern](15-null-object-pattern.md) — replace null with a default-behavior object to remove scattered null-checks

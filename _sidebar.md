@@ -43,6 +43,7 @@
   - [03. Observer Design Pattern](LLD/03-observer-design-pattern.md)
   - [04. Decorator Design Pattern](LLD/04-decorator-design-pattern.md)
   - [14. LLD of BookMyShow](LLD/14-bookmyshow-lld.md)
+  - [15. Null Object Pattern](LLD/15-null-object-pattern.md)
 - AI
   - [01. 20 AI Concepts Explained in 40 Minutes](AI/01-20-ai-concepts-explained.md)
 - Frameworks
