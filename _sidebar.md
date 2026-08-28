@@ -42,6 +42,7 @@
   - [02. Strategy Design Pattern](LLD/02-strategy-design-pattern.md)
   - [03. Observer Design Pattern](LLD/03-observer-design-pattern.md)
   - [04. Decorator Design Pattern](LLD/04-decorator-design-pattern.md)
+  - [13. Proxy Design Pattern](LLD/13-proxy-design-pattern.md)
   - [14. LLD of BookMyShow](LLD/14-bookmyshow-lld.md)
   - [15. Null Object Pattern](LLD/15-null-object-pattern.md)
 - AI

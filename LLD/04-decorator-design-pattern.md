@@ -199,3 +199,5 @@ same wrap-to-extend shape as pizza toppings.
   inheritance, but Strategy swaps one behavior, Decorator layers many.
 - [[LLD/01-solid-principles]] — Decorator follows OCP: new toppings are new
   classes, no existing class is modified.
+- [[LLD/13-proxy-design-pattern]] — same both-is-a-and-has-a shape; Proxy
+  controls/intercepts access instead of layering behavior.
