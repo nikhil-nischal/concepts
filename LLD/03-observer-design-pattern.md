@@ -25,6 +25,16 @@
   calls into, it doesn't extend or get extended by them.
 
 ```mermaid
+flowchart LR
+    subgraph IsA["is-a (inheritance) — NOT this pattern"]
+        Parent["Parent class"] -->|extends| Child["Child class"]
+    end
+    subgraph HasA["has-a (composition) — Observer pattern"]
+        Obs["Observable"] -->|holds a list of, calls into| Obr["Observer"]
+    end
+```
+
+```mermaid
 classDiagram
     class Observable {
         <<interface>>
