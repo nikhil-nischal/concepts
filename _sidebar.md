@@ -39,6 +39,7 @@
   - [00b. Java Interfaces](LLD/00b-java-interfaces.md)
   - [01. SOLID Principles](LLD/01-solid-principles.md)
   - [01.1. LSP with Solution](LLD/01.1-lsp-solution.md)
+  - [01.2. is-a vs has-a](LLD/01.2-is-a-vs-has-a.md)
   - [02. Strategy Design Pattern](LLD/02-strategy-design-pattern.md)
   - [03. Observer Design Pattern](LLD/03-observer-design-pattern.md)
   - [04. Decorator Design Pattern](LLD/04-decorator-design-pattern.md)

@@ -3,6 +3,7 @@
 - [00b. Java Interfaces](00b-java-interfaces.md) — static/default methods, achieving multiple inheritance
 - [01. SOLID Principles](01-solid-principles.md) — SRP, OCP, LSP, ISP, DIP with examples
 - [01.1. LSP with Solution](01.1-lsp-solution.md) — fixing an LSP violation via inheritance restructuring
+- [01.2. is-a vs has-a: How Each Looks in Code](01.2-is-a-vs-has-a.md) — extends/implements vs constructor-injected field, and when a class needs both
 - [02. Strategy Design Pattern](02-strategy-design-pattern.md) — composition over inheritance via a swappable strategy interface
 - [03. Observer Design Pattern](03-observer-design-pattern.md) — auto-notify subscribers on state change, constructor-injected observers
 - [04. Decorator Design Pattern](04-decorator-design-pattern.md) — add features by wrapping at runtime instead of subclassing per combination

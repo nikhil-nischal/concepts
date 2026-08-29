@@ -212,6 +212,8 @@ rough UML does.
 </details>
 
 ## Related Topics
+- [[LLD/01.2-is-a-vs-has-a]] — how these relationships are actually written
+  in code, side by side.
 - Design patterns (Singleton, Builder, Factory, etc.) — to be added as
   individual notes per the roadmap.
 - SOLID principles — prerequisite per [[LLD/00-roadmap]].

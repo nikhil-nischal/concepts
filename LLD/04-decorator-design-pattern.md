@@ -195,6 +195,8 @@ same wrap-to-extend shape as pizza toppings.
 </details>
 
 ## Related Topics
+- [[LLD/01.2-is-a-vs-has-a]] — generic code comparison of is-a and has-a,
+  including this pattern's both-at-once shape.
 - [[LLD/02-strategy-design-pattern]] — both favor composition over rigid
   inheritance, but Strategy swaps one behavior, Decorator layers many.
 - [[LLD/01-solid-principles]] — Decorator follows OCP: new toppings are new

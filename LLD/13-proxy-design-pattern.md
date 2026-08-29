@@ -215,6 +215,8 @@ the real object at all.
 </details>
 
 ## Related Topics
+- [[LLD/01.2-is-a-vs-has-a]] — generic code comparison of is-a and has-a,
+  including this pattern's both-at-once shape.
 - [[LLD/04-decorator-design-pattern]] — same both-is-a-and-has-a shape;
   Decorator adds/layers behavior, Proxy controls/intercepts access.
 - [[LLD/01-solid-principles]] — Proxy follows OCP: cross-cutting behavior
