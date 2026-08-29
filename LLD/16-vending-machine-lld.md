@@ -317,3 +317,6 @@ instead of four.
 - [[LLD/11-snake-and-ladder-lld]] — another design driven by explicit
   requirements-gathering before modeling (dice count, snake/ladder count)
   the way this note starts with vending machine requirements.
+- [[LLD/17-atm-lld]] — reuses this same State pattern shape for the ATM's
+  operation flow, combined with Chain of Responsibility for cash
+  withdrawal.

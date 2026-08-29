@@ -240,3 +240,5 @@ wires the whole chain in one expression.
   passes along a sequence of candidate handlers.
 - [[LLD/01-solid-principles]] — adding a new receiver type means adding a
   new class, not modifying existing processors (Open/Closed Principle).
+- [[LLD/17-atm-lld]] — full ATM design using this exact denomination chain
+  for cash withdrawal, combined with State pattern for the operation flow.

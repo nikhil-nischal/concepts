@@ -18,3 +18,4 @@
 - [14. LLD of BookMyShow](14-bookmyshow-lld.md) — movie ticket booking class design + optimistic locking for concurrent seat booking
 - [15. Null Object Pattern](15-null-object-pattern.md) — replace null with a default-behavior object to remove scattered null-checks
 - [16. LLD of Vending Machine](16-vending-machine-lld.md) — one class per machine state (State Design Pattern), context delegates every button press to current state
+- [17. LLD of ATM](17-atm-lld.md) — State pattern for the operation flow + Chain of Responsibility for denomination-based cash withdrawal
