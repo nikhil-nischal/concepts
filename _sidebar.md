@@ -49,6 +49,7 @@
   - [09. LLD of Car Rental System](LLD/09-car-rental-system-lld.md)
   - [10. Chain of Responsibility Design Pattern](LLD/10-chain-of-responsibility-pattern.md)
   - [11. LLD of Snake and Ladder](LLD/11-snake-and-ladder-lld.md)
+  - [12. HashMap Internal Implementation](LLD/12-hashmap-internal-implementation.md)
   - [13. Proxy Design Pattern](LLD/13-proxy-design-pattern.md)
   - [14. LLD of BookMyShow](LLD/14-bookmyshow-lld.md)
   - [15. Null Object Pattern](LLD/15-null-object-pattern.md)

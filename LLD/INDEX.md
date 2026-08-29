@@ -13,6 +13,7 @@
 - [09. LLD of Car Rental System](09-car-rental-system-lld.md) — store/location/inventory/reservation design, keep interview scope as simple as asked
 - [10. Chain of Responsibility Design Pattern](10-chain-of-responsibility-pattern.md) — request forwarded through a chain of receivers until handled; logging system worked example
 - [11. LLD of Snake and Ladder](11-snake-and-ladder-lld.md) — Jump superclass shared by Snake/Ladder, random board setup, turn-queue rotation
+- [12. HashMap Internal Implementation](12-hashmap-internal-implementation.md) — bucket chaining, power-of-2 capacity, hash spreading, load-factor resize
 - [13. Proxy Design Pattern](13-proxy-design-pattern.md) — centralize access validation/logging behind a proxy that implements the same interface as the real object
 - [14. LLD of BookMyShow](14-bookmyshow-lld.md) — movie ticket booking class design + optimistic locking for concurrent seat booking
 - [15. Null Object Pattern](15-null-object-pattern.md) — replace null with a default-behavior object to remove scattered null-checks
