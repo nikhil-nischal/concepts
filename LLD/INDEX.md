@@ -7,6 +7,7 @@
 - [02. Strategy Design Pattern](02-strategy-design-pattern.md) — composition over inheritance via a swappable strategy interface
 - [03. Observer Design Pattern](03-observer-design-pattern.md) — auto-notify subscribers on state change, constructor-injected observers
 - [04. Decorator Design Pattern](04-decorator-design-pattern.md) — add features by wrapping at runtime instead of subclassing per combination
+- [05. Factory vs Abstract Factory Pattern](05-factory-vs-abstract-factory-pattern.md) — centralize condition-based object creation; abstract factory adds a factory-of-factories layer for grouped product families
 - [13. Proxy Design Pattern](13-proxy-design-pattern.md) — centralize access validation/logging behind a proxy that implements the same interface as the real object
 - [14. LLD of BookMyShow](14-bookmyshow-lld.md) — movie ticket booking class design + optimistic locking for concurrent seat booking
 - [15. Null Object Pattern](15-null-object-pattern.md) — replace null with a default-behavior object to remove scattered null-checks
