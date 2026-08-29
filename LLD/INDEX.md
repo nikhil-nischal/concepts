@@ -10,6 +10,7 @@
 - [05. Factory vs Abstract Factory Pattern](05-factory-vs-abstract-factory-pattern.md) — centralize condition-based object creation; abstract factory adds a factory-of-factories layer for grouped product families
 - [06. LLD of Parking Lot](06-parking-lot-lld.md) — requirements-first design combining Strategy (find-spot, pricing) and Factory (manager, cost-computation) patterns
 - [07. LLD of Tic-Tac-Toe](07-tic-tac-toe-lld.md) — extensible board/symbols/players via abstract Piece and a turn queue
+- [09. LLD of Car Rental System](09-car-rental-system-lld.md) — store/location/inventory/reservation design, keep interview scope as simple as asked
 - [13. Proxy Design Pattern](13-proxy-design-pattern.md) — centralize access validation/logging behind a proxy that implements the same interface as the real object
 - [14. LLD of BookMyShow](14-bookmyshow-lld.md) — movie ticket booking class design + optimistic locking for concurrent seat booking
 - [15. Null Object Pattern](15-null-object-pattern.md) — replace null with a default-behavior object to remove scattered null-checks
