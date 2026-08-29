@@ -151,6 +151,34 @@ class GoodsVehicle extends Vehicle {
 | Plain inheritance (is-a) | Capability defined/overridden in each subclass | Duplicated code when unrelated subclasses need the same capability; doesn't scale |
 | Strategy pattern (has-a) | Capability injected as a strategy object via constructor | Each subclass just picks/passes the strategy it needs; no duplication |
 
+### How each looks in code
+- **is-a**: subclass gets the behavior by `extends`-ing a class that defines
+  it — the behavior lives inside the class hierarchy itself.
+- **has-a**: class gets the behavior by holding a reference (usually
+  injected via constructor) to an object whose type defines it — the
+  behavior lives outside, in a separate object.
+
+```java
+// is-a: OffRoadVehicle IS a Vehicle, inherits drive() from it directly
+class Vehicle {
+    void drive() { System.out.println("normal drive"); }
+}
+class OffRoadVehicle extends Vehicle {
+    @Override
+    void drive() { System.out.println("special drive"); } // only way to vary: override
+}
+
+// has-a: Vehicle HAS a DriveStrategy, delegates to it instead of implementing drive() itself
+class Vehicle {
+    private final DriveStrategy driveStrategy; // reference to a separate object
+    Vehicle(DriveStrategy driveStrategy) { this.driveStrategy = driveStrategy; }
+    void drive() { driveStrategy.drive(); } // delegates — swap the object to vary behavior
+}
+```
+- Full versions of both (the class-explosion problem under is-a, and the
+  fix under has-a) are above under "The problem with plain inheritance" and
+  "The strategy pattern fix".
+
 ## Example / Walkthrough
 - `Vehicle` base class, children: `PassengerVehicle`, `OffRoadVehicle`,
   `SportsVehicle`, `GoodsVehicle`.
