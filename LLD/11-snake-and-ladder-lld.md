@@ -333,3 +333,5 @@ starts there, to decide the final resting position for the turn.
   at back) for round-robin turn order.
 - [[LLD/01-solid-principles]] — `Jump` → `Snake`/`Ladder` is the same
   extend-by-subclassing (OCP) shape as `Piece` → `PieceX`/`PieceO`.
+- [[LLD/18-chess-game-lld]] — same abstract-superclass-per-variant shape
+  applied to chess pieces (`Piece` → `Pawn`/`Bishop`/...).

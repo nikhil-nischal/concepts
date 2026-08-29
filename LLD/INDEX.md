@@ -19,3 +19,4 @@
 - [15. Null Object Pattern](15-null-object-pattern.md) — replace null with a default-behavior object to remove scattered null-checks
 - [16. LLD of Vending Machine](16-vending-machine-lld.md) — one class per machine state (State Design Pattern), context delegates every button press to current state
 - [17. LLD of ATM](17-atm-lld.md) — State pattern for the operation flow + Chain of Responsibility for denomination-based cash withdrawal
+- [18. LLD of Chess Game (Mock Interview)](18-chess-game-lld.md) — Cell owns position not Piece, abstract Piece per type, move-as-validation vs move-as-mutation, plus interview-process lessons

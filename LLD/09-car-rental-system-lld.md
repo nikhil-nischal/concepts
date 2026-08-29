@@ -363,3 +363,6 @@ it.
   `VehicleInventoryManagement` here.
 - [[LLD/14-bookmyshow-lld]] — another full "design X" walkthrough with a
   reservation → bill → payment flow.
+- [[LLD/18-chess-game-lld]] — a mock interview where skipping a scope
+  question (chess-engine move generation vs. validation-only) cost time
+  that could've been saved by asking upfront.

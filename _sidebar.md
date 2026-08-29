@@ -55,6 +55,7 @@
   - [15. Null Object Pattern](LLD/15-null-object-pattern.md)
   - [16. LLD of Vending Machine](LLD/16-vending-machine-lld.md)
   - [17. LLD of ATM](LLD/17-atm-lld.md)
+  - [18. LLD of Chess Game (Mock Interview)](LLD/18-chess-game-lld.md)
 - AI
   - [01. 20 AI Concepts Explained in 40 Minutes](AI/01-20-ai-concepts-explained.md)
 - Frameworks
