@@ -17,3 +17,4 @@
 - [13. Proxy Design Pattern](13-proxy-design-pattern.md) — centralize access validation/logging behind a proxy that implements the same interface as the real object
 - [14. LLD of BookMyShow](14-bookmyshow-lld.md) — movie ticket booking class design + optimistic locking for concurrent seat booking
 - [15. Null Object Pattern](15-null-object-pattern.md) — replace null with a default-behavior object to remove scattered null-checks
+- [16. LLD of Vending Machine](16-vending-machine-lld.md) — one class per machine state (State Design Pattern), context delegates every button press to current state
