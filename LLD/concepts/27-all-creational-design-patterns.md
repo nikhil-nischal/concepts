@@ -7,6 +7,9 @@
   dedicated coverage. Factory, Abstract Factory, and Builder already have
   their own in-depth notes; this note only recaps them briefly with the
   video's fresh examples and links out to the full versions.
+- Part 2 (below) covers a follow-up video: a real bug in the
+  double-checked locking Singleton solution above, and the `volatile` fix
+  — this is the part of Singleton that trips up most candidates.
 
 ## Key Concepts
 ### Prototype — clone instead of rebuild
@@ -340,6 +343,143 @@ Abstract Factory. It's needed when products themselves fall into distinct
 families (e.g. economic cars vs. luxury cars) — a top-level producer
 first picks the right family-specific factory, which then produces the
 actual object within that family.
+
+</details>
+
+## Part 2 — Bug in Double-Checked Locking, and the volatile Fix
+- Double-checked locking (above) looks correct, but has **two real
+  memory-visibility bugs** in a multi-threaded environment — this is
+  where most candidates get stuck, and it's a very common interview
+  follow-up once double-checked locking is presented as "the" answer.
+- Both bugs stem from the same root cause: the null-check only looks at
+  whether the **reference** is non-null, but says nothing about whether
+  the object it points to is actually **fully constructed**.
+
+### Bug 1 — instruction reordering
+- `instance = new DBConnection()` isn't one atomic step — at a high
+  level it's three: (1) allocate memory, (2) initialize the object's
+  member variables, (3) assign the memory reference to the `instance`
+  variable.
+- The CPU can **reorder instructions** to improve performance — and it's
+  free to reorder steps (2) and (3), assigning the reference to `instance`
+  *before* the member variables have actually been initialized.
+- If that reordering happens, another thread can see `instance != null`
+  and start using the object while its fields still hold **default
+  values**, not the values the constructor was supposed to set.
+
+```mermaid
+sequenceDiagram
+    participant T1 as Thread 1
+    participant Mem as Memory/instance
+
+    T1->>Mem: allocate memory
+    Note over T1,Mem: reordered: reference assigned before init
+    T1->>Mem: assign memory reference to `instance`
+    Note over Mem: instance != null, but memberVariable still = default (0), not 10
+    participant T2 as Thread 2
+    T2->>Mem: check instance == null? → no (sees the reference already)
+    T2->>Mem: reads memberVariable → gets default value, not 10
+```
+
+### Bug 2 — L1 cache visibility across cores
+- Each CPU core has its own **L1 cache**; a core generally does its work
+  against that local cache and only syncs the result back to main memory
+  (and to other cores' caches) after some delay — not immediately on every
+  write.
+- If Thread 1 runs on Core A and creates the instance, that write can sit
+  in Core A's cache without yet being flushed to main memory or synced to
+  Core B's cache.
+- If Thread 2 then runs on Core B and checks `instance == null`, it may
+  still see `null` (from main memory or its own stale cache) even though
+  Thread 1 already "created" the instance — so Thread 2 proceeds to
+  create a **second** instance, breaking the Singleton guarantee.
+
+```mermaid
+flowchart TB
+    subgraph CoreA["Core A"]
+        T1["Thread 1: instance = new DBConnection()"]
+        CacheA["Core A's L1 cache\n(has the new instance)"]
+    end
+    subgraph CoreB["Core B"]
+        T2["Thread 2: instance == null ?"]
+        CacheB["Core B's L1 cache\n(hasn't synced yet)"]
+    end
+    Memory["Main Memory\n(not yet updated either)"]
+
+    T1 --> CacheA
+    CacheA -.->|"not yet flushed"| Memory
+    T2 --> CacheB
+    CacheB -->|"no info, falls through"| Memory
+    Memory -->|"still shows null"| T2
+    T2 --> Duplicate["Thread 2 creates a 2nd instance — bug"]
+```
+
+### The fix — `volatile`
+- Mark the singleton reference `volatile` — nothing else about
+  double-checked locking changes.
+
+```java
+private static volatile DBConnection instance; // the only change needed
+```
+
+- `volatile` provides two guarantees that directly fix both bugs:
+  1. **Always reads/writes through main memory, never a stale local
+     cache** — fixes Bug 2, since every thread checking `instance` sees
+     the same, immediately up-to-date value.
+  2. **Ordering ("happens-before") guarantee** — instructions before a
+     volatile write can still be reordered *among themselves*, but all of
+     them must complete *before* the volatile write executes; instructions
+     after it can also reorder among themselves, but only ever run *after*
+     it. This blocks exactly the reordering in Bug 1: member-variable
+     initialization can no longer be pushed past the (volatile) reference
+     assignment. As a side effect, when the volatile write executes, any
+     pending writes still sitting in a cache get flushed to memory too.
+
+```mermaid
+flowchart LR
+    Before["Instructions before the volatile write\n(can reorder among themselves)"] --> Volatile["volatile write\n(instance = new DBConnection())"]
+    Volatile --> After["Instructions after the volatile write\n(can reorder among themselves)"]
+    Volatile -.->|"flushes pending writes to memory"| Memory["Main Memory"]
+```
+
+### Interview Q&A — Part 2
+<details>
+<summary>What are the two memory-visibility bugs in double-checked locking?</summary>
+
+Instruction reordering — the object's reference can be assigned before
+its member variables finish initializing — and L1 cache visibility —
+another thread on a different core can still see a stale `null` because
+the write hasn't been flushed from the first core's cache to memory yet.
+
+</details>
+
+<details>
+<summary>Why does the null-check in double-checked locking fail to catch these bugs?</summary>
+
+The check only looks at whether the reference is non-null — it says
+nothing about whether the object it points to is fully constructed
+(Bug 1) or whether the reference update is even visible yet to other
+cores (Bug 2).
+
+</details>
+
+<details>
+<summary>What's the fix, and why does it work?</summary>
+
+Mark the singleton reference `volatile`. It forces all reads/writes to go
+through main memory instead of a local cache (fixing the cache-visibility
+bug), and enforces a happens-before ordering so instructions before the
+volatile write must fully complete before it executes (fixing the
+reordering bug).
+
+</details>
+
+<details>
+<summary>Does the volatile fix require any other code changes to double-checked locking?</summary>
+
+No — the only change is adding the `volatile` keyword to the singleton's
+static reference field; the rest of the double-checked locking logic
+stays exactly the same.
 
 </details>
 
