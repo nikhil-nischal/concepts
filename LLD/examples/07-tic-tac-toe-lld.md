@@ -5,8 +5,8 @@
   for two reasons: the objects involved are easy to spot, and it tests
   whether you write genuinely extensible code (board size, symbols, number
   of players) rather than hardcoding a 3x3, 2-player game.
-- Small object set compared to [[LLD/06-parking-lot-lld]] or
-  [[LLD/14-bookmyshow-lld]], so the interview focus shifts to turn
+- Small object set compared to [06. LLD of Parking Lot](06-parking-lot-lld.md) or
+  [14. LLD of BookMyShow](14-bookmyshow-lld.md), so the interview focus shifts to turn
   management and win-checking logic rather than a large class graph.
 
 ## Key Concepts
@@ -255,7 +255,7 @@ counter after a move becomes O(1) instead of O(size).
 </details>
 
 ## Related Topics
-- [[LLD/06-parking-lot-lld]] — same requirements-first, extensibility-driven
+- [06. LLD of Parking Lot](06-parking-lot-lld.md) — same requirements-first, extensibility-driven
   approach applied to a larger object graph.
-- [[LLD/01-solid-principles]] — `Piece` subclassing follows OCP: new symbols
+- [01. SOLID Principles](../concepts/01-solid-principles.md) — `Piece` subclassing follows OCP: new symbols
   are new classes, no existing class is modified.

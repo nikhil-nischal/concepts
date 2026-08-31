@@ -53,7 +53,7 @@ sequenceDiagram
   expected.
 - `Proxy` also holds a reference to the real `Employee` object internally —
   **has-a** the real object it wraps and delegates to.
-- Both relationships matter equally, same shape as [[LLD/04-decorator-design-pattern]]:
+- Both relationships matter equally, same shape as [04. Decorator Design Pattern](04-decorator-design-pattern.md):
   is-a lets the proxy stand in for the real object from the client's point
   of view; has-a is what lets it actually forward the call once it decides
   to.
@@ -215,9 +215,9 @@ the real object at all.
 </details>
 
 ## Related Topics
-- [[LLD/01.2-is-a-vs-has-a]] — generic code comparison of is-a and has-a,
+- [01.2. is-a vs has-a: How Each Looks in Code](01.2-is-a-vs-has-a.md) — generic code comparison of is-a and has-a,
   including this pattern's both-at-once shape.
-- [[LLD/04-decorator-design-pattern]] — same both-is-a-and-has-a shape;
+- [04. Decorator Design Pattern](04-decorator-design-pattern.md) — same both-is-a-and-has-a shape;
   Decorator adds/layers behavior, Proxy controls/intercepts access.
-- [[LLD/01-solid-principles]] — Proxy follows OCP: cross-cutting behavior
+- [01. SOLID Principles](01-solid-principles.md) — Proxy follows OCP: cross-cutting behavior
   (validation, logging) is added without modifying the real object's class.

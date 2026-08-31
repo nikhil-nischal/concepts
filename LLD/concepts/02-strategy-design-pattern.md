@@ -151,7 +151,7 @@ class GoodsVehicle extends Vehicle {
 | Plain inheritance (is-a) | Capability defined/overridden in each subclass | Duplicated code when unrelated subclasses need the same capability; doesn't scale |
 | Strategy pattern (has-a) | Capability injected as a strategy object via constructor | Each subclass just picks/passes the strategy it needs; no duplication |
 - For how is-a and has-a look in code generally (not specific to Strategy):
-  [[LLD/01.2-is-a-vs-has-a]].
+  [01.2. is-a vs has-a: How Each Looks in Code](01.2-is-a-vs-has-a.md).
 
 ## Example / Walkthrough
 - `Vehicle` base class, children: `PassengerVehicle`, `OffRoadVehicle`,
@@ -235,8 +235,8 @@ own override, duplicating logic.
 </details>
 
 ## Related Topics
-- [[LLD/00a-what-is-lld]] — is-a vs has-a relationship background.
-- [[LLD/01.2-is-a-vs-has-a]] — how is-a and has-a look in code, generally
+- [00a. What is LLD](00a-what-is-lld.md) — is-a vs has-a relationship background.
+- [01.2. is-a vs has-a: How Each Looks in Code](01.2-is-a-vs-has-a.md) — how is-a and has-a look in code, generally
   (not specific to Strategy).
-- [[LLD/01-solid-principles]] — Strategy pattern is one concrete way OCP and
+- [01. SOLID Principles](01-solid-principles.md) — Strategy pattern is one concrete way OCP and
   DIP get implemented in practice.

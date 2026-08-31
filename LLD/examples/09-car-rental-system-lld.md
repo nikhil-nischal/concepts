@@ -358,11 +358,11 @@ it.
 </details>
 
 ## Related Topics
-- [[LLD/06-parking-lot-lld]] — same requirements-first, bottom-up shape;
+- [06. LLD of Parking Lot](06-parking-lot-lld.md) — same requirements-first, bottom-up shape;
   also uses a per-type manager pattern similar to
   `VehicleInventoryManagement` here.
-- [[LLD/14-bookmyshow-lld]] — another full "design X" walkthrough with a
+- [14. LLD of BookMyShow](14-bookmyshow-lld.md) — another full "design X" walkthrough with a
   reservation → bill → payment flow.
-- [[LLD/18-chess-game-lld]] — a mock interview where skipping a scope
+- [18. LLD of Chess Game (Mock Interview)](18-chess-game-lld.md) — a mock interview where skipping a scope
   question (chess-engine move generation vs. validation-only) cost time
   that could've been saved by asking upfront.

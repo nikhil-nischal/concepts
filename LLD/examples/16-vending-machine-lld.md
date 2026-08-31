@@ -311,12 +311,12 @@ instead of four.
 </details>
 
 ## Related Topics
-- [[LLD/02-strategy-design-pattern]] — both patterns swap in an interface
+- [02. Strategy Design Pattern](../concepts/02-strategy-design-pattern.md) — both patterns swap in an interface
   implementation at runtime; Strategy picks *behavior* explicitly from the
   client, State transitions *itself* based on internal triggers.
-- [[LLD/11-snake-and-ladder-lld]] — another design driven by explicit
+- [11. LLD of Snake and Ladder](11-snake-and-ladder-lld.md) — another design driven by explicit
   requirements-gathering before modeling (dice count, snake/ladder count)
   the way this note starts with vending machine requirements.
-- [[LLD/17-atm-lld]] — reuses this same State pattern shape for the ATM's
+- [17. LLD of ATM](17-atm-lld.md) — reuses this same State pattern shape for the ATM's
   operation flow, combined with Chain of Responsibility for cash
   withdrawal.

@@ -44,7 +44,7 @@
   its own coordinates — asking "where is this piece?" is a question about
   the *cell*, not the piece.
 - This is the same is-a/has-a discipline covered in
-  [[LLD/01.2-is-a-vs-has-a]]: get the ownership direction wrong and later
+  [01.2. is-a vs has-a: How Each Looks in Code](../concepts/01.2-is-a-vs-has-a.md): get the ownership direction wrong and later
   operations (like updating a piece's position after a move) become
   awkward, because two places now disagree about where a piece "lives."
 
@@ -94,7 +94,7 @@ classDiagram
 - Fix: `Piece` becomes `abstract`, holding only what's common (`color`)
   plus an abstract move-validation method; `Pawn`, `Bishop`, `Knight`, etc.
   each extend it and implement their own rule. Same is-a shape as
-  [[LLD/11-snake-and-ladder-lld]]'s `Jump` → `Snake`/`Ladder`.
+  [11. LLD of Snake and Ladder](11-snake-and-ladder-lld.md)'s `Jump` → `Snake`/`Ladder`.
 
 ```java
 abstract class Piece {
@@ -342,10 +342,10 @@ unscoped problem.
   expects working code by the end, not just a complete UML.
 
 ## Related Topics
-- [[LLD/01.2-is-a-vs-has-a]] — the Cell-owns-position correction is a
+- [01.2. is-a vs has-a: How Each Looks in Code](../concepts/01.2-is-a-vs-has-a.md) — the Cell-owns-position correction is a
   has-a ownership question; Piece-as-abstract-class is an is-a
   substitutability question.
-- [[LLD/11-snake-and-ladder-lld]] — same abstract-superclass-with-subclass-
+- [11. LLD of Snake and Ladder](11-snake-and-ladder-lld.md) — same abstract-superclass-with-subclass-
   per-variant shape (`Jump` → `Snake`/`Ladder`) as `Piece` → `Pawn`/etc.
-- [[LLD/09-car-rental-system-lld]] — another note built around keeping
+- [09. LLD of Car Rental System](09-car-rental-system-lld.md) — another note built around keeping
   interview scope exactly as wide as the interviewer actually asks for.

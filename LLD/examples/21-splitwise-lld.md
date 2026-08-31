@@ -95,8 +95,8 @@ classDiagram
 ### Split creation — Factory pattern
 - A `SplitFactory` returns the right concrete `Split` implementation
   (`EqualSplit`/`UnequalSplit`/`PercentageSplit`) based on the requested
-  split type — same [[05-factory-vs-abstract-factory-pattern]] used
-  elsewhere, see the full [[00c-design-patterns-catalog]].
+  split type — same [05. Factory vs Abstract Factory Pattern](../concepts/05-factory-vs-abstract-factory-pattern.md) used
+  elsewhere, see the full [00c. Design Patterns Catalog](../concepts/00c-design-patterns-catalog.md).
 - For percentage splits, two client scenarios are both valid: the UI
   computes the rupee amount from the percentage client-side and sends the
   amount, **or** the client sends only the percentage and the server
@@ -500,9 +500,9 @@ perfect match can't be improved on from that branch.
 </details>
 
 ## Related Topics
-- [[05-factory-vs-abstract-factory-pattern]] — the Factory pattern used to
+- [05. Factory vs Abstract Factory Pattern](../concepts/05-factory-vs-abstract-factory-pattern.md) — the Factory pattern used to
   create the correct `Split` implementation.
-- [[00c-design-patterns-catalog]] — full checklist of covered patterns,
+- [00c. Design Patterns Catalog](../concepts/00c-design-patterns-catalog.md) — full checklist of covered patterns,
   including Factory.
-- [[14-bookmyshow-lld]] — another controller-per-entity case-study LLD with
+- [14. LLD of BookMyShow](14-bookmyshow-lld.md) — another controller-per-entity case-study LLD with
   the same separation-of-concerns shape.

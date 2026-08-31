@@ -10,7 +10,7 @@ https://www.youtube.com/watch?v=PpxzFint1IA
 - Interfaces can contain: abstract methods, static constants, static
   methods, and (since Java 8) default methods.
 - Prerequisite context for LLD: interfaces are the mechanism behind ISP and
-  DIP in [[LLD/01-solid-principles]], and behind achieving multiple
+  DIP in [01. SOLID Principles](01-solid-principles.md), and behind achieving multiple
   inheritance of type in Java.
 - In Java, an abstract method is a method that is declared without a body (implementation). It specifies what a method should do, but not how it should do it.
 
@@ -299,7 +299,7 @@ interface and the JVM runs it directly, same as in a class.
 </details>
 
 ## Related Topics
-- [[LLD/01-solid-principles]] — Interface Segregation and Dependency
+- [01. SOLID Principles](01-solid-principles.md) — Interface Segregation and Dependency
   Inversion both rely on interfaces as the abstraction mechanism.
-- [[LLD/00a-what-is-lld]] — is-a relationship (inheritance) vs implementing
+- [00a. What is LLD](00a-what-is-lld.md) — is-a relationship (inheritance) vs implementing
   an interface.

@@ -10,7 +10,7 @@
   format conversion, protocol mismatches, and version-shielding around
   external dependencies all use this shape.
 - Uses both is-a and has-a relationships together, same shape as
-  [[13-proxy-design-pattern]] and [[04-decorator-design-pattern]].
+  [13. Proxy Design Pattern](13-proxy-design-pattern.md) and [04. Decorator Design Pattern](04-decorator-design-pattern.md).
 
 ## Key Concepts
 ### The problem shape
@@ -216,11 +216,11 @@ logic or that a different underlying object exists at all.
 </details>
 
 ## Related Topics
-- [[13-proxy-design-pattern]] — same both-is-a-and-has-a shape; Proxy
+- [13. Proxy Design Pattern](13-proxy-design-pattern.md) — same both-is-a-and-has-a shape; Proxy
   controls/intercepts access to the same interface, Adapter converts
   between two different interfaces.
-- [[04-decorator-design-pattern]] — also wraps an object via has-a while
+- [04. Decorator Design Pattern](04-decorator-design-pattern.md) — also wraps an object via has-a while
   matching its type via is-a, but adds behavior rather than converting
   interfaces.
-- [[01.2-is-a-vs-has-a]] — generic code comparison of is-a and has-a,
+- [01.2. is-a vs has-a: How Each Looks in Code](01.2-is-a-vs-has-a.md) — generic code comparison of is-a and has-a,
   including this pattern's both-at-once shape.

@@ -205,7 +205,7 @@ class Ticket {
   entry.
 - Which manager (`TwoWheelerManager` vs `FourWheelerManager`) to ask is
   decided by `ParkingSpotManagerFactory.getManager(vehicleType)` — Factory
-  Pattern, same shape as [[LLD/05-factory-vs-abstract-factory-pattern]].
+  Pattern, same shape as [05. Factory vs Abstract Factory Pattern](../concepts/05-factory-vs-abstract-factory-pattern.md).
 - Once a spot is found: park the vehicle (updates spot state) and generate
   a `Ticket`.
 
@@ -465,9 +465,9 @@ yet.
 </details>
 
 ## Related Topics
-- [[LLD/02-strategy-design-pattern]] — same strategy-injection shape used
+- [02. Strategy Design Pattern](../concepts/02-strategy-design-pattern.md) — same strategy-injection shape used
   here for find-spot and cost-computation logic.
-- [[LLD/05-factory-vs-abstract-factory-pattern]] — same vehicle-type-based
+- [05. Factory vs Abstract Factory Pattern](../concepts/05-factory-vs-abstract-factory-pattern.md) — same vehicle-type-based
   factory shape used here for manager and cost-computation selection.
-- [[LLD/14-bookmyshow-lld]] — another full "design X" interview walkthrough,
+- [14. LLD of BookMyShow](14-bookmyshow-lld.md) — another full "design X" interview walkthrough,
   same requirements-first approach.

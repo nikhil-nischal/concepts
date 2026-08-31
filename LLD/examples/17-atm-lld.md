@@ -3,9 +3,9 @@
 ## Overview
 - Design an ATM — one of the most frequently asked, and one of the
   simplest once broken down, LLD interview questions.
-- Combines two patterns already covered: [[LLD/16-vending-machine-lld]]'s
+- Combines two patterns already covered: [16. LLD of Vending Machine](16-vending-machine-lld.md)'s
   **State Design Pattern** for the ATM's own operation flow, and
-  [[LLD/10-chain-of-responsibility-pattern]] for cash withdrawal note
+  [10. Chain of Responsibility Design Pattern](../concepts/10-chain-of-responsibility-pattern.md) for cash withdrawal note
   dispensing.
 - Whether both patterns are actually needed depends on scope — clarify with
   the interviewer whether cash withdrawal needs real denomination logic or
@@ -69,7 +69,7 @@ classDiagram
 ### ATM states — State pattern drives the operation flow
 - `ATM` **has** a current `ATMState`; every action the machine takes is
   delegated to whichever state object is current — same shape as the
-  vending machine's [[LLD/16-vending-machine-lld]] `State` interface.
+  vending machine's [16. LLD of Vending Machine](16-vending-machine-lld.md) `State` interface.
 - **Idle** — only `insertCard()` is legal; moves to HasCard.
 - **HasCard** — only `authenticatePin()` is legal (plus exit/return-card at
   any point). Correct PIN → SelectOperation; wrong PIN → return the card
@@ -157,7 +157,7 @@ class CheckBalanceState implements ATMState {
 ### Cash withdrawal — Chain of Responsibility for denomination dispensing
 - Only needed if the scope requires real note dispensing. Chain order is
   ₹2000 → ₹500 → ₹100, largest denomination first, same shape as the ATM
-  example already worked through in [[LLD/10-chain-of-responsibility-pattern]].
+  example already worked through in [10. Chain of Responsibility Design Pattern](../concepts/10-chain-of-responsibility-pattern.md).
 - Each processor dispenses as many of its own notes as it can from the
   remaining amount (bounded by both the amount and its own note count),
   decrements its note count, and forwards whatever's left to the next
@@ -329,7 +329,7 @@ independent constraints.
 To minimize the number of notes dispensed for a given amount — the same
 reasoning as normal cash withdrawal in real ATMs. Chain order is a
 correctness/behavior decision here, not just an implementation detail (see
-[[LLD/10-chain-of-responsibility-pattern]]'s note on why chain order
+[10. Chain of Responsibility Design Pattern](../concepts/10-chain-of-responsibility-pattern.md)'s note on why chain order
 matters for ATM withdrawal but not for logging).
 
 </details>
@@ -354,9 +354,9 @@ benefit the state pattern gives the vending machine.
 </details>
 
 ## Related Topics
-- [[LLD/16-vending-machine-lld]] — same State pattern shape (context holds
+- [16. LLD of Vending Machine](16-vending-machine-lld.md) — same State pattern shape (context holds
   current state, delegates every call); ATM's Idle/HasCard/SelectOperation
   states mirror the vending machine's Idle/HasMoney/Selection states.
-- [[LLD/10-chain-of-responsibility-pattern]] — the ATM cash-withdrawal
+- [10. Chain of Responsibility Design Pattern](../concepts/10-chain-of-responsibility-pattern.md) — the ATM cash-withdrawal
   chain used here is the worked example that pattern's note already covers
   in detail.

@@ -315,8 +315,8 @@ and choosing a seat.
 </details>
 
 ## Related Topics
-- [[LLD/01-solid-principles]] — SOLID underlies clean separation between
+- [01. SOLID Principles](../concepts/01-solid-principles.md) — SOLID underlies clean separation between
   `MovieController`/`TheatreController` and the entities they manage.
-- [[LLD/02-strategy-design-pattern]] — composition-over-inheritance shows up
+- [02. Strategy Design Pattern](../concepts/02-strategy-design-pattern.md) — composition-over-inheritance shows up
   in how `Booking` composes `Show` + `Seat`s + `Payment` rather than
   inheriting from them.

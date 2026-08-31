@@ -336,7 +336,7 @@ type.
 </details>
 
 ## Related Topics
-- [[LLD/02-strategy-design-pattern]] — both patterns favor composition
+- [02. Strategy Design Pattern](02-strategy-design-pattern.md) — both patterns favor composition
   (has-a, constructor-injected collaborators) over inheritance.
-- [[LLD/01-solid-principles]] — Observer follows OCP: new observer types can
+- [01. SOLID Principles](01-solid-principles.md) — Observer follows OCP: new observer types can
   be added without touching the observable.

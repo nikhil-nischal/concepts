@@ -308,7 +308,7 @@ builder class with its own explicit step sequence.
 </details>
 
 ## Related Topics
-- [[04-decorator-design-pattern]] — the pattern most often confused with
+- [04. Decorator Design Pattern](04-decorator-design-pattern.md) — the pattern most often confused with
   Builder; contrasted directly above.
-- [[00c-design-patterns-catalog]] — full checklist of covered patterns;
+- [00c. Design Patterns Catalog](00c-design-patterns-catalog.md) — full checklist of covered patterns;
   Builder is creational.

@@ -195,11 +195,11 @@ same wrap-to-extend shape as pizza toppings.
 </details>
 
 ## Related Topics
-- [[LLD/01.2-is-a-vs-has-a]] — generic code comparison of is-a and has-a,
+- [01.2. is-a vs has-a: How Each Looks in Code](01.2-is-a-vs-has-a.md) — generic code comparison of is-a and has-a,
   including this pattern's both-at-once shape.
-- [[LLD/02-strategy-design-pattern]] — both favor composition over rigid
+- [02. Strategy Design Pattern](02-strategy-design-pattern.md) — both favor composition over rigid
   inheritance, but Strategy swaps one behavior, Decorator layers many.
-- [[LLD/01-solid-principles]] — Decorator follows OCP: new toppings are new
+- [01. SOLID Principles](01-solid-principles.md) — Decorator follows OCP: new toppings are new
   classes, no existing class is modified.
-- [[LLD/13-proxy-design-pattern]] — same both-is-a-and-has-a shape; Proxy
+- [13. Proxy Design Pattern](13-proxy-design-pattern.md) — same both-is-a-and-has-a shape; Proxy
   controls/intercepts access instead of layering behavior.

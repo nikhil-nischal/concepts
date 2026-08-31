@@ -182,7 +182,7 @@ implementing the same interface" idea cold is low effort, high payoff.
 </details>
 
 ## Related Topics
-- [[LLD/01-solid-principles]] — Null Object relies on the same interface
+- [01. SOLID Principles](01-solid-principles.md) — Null Object relies on the same interface
   substitutability that Liskov Substitution Principle requires.
-- [[LLD/02-strategy-design-pattern]] — both patterns rely on multiple
+- [02. Strategy Design Pattern](02-strategy-design-pattern.md) — both patterns rely on multiple
   classes implementing one shared interface, selected/injected at runtime.

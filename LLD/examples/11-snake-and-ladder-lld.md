@@ -3,7 +3,7 @@
 ## Overview
 - Design the classic Snake and Ladder board game — a popular LLD interview
   question, asked specifically at Amazon per this video.
-- Small object set like [[LLD/07-tic-tac-toe-lld]], but the interview focus
+- Small object set like [07. LLD of Tic-Tac-Toe](07-tic-tac-toe-lld.md), but the interview focus
   here is turn rotation, random board setup (snakes/ladders), and applying a
   "jump" (snake or ladder) after a dice roll.
 
@@ -147,7 +147,7 @@ class Dice {
 ### Game — turn queue, dice roll, jump resolution
 - `Player` — name and current `position` (starts at 0, i.e. before cell 1).
 - `Game` holds the `Board`, `Dice`, and players in a queue for turn order —
-  same round-robin pattern as [[LLD/07-tic-tac-toe-lld]]: pop the front
+  same round-robin pattern as [07. LLD of Tic-Tac-Toe](07-tic-tac-toe-lld.md): pop the front
   player, play their turn, push them to the back to continue.
 - Per turn: roll the dice, add the total to the player's position; if that
   reaches or crosses the last cell, the player wins (no exact-count rule
@@ -296,7 +296,7 @@ found.
 
 Players sit in a queue. Each turn, the front player is polled, plays their
 turn, and (unless they just won) is pushed back to the back of the queue —
-the same round-robin pattern used in [[LLD/07-tic-tac-toe-lld]], which
+the same round-robin pattern used in [07. LLD of Tic-Tac-Toe](07-tic-tac-toe-lld.md), which
 generalizes to any number of players without hardcoding turn alternation.
 
 </details>
@@ -329,9 +329,9 @@ starts there, to decide the final resting position for the turn.
 </details>
 
 ## Related Topics
-- [[LLD/07-tic-tac-toe-lld]] — same turn-queue pattern (poll front, requeue
+- [07. LLD of Tic-Tac-Toe](07-tic-tac-toe-lld.md) — same turn-queue pattern (poll front, requeue
   at back) for round-robin turn order.
-- [[LLD/01-solid-principles]] — `Jump` → `Snake`/`Ladder` is the same
+- [01. SOLID Principles](../concepts/01-solid-principles.md) — `Jump` → `Snake`/`Ladder` is the same
   extend-by-subclassing (OCP) shape as `Piece` → `PieceX`/`PieceO`.
-- [[LLD/18-chess-game-lld]] — same abstract-superclass-per-variant shape
+- [18. LLD of Chess Game (Mock Interview)](18-chess-game-lld.md) — same abstract-superclass-per-variant shape
   applied to chess pieces (`Piece` → `Pawn`/`Bishop`/...).

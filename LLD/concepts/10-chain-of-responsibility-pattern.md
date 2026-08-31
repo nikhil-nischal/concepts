@@ -235,10 +235,10 @@ wires the whole chain in one expression.
 </details>
 
 ## Related Topics
-- [[LLD/13-proxy-design-pattern]] — both patterns wrap/forward a call, but
+- [13. Proxy Design Pattern](13-proxy-design-pattern.md) — both patterns wrap/forward a call, but
   Proxy intercepts once for a single real object, Chain of Responsibility
   passes along a sequence of candidate handlers.
-- [[LLD/01-solid-principles]] — adding a new receiver type means adding a
+- [01. SOLID Principles](01-solid-principles.md) — adding a new receiver type means adding a
   new class, not modifying existing processors (Open/Closed Principle).
-- [[LLD/17-atm-lld]] — full ATM design using this exact denomination chain
+- [17. LLD of ATM](../examples/17-atm-lld.md) — full ATM design using this exact denomination chain
   for cash withdrawal, combined with State pattern for the operation flow.

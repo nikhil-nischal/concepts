@@ -271,9 +271,9 @@ operations as composite nodes holding left/right sub-expressions).
 </details>
 
 ## Related Topics
-- [[LLD/04-decorator-design-pattern]] — both wrap/nest objects of a shared
+- [04. Decorator Design Pattern](04-decorator-design-pattern.md) — both wrap/nest objects of a shared
   type recursively, but Decorator nests to *add behavior* to one object,
   Composite nests to represent a *whole tree* of many objects.
-- [[LLD/01-solid-principles]] — Composite follows OCP: new leaf/composite
+- [01. SOLID Principles](01-solid-principles.md) — Composite follows OCP: new leaf/composite
   types are new classes implementing the shared interface, no existing
   code is modified.

@@ -257,4 +257,4 @@ match or reach the end.
 </details>
 
 ## Related Topics
-- [[LLD/01-solid-principles]]
+- [01. SOLID Principles](01-solid-principles.md)

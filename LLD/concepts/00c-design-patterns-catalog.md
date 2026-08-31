@@ -33,7 +33,7 @@
 - ⬜ **Mediator** — centralize how a set of objects interact, so they don't reference each other directly
 - ⬜ **Memento** — capture and restore an object's internal state without violating encapsulation
 - ✅ [Observer](03-observer-design-pattern.md) — auto-notify subscribers on state change
-- ✅ [State](16-vending-machine-lld.md) — one class per state, context delegates every action to its current state (canonical example: Vending Machine; reused in [ATM](17-atm-lld.md))
+- ✅ [State](../examples/16-vending-machine-lld.md) — one class per state, context delegates every action to its current state (canonical example: Vending Machine; reused in [ATM](../examples/17-atm-lld.md))
 - ✅ [Strategy](02-strategy-design-pattern.md) — swap out an algorithm/capability at runtime via composition
 - ⬜ **Template Method** — define an algorithm's skeleton in a base class, letting subclasses override specific steps
 - ⬜ **Visitor** — separate an operation from the object structure it operates on, so new operations don't touch existing classes
@@ -42,9 +42,9 @@
 - ✅ [Null Object](15-null-object-pattern.md) — replace null with a default-behavior object to remove scattered null-checks
 
 ## Patterns combined in case-study LLDs
-- [Parking Lot](06-parking-lot-lld.md) — Strategy (find-spot, pricing) + Factory (manager, cost computation)
-- [ATM](17-atm-lld.md) — State (operation flow) + Chain of Responsibility (denomination-based cash withdrawal)
-- [BookMyShow](14-bookmyshow-lld.md) — Strategy-flavored composition for seat/booking logic
+- [Parking Lot](../examples/06-parking-lot-lld.md) — Strategy (find-spot, pricing) + Factory (manager, cost computation)
+- [ATM](../examples/17-atm-lld.md) — State (operation flow) + Chain of Responsibility (denomination-based cash withdrawal)
+- [BookMyShow](../examples/14-bookmyshow-lld.md) — Strategy-flavored composition for seat/booking logic
 
 ## Related Topics
 - [00a. What is LLD](00a-what-is-lld.md) — the creational/structural/behavioral definitions this catalog groups by

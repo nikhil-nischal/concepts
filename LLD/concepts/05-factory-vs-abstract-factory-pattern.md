@@ -217,8 +217,8 @@ Circle or Mercedes are never referenced directly by the caller.
 </details>
 
 ## Related Topics
-- [[LLD/02-strategy-design-pattern]] — Strategy also picks a concrete
+- [02. Strategy Design Pattern](02-strategy-design-pattern.md) — Strategy also picks a concrete
   implementation via an interface, but for *behavior* selection, not object
   creation.
-- [[LLD/01-solid-principles]] — both factory patterns support DIP: callers
+- [01. SOLID Principles](01-solid-principles.md) — both factory patterns support DIP: callers
   depend on abstractions (interfaces), not concrete classes.

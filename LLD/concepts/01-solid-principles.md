@@ -132,7 +132,7 @@ class SMSNotification implements Notification { // added later, nothing above ch
   guarantees (e.g. the child's overridden method doesn't actually turn on
   the engine, or throws/does something unexpected), callers relying on the
   parent's contract break — this is what LSP forbids.
-- Concrete violation + fix walkthrough: [[LLD/01.1-lsp-solution]].
+- Concrete violation + fix walkthrough: [01.1. LSP with Solution](01.1-lsp-solution.md).
 
 ```mermaid
 classDiagram
@@ -164,7 +164,7 @@ class Bicycle extends Bike { // violation: Bicycle has no engine at all
 }
 ```
 - Full violation + compile-time-safe fix (splitting the hierarchy instead of
-  throwing): [[LLD/01.1-lsp-solution]].
+  throwing): [01.1. LSP with Solution](01.1-lsp-solution.md).
 
 ### Interface Segregation Principle (ISP)
 - Don't force a class to implement methods it doesn't need — split large
@@ -395,9 +395,9 @@ callers relying on Bike's contract — that's an LSP violation.
 </details>
 
 ## Related Topics
-- [[LLD/00a-what-is-lld]] — LLD categories (creational/structural/behavioral)
+- [00a. What is LLD](00a-what-is-lld.md) — LLD categories (creational/structural/behavioral)
   that these principles underpin.
-- [[LLD/00b-java-interfaces]] — interfaces are the mechanism ISP and DIP
+- [00b. Java Interfaces](00b-java-interfaces.md) — interfaces are the mechanism ISP and DIP
   rely on.
 - Design patterns (Factory, Decorator, Strategy, etc.) — many directly
   implement one or more SOLID principles.
