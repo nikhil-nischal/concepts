@@ -18,7 +18,7 @@
 
 ## Structural — controls how classes/objects are arranged together
 - ✅ [Adapter](20-adapter-design-pattern.md) — bridge an existing interface and an expected interface via both is-a and has-a
-- ⬜ **Bridge** — decouple an abstraction from its implementation so the two can vary independently
+- ✅ [Bridge](26-bridge-design-pattern.md) — decouple an abstraction from its implementation so the two can vary independently
 - ✅ [Composite](19-composite-design-pattern.md) — shared leaf/composite interface to model tree-shaped problems without instanceof branching
 - ✅ [Decorator](04-decorator-design-pattern.md) — add features by wrapping at runtime instead of subclassing per combination
 - ✅ [Facade](25-facade-design-pattern.md) — one simplified interface hiding a complex subsystem of classes

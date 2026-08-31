@@ -19,6 +19,7 @@
 - [20. Adapter Design Pattern](concepts/20-adapter-design-pattern.md) — bridge an existing interface and an expected interface via both is-a and has-a, e.g. converting pounds to kg
 - [23. Builder Design Pattern](concepts/23-builder-design-pattern.md) — step-by-step object construction to avoid telescoping constructors, plus Director orchestration and the Builder vs. Decorator distinction
 - [25. Facade Design Pattern](concepts/25-facade-design-pattern.md) — hide subsystem complexity behind one simplified interface; contrasted with Proxy (same interface, one object) and Adapter (solves incompatibility, not complexity)
+- [26. Bridge Design Pattern](concepts/26-bridge-design-pattern.md) — decouple an abstraction hierarchy from an implementation hierarchy so both can grow independently; near-identical to Strategy but different intent
 
 ## Examples
 - [06. LLD of Parking Lot](examples/06-parking-lot-lld.md) — requirements-first design combining Strategy (find-spot, pricing) and Factory (manager, cost-computation) patterns

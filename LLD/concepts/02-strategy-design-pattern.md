@@ -240,3 +240,6 @@ own override, duplicating logic.
   (not specific to Strategy).
 - [01. SOLID Principles](01-solid-principles.md) — Strategy pattern is one concrete way OCP and
   DIP get implemented in practice.
+- [26. Bridge Design Pattern](26-bridge-design-pattern.md) — nearly identical code/UML shape;
+  Strategy's intent is swapping one object's behavior at runtime, Bridge's
+  intent is letting two class hierarchies grow independently.
