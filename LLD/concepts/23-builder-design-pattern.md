@@ -312,3 +312,5 @@ builder class with its own explicit step sequence.
   Builder; contrasted directly above.
 - [00c. Design Patterns Catalog](00c-design-patterns-catalog.md) — full checklist of covered patterns;
   Builder is creational.
+- [27. All Creational Design Patterns](27-all-creational-design-patterns.md) — this note's full
+  depth on Builder, alongside Prototype and Singleton.

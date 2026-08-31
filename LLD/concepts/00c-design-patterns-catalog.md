@@ -10,11 +10,11 @@
   bottom.
 
 ## Creational — controls how objects get created
-- ⬜ **Singleton** — ensure a class has exactly one instance, with a global access point to it
+- ✅ [Singleton](27-all-creational-design-patterns.md) — ensure a class has exactly one instance, with a global access point to it (eager/lazy/synchronized/double-checked locking)
 - ⬜ **Factory Method** — subclasses decide which concrete class to instantiate, behind a common creation method
 - ✅ [Factory vs Abstract Factory](05-factory-vs-abstract-factory-pattern.md) — centralize condition-based object creation; abstract factory adds a factory-of-factories layer for grouped product families
 - ✅ [Builder](23-builder-design-pattern.md) — construct a complex object step-by-step via a Builder + optional Director, avoiding telescoping constructors
-- ⬜ **Prototype** — create new objects by cloning an existing instance instead of instantiating from scratch
+- ✅ [Prototype](27-all-creational-design-patterns.md) — create new objects by cloning an existing instance instead of instantiating from scratch
 
 ## Structural — controls how classes/objects are arranged together
 - ✅ [Adapter](20-adapter-design-pattern.md) — bridge an existing interface and an expected interface via both is-a and has-a

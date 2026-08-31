@@ -222,3 +222,5 @@ Circle or Mercedes are never referenced directly by the caller.
   creation.
 - [01. SOLID Principles](01-solid-principles.md) — both factory patterns support DIP: callers
   depend on abstractions (interfaces), not concrete classes.
+- [27. All Creational Design Patterns](27-all-creational-design-patterns.md) — this note's full
+  depth on Factory/Abstract Factory, alongside Prototype and Singleton.
