@@ -59,6 +59,7 @@
   - [18. LLD of Chess Game (Mock Interview)](LLD/18-chess-game-lld.md)
   - [19. Composite Design Pattern](LLD/19-composite-design-pattern.md)
   - [20. Adapter Design Pattern](LLD/20-adapter-design-pattern.md)
+  - [21. LLD of Splitwise](LLD/21-splitwise-lld.md)
 - AI
   - [01. 20 AI Concepts Explained in 40 Minutes](AI/01-20-ai-concepts-explained.md)
 - Frameworks
