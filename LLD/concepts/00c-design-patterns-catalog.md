@@ -21,7 +21,7 @@
 - ⬜ **Bridge** — decouple an abstraction from its implementation so the two can vary independently
 - ✅ [Composite](19-composite-design-pattern.md) — shared leaf/composite interface to model tree-shaped problems without instanceof branching
 - ✅ [Decorator](04-decorator-design-pattern.md) — add features by wrapping at runtime instead of subclassing per combination
-- ⬜ **Facade** — one simplified interface hiding a complex subsystem of classes
+- ✅ [Facade](24-facade-design-pattern.md) — one simplified interface hiding a complex subsystem of classes
 - ⬜ **Flyweight** — share common state across many fine-grained objects to cut memory use
 - ✅ [Proxy](13-proxy-design-pattern.md) — centralize access validation/logging behind a stand-in that implements the same interface as the real object
 

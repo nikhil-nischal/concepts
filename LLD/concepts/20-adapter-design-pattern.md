@@ -222,5 +222,8 @@ logic or that a different underlying object exists at all.
 - [04. Decorator Design Pattern](04-decorator-design-pattern.md) — also wraps an object via has-a while
   matching its type via is-a, but adds behavior rather than converting
   interfaces.
+- [24. Facade Design Pattern](24-facade-design-pattern.md) — contrasted directly: Adapter solves an
+  incompatibility between interfaces, Facade solves complexity in an
+  already-compatible system.
 - [01.2. is-a vs has-a: How Each Looks in Code](01.2-is-a-vs-has-a.md) — generic code comparison of is-a and has-a,
   including this pattern's both-at-once shape.

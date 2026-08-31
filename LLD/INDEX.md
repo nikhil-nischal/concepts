@@ -18,6 +18,7 @@
 - [19. Composite Design Pattern](concepts/19-composite-design-pattern.md) — shared leaf/composite interface to model tree-shaped problems (file system, expression tree) without instanceof branching
 - [20. Adapter Design Pattern](concepts/20-adapter-design-pattern.md) — bridge an existing interface and an expected interface via both is-a and has-a, e.g. converting pounds to kg
 - [22. Builder Design Pattern](concepts/22-builder-design-pattern.md) — step-by-step object construction to avoid telescoping constructors, plus Director orchestration and the Builder vs. Decorator distinction
+- [24. Facade Design Pattern](concepts/24-facade-design-pattern.md) — hide subsystem complexity behind one simplified interface; contrasted with Proxy (same interface, one object) and Adapter (solves incompatibility, not complexity)
 
 ## Examples
 - [06. LLD of Parking Lot](examples/06-parking-lot-lld.md) — requirements-first design combining Strategy (find-spot, pricing) and Factory (manager, cost-computation) patterns

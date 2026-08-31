@@ -53,6 +53,7 @@
     - [19. Composite Design Pattern](LLD/concepts/19-composite-design-pattern.md)
     - [20. Adapter Design Pattern](LLD/concepts/20-adapter-design-pattern.md)
     - [22. Builder Design Pattern](LLD/concepts/22-builder-design-pattern.md)
+    - [24. Facade Design Pattern](LLD/concepts/24-facade-design-pattern.md)
   - Examples
     - [06. LLD of Parking Lot](LLD/examples/06-parking-lot-lld.md)
     - [07. LLD of Tic-Tac-Toe](LLD/examples/07-tic-tac-toe-lld.md)

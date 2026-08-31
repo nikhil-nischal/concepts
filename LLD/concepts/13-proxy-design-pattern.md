@@ -221,3 +221,5 @@ the real object at all.
   Decorator adds/layers behavior, Proxy controls/intercepts access.
 - [01. SOLID Principles](01-solid-principles.md) — Proxy follows OCP: cross-cutting behavior
   (validation, logging) is added without modifying the real object's class.
+- [24. Facade Design Pattern](24-facade-design-pattern.md) — contrasted directly: Proxy wraps
+  one object behind the same interface, Facade fronts many classes behind a new one.
