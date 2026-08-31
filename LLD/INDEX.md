@@ -17,8 +17,8 @@
 - [15. Null Object Pattern](concepts/15-null-object-pattern.md) — replace null with a default-behavior object to remove scattered null-checks
 - [19. Composite Design Pattern](concepts/19-composite-design-pattern.md) — shared leaf/composite interface to model tree-shaped problems (file system, expression tree) without instanceof branching
 - [20. Adapter Design Pattern](concepts/20-adapter-design-pattern.md) — bridge an existing interface and an expected interface via both is-a and has-a, e.g. converting pounds to kg
-- [22. Builder Design Pattern](concepts/22-builder-design-pattern.md) — step-by-step object construction to avoid telescoping constructors, plus Director orchestration and the Builder vs. Decorator distinction
-- [24. Facade Design Pattern](concepts/24-facade-design-pattern.md) — hide subsystem complexity behind one simplified interface; contrasted with Proxy (same interface, one object) and Adapter (solves incompatibility, not complexity)
+- [23. Builder Design Pattern](concepts/23-builder-design-pattern.md) — step-by-step object construction to avoid telescoping constructors, plus Director orchestration and the Builder vs. Decorator distinction
+- [25. Facade Design Pattern](concepts/25-facade-design-pattern.md) — hide subsystem complexity behind one simplified interface; contrasted with Proxy (same interface, one object) and Adapter (solves incompatibility, not complexity)
 
 ## Examples
 - [06. LLD of Parking Lot](examples/06-parking-lot-lld.md) — requirements-first design combining Strategy (find-spot, pricing) and Factory (manager, cost-computation) patterns
@@ -30,4 +30,4 @@
 - [17. LLD of ATM](examples/17-atm-lld.md) — State pattern for the operation flow + Chain of Responsibility for denomination-based cash withdrawal
 - [18. LLD of Chess Game (Mock Interview)](examples/18-chess-game-lld.md) — Cell owns position not Piece, abstract Piece per type, move-as-validation vs move-as-mutation, plus interview-process lessons
 - [21. LLD of Splitwise](examples/21-splitwise-lld.md) — Equal/Unequal/Percentage splits via a Factory, per-user friend-balance-sheet updates on each expense; plus Part 2: the Simplify debt-reduction algorithm (DFS/backtracking, NP-hard)
-- [23. LLD of Cricbuzz / CricInfo](examples/23-cricbuzz-lld.md) — Match/Innings/Over/Ball hierarchy, batting/bowling controllers, MatchType polymorphism, Observer-driven scorecard updates
+- [24. LLD of Cricbuzz / CricInfo](examples/24-cricbuzz-lld.md) — Match/Innings/Over/Ball hierarchy, batting/bowling controllers, MatchType polymorphism, Observer-driven scorecard updates

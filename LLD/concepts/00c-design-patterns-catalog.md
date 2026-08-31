@@ -13,7 +13,7 @@
 - ⬜ **Singleton** — ensure a class has exactly one instance, with a global access point to it
 - ⬜ **Factory Method** — subclasses decide which concrete class to instantiate, behind a common creation method
 - ✅ [Factory vs Abstract Factory](05-factory-vs-abstract-factory-pattern.md) — centralize condition-based object creation; abstract factory adds a factory-of-factories layer for grouped product families
-- ✅ [Builder](22-builder-design-pattern.md) — construct a complex object step-by-step via a Builder + optional Director, avoiding telescoping constructors
+- ✅ [Builder](23-builder-design-pattern.md) — construct a complex object step-by-step via a Builder + optional Director, avoiding telescoping constructors
 - ⬜ **Prototype** — create new objects by cloning an existing instance instead of instantiating from scratch
 
 ## Structural — controls how classes/objects are arranged together
@@ -21,7 +21,7 @@
 - ⬜ **Bridge** — decouple an abstraction from its implementation so the two can vary independently
 - ✅ [Composite](19-composite-design-pattern.md) — shared leaf/composite interface to model tree-shaped problems without instanceof branching
 - ✅ [Decorator](04-decorator-design-pattern.md) — add features by wrapping at runtime instead of subclassing per combination
-- ✅ [Facade](24-facade-design-pattern.md) — one simplified interface hiding a complex subsystem of classes
+- ✅ [Facade](25-facade-design-pattern.md) — one simplified interface hiding a complex subsystem of classes
 - ⬜ **Flyweight** — share common state across many fine-grained objects to cut memory use
 - ✅ [Proxy](13-proxy-design-pattern.md) — centralize access validation/logging behind a stand-in that implements the same interface as the real object
 
@@ -45,7 +45,7 @@
 - [Parking Lot](../examples/06-parking-lot-lld.md) — Strategy (find-spot, pricing) + Factory (manager, cost computation)
 - [ATM](../examples/17-atm-lld.md) — State (operation flow) + Chain of Responsibility (denomination-based cash withdrawal)
 - [BookMyShow](../examples/14-bookmyshow-lld.md) — Strategy-flavored composition for seat/booking logic
-- [Cricbuzz / CricInfo](../examples/23-cricbuzz-lld.md) — Observer (ball-by-ball scorecard updates)
+- [Cricbuzz / CricInfo](../examples/24-cricbuzz-lld.md) — Observer (ball-by-ball scorecard updates)
 
 ## Related Topics
 - [00a. What is LLD](00a-what-is-lld.md) — the creational/structural/behavioral definitions this catalog groups by

@@ -52,8 +52,8 @@
     - [15. Null Object Pattern](LLD/concepts/15-null-object-pattern.md)
     - [19. Composite Design Pattern](LLD/concepts/19-composite-design-pattern.md)
     - [20. Adapter Design Pattern](LLD/concepts/20-adapter-design-pattern.md)
-    - [22. Builder Design Pattern](LLD/concepts/22-builder-design-pattern.md)
-    - [24. Facade Design Pattern](LLD/concepts/24-facade-design-pattern.md)
+    - [23. Builder Design Pattern](LLD/concepts/23-builder-design-pattern.md)
+    - [25. Facade Design Pattern](LLD/concepts/25-facade-design-pattern.md)
   - Examples
     - [06. LLD of Parking Lot](LLD/examples/06-parking-lot-lld.md)
     - [07. LLD of Tic-Tac-Toe](LLD/examples/07-tic-tac-toe-lld.md)
@@ -64,7 +64,7 @@
     - [17. LLD of ATM](LLD/examples/17-atm-lld.md)
     - [18. LLD of Chess Game (Mock Interview)](LLD/examples/18-chess-game-lld.md)
     - [21. LLD of Splitwise](LLD/examples/21-splitwise-lld.md)
-    - [23. LLD of Cricbuzz / CricInfo](LLD/examples/23-cricbuzz-lld.md)
+    - [24. LLD of Cricbuzz / CricInfo](LLD/examples/24-cricbuzz-lld.md)
 - AI
   - [01. 20 AI Concepts Explained in 40 Minutes](AI/01-20-ai-concepts-explained.md)
 - Frameworks
