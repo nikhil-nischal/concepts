@@ -29,3 +29,4 @@
 - [17. LLD of ATM](examples/17-atm-lld.md) — State pattern for the operation flow + Chain of Responsibility for denomination-based cash withdrawal
 - [18. LLD of Chess Game (Mock Interview)](examples/18-chess-game-lld.md) — Cell owns position not Piece, abstract Piece per type, move-as-validation vs move-as-mutation, plus interview-process lessons
 - [21. LLD of Splitwise](examples/21-splitwise-lld.md) — Equal/Unequal/Percentage splits via a Factory, per-user friend-balance-sheet updates on each expense; plus Part 2: the Simplify debt-reduction algorithm (DFS/backtracking, NP-hard)
+- [23. LLD of Cricbuzz / CricInfo](examples/23-cricbuzz-lld.md) — Match/Innings/Over/Ball hierarchy, batting/bowling controllers, MatchType polymorphism, Observer-driven scorecard updates

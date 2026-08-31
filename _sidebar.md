@@ -63,6 +63,7 @@
     - [17. LLD of ATM](LLD/examples/17-atm-lld.md)
     - [18. LLD of Chess Game (Mock Interview)](LLD/examples/18-chess-game-lld.md)
     - [21. LLD of Splitwise](LLD/examples/21-splitwise-lld.md)
+    - [23. LLD of Cricbuzz / CricInfo](LLD/examples/23-cricbuzz-lld.md)
 - AI
   - [01. 20 AI Concepts Explained in 40 Minutes](AI/01-20-ai-concepts-explained.md)
 - Frameworks

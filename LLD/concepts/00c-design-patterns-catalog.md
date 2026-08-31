@@ -45,6 +45,7 @@
 - [Parking Lot](../examples/06-parking-lot-lld.md) — Strategy (find-spot, pricing) + Factory (manager, cost computation)
 - [ATM](../examples/17-atm-lld.md) — State (operation flow) + Chain of Responsibility (denomination-based cash withdrawal)
 - [BookMyShow](../examples/14-bookmyshow-lld.md) — Strategy-flavored composition for seat/booking logic
+- [Cricbuzz / CricInfo](../examples/23-cricbuzz-lld.md) — Observer (ball-by-ball scorecard updates)
 
 ## Related Topics
 - [00a. What is LLD](00a-what-is-lld.md) — the creational/structural/behavioral definitions this catalog groups by
