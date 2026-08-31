@@ -290,6 +290,71 @@ sequenceDiagram
     ATM->>ATM: CashWithdrawal -> Idle
 ```
 
+## UML Class Diagram
+Full class structure with proper UML relationship types (inheritance,
+realization, composition, aggregation, association, dependency) instead
+of generic arrows:
+```mermaid
+classDiagram
+    class ATMRoom {
+        -ATM atm
+        -User user
+    }
+    class User {
+        -Card card
+        -BankAccount bankAccount
+    }
+    class Card {
+        -String cardNumber
+        -String pin
+    }
+    class BankAccount {
+        -int balance
+        +updateBalance(int delta)
+    }
+    class ATM {
+        -ATMState current
+        -CashWithdrawalProcessor withdrawalChain
+    }
+    class ATMState {
+        <<interface>>
+        +insertCard(ATM)
+        +authenticatePin(ATM, String)
+        +cashWithdrawal(ATM, int)
+    }
+    class IdleState
+    class HasCardState
+    class SelectOperationState
+    class CashWithdrawalState
+    class CheckBalanceState
+    class CashWithdrawalProcessor {
+        <<abstract>>
+        #CashWithdrawalProcessor next
+        +withdraw(ATM, int)
+    }
+    class TwoThousandProcessor
+    class FiveHundredProcessor
+    class HundredProcessor
+
+    ATMRoom --> ATM : association
+    ATMRoom --> User : association
+    User *-- Card : composition — card belongs exclusively to this user
+    User o-- BankAccount : aggregation — bank-side record, outlives any one card
+    Card --> BankAccount : association — linked for lookup
+    ATM --> ATMState : association — delegates to whichever state is current
+    ATMState <|.. IdleState : realization
+    ATMState <|.. HasCardState : realization
+    ATMState <|.. SelectOperationState : realization
+    ATMState <|.. CashWithdrawalState : realization
+    ATMState <|.. CheckBalanceState : realization
+    ATM *-- CashWithdrawalProcessor : composition — ATM builds and owns the chain
+    CashWithdrawalProcessor <|-- TwoThousandProcessor : inheritance
+    CashWithdrawalProcessor <|-- FiveHundredProcessor : inheritance
+    CashWithdrawalProcessor <|-- HundredProcessor : inheritance
+    CashWithdrawalProcessor --> CashWithdrawalProcessor : association — next in chain
+    CashWithdrawalState ..> BankAccount : dependency — updates balance via the current card, no field of its own
+```
+
 ## Interview Q&A
 <details>
 <summary>Why does the ATM use two design patterns instead of one?</summary>

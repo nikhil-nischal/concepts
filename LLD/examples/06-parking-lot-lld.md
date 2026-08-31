@@ -395,6 +395,84 @@ flowchart TB
     ExitGate --> SMF
 ```
 
+## UML Class Diagram
+Full class structure with proper UML relationship types (inheritance,
+realization, composition, aggregation, association, dependency) instead
+of generic arrows:
+```mermaid
+classDiagram
+    class ParkingSpot {
+        <<abstract>>
+        +price() double
+    }
+    class TwoWheelerSpot
+    class FourWheelerSpot
+    class ParkingSpotManager {
+        <<abstract>>
+    }
+    class TwoWheelerManager
+    class FourWheelerManager
+    class ParkingStrategy {
+        <<interface>>
+    }
+    class DefaultStrategy
+    class NearestToEntranceStrategy
+    class Vehicle
+    class Ticket
+    class EntranceGate
+    class ExitGate
+    class EntranceManager
+    class ParkingSpotManagerFactory
+    class CostComputationFactory
+    class CostComputation {
+        <<abstract>>
+    }
+    class TwoWheelerCostComputation
+    class FourWheelerCostComputation
+    class PricingStrategy {
+        <<interface>>
+    }
+    class FixedPriceStrategy
+    class HourlyPricingStrategy
+    class MinutePricingStrategy
+    class Payment {
+        <<abstract>>
+    }
+    class CashPayment
+    class CardPayment
+
+    ParkingSpot <|-- TwoWheelerSpot
+    ParkingSpot <|-- FourWheelerSpot
+    ParkingSpotManager <|-- TwoWheelerManager
+    ParkingSpotManager <|-- FourWheelerManager
+    ParkingStrategy <|.. DefaultStrategy
+    ParkingStrategy <|.. NearestToEntranceStrategy
+    CostComputation <|-- TwoWheelerCostComputation
+    CostComputation <|-- FourWheelerCostComputation
+    PricingStrategy <|.. FixedPriceStrategy
+    PricingStrategy <|.. HourlyPricingStrategy
+    PricingStrategy <|.. MinutePricingStrategy
+    Payment <|-- CashPayment
+    Payment <|-- CardPayment
+
+    ParkingSpotManager o-- ParkingSpot : aggregation — spot list is passed in, spots outlive any one manager instance
+    ParkingSpotManager --> ParkingStrategy : association, injected find-spot behavior
+    ParkingSpot --> Vehicle : association, references parked vehicle temporarily
+    Ticket --> Vehicle : association
+    Ticket --> ParkingSpot : association, assigned spot
+    EntranceManager o-- EntranceGate : aggregation — gates can be added/closed independently
+    EntranceGate --> ParkingSpotManagerFactory : association
+    EntranceGate ..> ParkingSpotManager : dependency, fetched per request not stored
+    EntranceGate ..> Ticket : dependency, creates on arrival
+    ParkingSpotManagerFactory --> ParkingSpotManager : association, holds manager instances
+    ExitGate --> ParkingSpotManagerFactory : association
+    ExitGate --> CostComputationFactory : association
+    ExitGate ..> Ticket : dependency, takes as parameter
+    ExitGate ..> Payment : dependency, takes as parameter
+    CostComputationFactory ..> CostComputation : dependency — creates a new instance per call
+    CostComputation --> PricingStrategy : association, injected pricing behavior
+```
+
 ## Interview Q&A
 <details>
 <summary>Why does the design use separate managers per vehicle type instead of one manager for all spots?</summary>

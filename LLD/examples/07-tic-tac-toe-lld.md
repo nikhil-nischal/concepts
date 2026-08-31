@@ -197,6 +197,39 @@ flowchart TB
     Check -->|no winner, space left| Poll
 ```
 
+## UML Class Diagram
+Full class structure with proper UML relationship types (inheritance,
+realization, composition, aggregation, association, dependency) instead
+of generic arrows:
+```mermaid
+classDiagram
+    class Piece {
+        <<abstract>>
+        -String pieceType
+    }
+    class PieceX
+    class PieceO
+    class Board {
+        -int size
+        -Piece[][] grid
+    }
+    class Player {
+        -String name
+        -String playerId
+    }
+    class Game {
+        -Board board
+        -Queue~Player~ players
+    }
+
+    Piece <|-- PieceX
+    Piece <|-- PieceO
+    Board --> Piece : association — grid cells reference pieces, doesn't own their lifecycle
+    Player --> Piece : association — assigned symbol, not exclusively owned
+    Game *-- Board : composition — the board is created for and dies with this game
+    Game o-- Player : aggregation — players exist independently, could play other games
+```
+
 ## Interview Q&A
 <details>
 <summary>Why is Tic-Tac-Toe a popular first LLD question?</summary>

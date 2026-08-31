@@ -231,6 +231,66 @@ classDiagram
     Group --> Expense : owns
 ```
 
+## UML Class Diagram
+Full class structure with proper UML relationship types (inheritance,
+composition, aggregation, association, dependency) instead of generic
+arrows:
+```mermaid
+classDiagram
+    class User {
+        -String userId
+        -List~User~ friends
+        -Map~User, FriendBalance~ balanceSheet
+    }
+    class Group {
+        -String groupId
+        -String groupName
+    }
+    class Expense {
+        -String title
+        -double amount
+        -User paidBy
+    }
+    class Split {
+        <<abstract>>
+        -User user
+        -double amount
+    }
+    class EqualSplit
+    class UnequalSplit
+    class PercentageSplit
+    class FriendBalance {
+        -double totalYouGetBack
+        -double totalYouOwe
+    }
+    class SplitFactory {
+        +getSplitObject(SplitType) Split
+    }
+    class ExpenseController {
+        +createExpense(...)
+    }
+    class BalanceSheetController {
+        +updateBalanceSheet(Expense)
+    }
+    class GroupController
+    class UserController
+
+    Split <|-- EqualSplit
+    Split <|-- UnequalSplit
+    Split <|-- PercentageSplit
+    Expense *-- Split : composition — a split is meaningless outside its expense
+    Group o-- User : aggregation — members outlive their group membership
+    Group o-- Expense : aggregation — an expense can exist without a group
+    User *-- FriendBalance : composition — balance entry is bound to the user
+    SplitFactory ..> Split : dependency — creates instances on demand, no lasting reference
+    ExpenseController --> SplitFactory : association
+    ExpenseController --> Expense : association, builds
+    ExpenseController --> BalanceSheetController : association
+    BalanceSheetController --> User : association, updates balanceSheet
+    GroupController --> Group : association, manages
+    UserController --> User : association, manages
+```
+
 ## Interview Q&A
 <details>
 <summary>What are the three split types Splitwise must support, and what does each validate?</summary>

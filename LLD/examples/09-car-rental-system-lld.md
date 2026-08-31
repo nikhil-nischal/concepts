@@ -300,6 +300,86 @@ flowchart TB
     B --> P[Payment]
 ```
 
+## UML Class Diagram
+Full class structure with proper UML relationship types (inheritance,
+realization, composition, aggregation, association, dependency) instead
+of generic arrows:
+```mermaid
+classDiagram
+    class Vehicle {
+        -String vehicleId
+        -VehicleType type
+        -VehicleStatus status
+    }
+    class VehicleType {
+        <<enumeration>>
+        CAR
+        BIKE
+    }
+    class VehicleStatus {
+        <<enumeration>>
+        ACTIVE
+        INACTIVE
+    }
+    class Location {
+        -String city
+        -String pincode
+    }
+    class Store {
+        -String storeId
+    }
+    class VehicleInventoryManagement {
+        -List~Vehicle~ vehicles
+    }
+    class Reservation {
+        -String reservationId
+        -ReservationStatus status
+    }
+    class ReservationStatus {
+        <<enumeration>>
+        SCHEDULED
+        IN_PROGRESS
+        COMPLETED
+        CANCELLED
+    }
+    class Bill {
+        -double amount
+        -boolean isPaid
+    }
+    class Payment {
+        -PaymentMode mode
+        -double amount
+    }
+    class PaymentMode {
+        <<enumeration>>
+        CASH
+        ONLINE
+    }
+    class User {
+        -String userId
+        -String drivingLicense
+    }
+    class CarRentalSystem
+
+    Vehicle --> VehicleType : association
+    Vehicle --> VehicleStatus : association
+    Reservation --> ReservationStatus : association
+    Payment --> PaymentMode : association
+
+    CarRentalSystem o-- Store : aggregation — stores are independent business locations
+    CarRentalSystem o-- User : aggregation — users exist independently of the system object
+    Store --> Location : association — describes the store, not exclusively owned
+    Store *-- VehicleInventoryManagement : composition — one manager instance per store, meaningless alone
+    VehicleInventoryManagement o-- Vehicle : aggregation — vehicles are physical assets, outlive the inventory list
+    Store *-- Reservation : composition — a reservation can't exist independently of its store
+    User --> Reservation : association — user also tracks reservations, but store is the owning side
+    Reservation --> Vehicle : association
+    Reservation --> User : association
+    Reservation --> Location : association — pickup/drop locations
+    Reservation *-- Bill : composition — a bill is generated for and scoped entirely to one reservation
+    Bill *-- Payment : composition — a payment record is scoped entirely to one bill
+```
+
 ## Interview Q&A
 <details>
 <summary>Why does each Store own its own VehicleInventoryManagement instead of one shared inventory manager?</summary>

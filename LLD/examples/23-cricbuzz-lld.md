@@ -315,6 +315,89 @@ flowchart TB
     Match -.-> MT["MatchType\n(ODI / T20 / Test — total overs, max overs/bowler)"]
 ```
 
+## UML Class Diagram
+Full class structure with proper UML relationship types (inheritance,
+realization, composition, aggregation, association, dependency) instead
+of generic arrows:
+```mermaid
+classDiagram
+    class Person {
+        -String name
+        -String address
+    }
+    class Player {
+        -PlayerType type
+    }
+    class BattingScoreCard {
+        -int runsScored
+        -int ballsFaced
+    }
+    class BowlingScoreCard {
+        -int oversDelivered
+        -int wicketsTaken
+    }
+    class Team {
+        -String name
+        -List~Player~ playingEleven
+    }
+    class PlayerBattingController {
+        -Queue~Player~ yetToBat
+    }
+    class PlayerBowlingController {
+        -Map~Player, Integer~ oversBowledByPlayer
+    }
+    class Match {
+        -String venue
+        -Team tossWinner
+    }
+    class MatchType {
+        <<abstract>>
+        +getTotalOvers() int
+        +getMaxOversPerBowler() int
+    }
+    class ODI
+    class T20
+    class TestMatch
+    class Innings {
+        -Team battingTeam
+        -Team bowlingTeam
+    }
+    class Over {
+        -Player bowler
+    }
+    class Ball {
+        -int runsScored
+        -BallType ballType
+    }
+    class ScoreCardUpdater {
+        <<interface>>
+        +update(Ball)
+    }
+    class BattingScoreCardUpdater
+    class BowlingScoreCardUpdater
+
+    Person <|-- Player : inheritance
+    MatchType <|-- ODI : inheritance
+    MatchType <|-- T20 : inheritance
+    MatchType <|-- TestMatch : inheritance
+    ScoreCardUpdater <|.. BattingScoreCardUpdater : realization
+    ScoreCardUpdater <|.. BowlingScoreCardUpdater : realization
+    Player *-- BattingScoreCard : composition — card is meaningless without the player
+    Player *-- BowlingScoreCard : composition — card is meaningless without the player
+    Team o-- Player : aggregation — players outlive being on this team's squad
+    Team *-- PlayerBattingController : composition — helper owned entirely by the team
+    Team *-- PlayerBowlingController : composition — helper owned entirely by the team
+    Match o-- Team : aggregation — teams exist independently of one match
+    Match *-- Innings : composition — innings belong entirely to the match
+    Match --> MatchType : association — holds the format's rules
+    Innings *-- Over : composition — overs belong entirely to the innings
+    Over *-- Ball : composition — balls belong entirely to the over
+    Ball o-- ScoreCardUpdater : aggregation — observers exist independently of any one ball
+    PlayerBowlingController ..> MatchType : dependency — reads overs limit, not stored
+    BattingScoreCardUpdater ..> Ball : dependency — receives ball as a parameter
+    BowlingScoreCardUpdater ..> Ball : dependency — receives ball as a parameter
+```
+
 ## Interview Q&A
 <details>
 <summary>What's the core object hierarchy for modeling a live cricket match?</summary>

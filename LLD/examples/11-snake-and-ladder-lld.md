@@ -263,6 +263,48 @@ flowchart TB
     Back --> Poll
 ```
 
+## UML Class Diagram
+Full class structure with proper UML relationship types (inheritance,
+realization, composition, aggregation, association, dependency) instead
+of generic arrows:
+```mermaid
+classDiagram
+    class Jump {
+        -int start
+        -int end
+    }
+    class Snake
+    class Ladder
+    class Cell {
+        -int position
+        -Jump jump
+    }
+    class Board {
+        -int size
+        -Cell[] cells
+        +setup(int, int)
+    }
+    class Dice {
+        -int numberOfDice
+        +rollDice() int
+    }
+    class Player {
+        -String name
+        -int position
+    }
+    class Game {
+        -Queue~Player~ players
+    }
+
+    Jump <|-- Snake
+    Jump <|-- Ladder
+    Cell *-- Jump : composition — a jump is created only for that cell, meaningless elsewhere
+    Board *-- Cell : composition — cells are (re)built entirely inside setup(), don't exist outside a board
+    Game o-- Board : aggregation — same Board instance can be reused/re-setup across games
+    Game o-- Dice : aggregation — Dice is passed in, reusable independently of one game
+    Game o-- Player : aggregation — players exist independently, could play other games
+```
+
 ## Interview Q&A
 <details>
 <summary>Why model Snake and Ladder as subclasses of a single Jump class instead of two separate classes?</summary>

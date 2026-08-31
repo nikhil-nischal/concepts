@@ -250,6 +250,59 @@ flowchart TB
     Mutate --> FlipTurn["flip turn"]
 ```
 
+## UML Class Diagram
+Full class structure with proper UML relationship types (inheritance,
+realization, composition, aggregation, association, dependency) instead
+of generic arrows:
+```mermaid
+classDiagram
+    class Game {
+        -Board board
+        -Player player1
+        -Player player2
+        -String turn
+        -List~Piece~ capturedPieces
+        -String status
+    }
+    class Player {
+        -String name
+        -String color
+    }
+    class Board {
+        -Cell[][] cells
+        +initialize()
+        +move(Cell, Cell) boolean
+    }
+    class Cell {
+        -int x
+        -int y
+        -Piece piece
+    }
+    class Piece {
+        <<abstract>>
+        -String color
+        +isValidMove(Cell, Cell) boolean
+    }
+    class Pawn
+    class Bishop
+    class Knight
+    class Rook
+    class Queen
+    class King
+
+    Game *-- Board : composition — board belongs entirely to this game
+    Game o-- Player : aggregation — a player exists independently of any one game
+    Game o-- Piece : aggregation — capturedPieces references pieces that outlived their cell
+    Board *-- Cell : composition — cells are the board's fixed structure
+    Cell o-- Piece : aggregation — a piece outlives being on any one cell (moves, or gets captured)
+    Piece <|-- Pawn : inheritance
+    Piece <|-- Bishop : inheritance
+    Piece <|-- Knight : inheritance
+    Piece <|-- Rook : inheritance
+    Piece <|-- Queen : inheritance
+    Piece <|-- King : inheritance
+```
+
 ## Interview Q&A
 <details>
 <summary>Why does Cell hold the position and piece reference instead of Piece holding its own position?</summary>

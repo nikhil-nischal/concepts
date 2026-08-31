@@ -256,6 +256,59 @@ flowchart TB
     Seat -->|version-checked update| Booking
 ```
 
+## UML Class Diagram
+Full class structure with proper UML relationship types (inheritance,
+realization, composition, aggregation, association, dependency) instead
+of generic arrows:
+```mermaid
+classDiagram
+    class Movie {
+        -String movieId
+        -String movieName
+        -int movieDuration
+    }
+    class MovieController {
+        -List~Movie~ allMovies
+        -Map~City, List~Movie~~ movieByCity
+    }
+    class Theatre {
+        -String theatreId
+        -String address
+    }
+    class TheatreController {
+        -Map~City, List~Theatre~~ theatreByCity
+    }
+    class Screen {
+        -String screenId
+    }
+    class Show {
+        -String showId
+        -DateTime showTime
+    }
+    class Seat {
+        -String seatId
+        -String category
+        -int version
+    }
+    class Booking {
+        -String bookingId
+    }
+    class Payment {
+        -String paymentId
+        -String paymentStatus
+    }
+
+    MovieController --> Movie : association — manages
+    TheatreController --> Theatre : association — manages
+    Theatre *-- Screen : composition — a screen is a physical part of one theatre
+    Screen *-- Seat : composition — seats are fixed to their screen
+    Screen *-- Show : composition — a show is scheduled on exactly one screen
+    Show --> Movie : association — many shows reference the same movie
+    Booking --> Show : association — books a particular show
+    Booking o-- Seat : aggregation — seats outlive any one booking (screen owns them)
+    Booking *-- Payment : composition — payment record belongs entirely to its booking
+```
+
 ## Interview Q&A
 <details>
 <summary>How do movies get scoped to a city in this design?</summary>

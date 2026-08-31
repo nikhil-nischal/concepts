@@ -248,6 +248,43 @@ flowchart TB
     Dispense -->|dispenseProduct, change if any| Idle
 ```
 
+## UML Class Diagram
+Full class structure with proper UML relationship types (inheritance,
+realization, composition, aggregation, association, dependency) instead
+of generic arrows:
+```mermaid
+classDiagram
+    class State {
+        <<interface>>
+        +insertCoin(VendingMachine)
+        +chooseProduct(VendingMachine, String)
+        +cancel(VendingMachine)
+        +dispenseProduct(VendingMachine)
+    }
+    class IdleState
+    class HasMoneyState
+    class SelectionState
+    class DispenseState
+    class VendingMachine {
+        -State current
+        -int amount
+        -String selectedCode
+        -Map~String, Item~ inventory
+    }
+    class Item {
+        -String type
+        -int price
+        -int quantity
+    }
+
+    State <|.. IdleState : realization
+    State <|.. HasMoneyState : realization
+    State <|.. SelectionState : realization
+    State <|.. DispenseState : realization
+    VendingMachine --> State : association — delegates to whichever state is current
+    VendingMachine *-- Item : composition — inventory items belong entirely to this machine
+```
+
 ## Interview Q&A
 <details>
 <summary>Why use the State design pattern for a vending machine instead of one class with state flags?</summary>
