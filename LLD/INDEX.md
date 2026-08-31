@@ -24,3 +24,4 @@
 - [19. Composite Design Pattern](19-composite-design-pattern.md) — shared leaf/composite interface to model tree-shaped problems (file system, expression tree) without instanceof branching
 - [20. Adapter Design Pattern](20-adapter-design-pattern.md) — bridge an existing interface and an expected interface via both is-a and has-a, e.g. converting pounds to kg
 - [21. LLD of Splitwise](21-splitwise-lld.md) — Equal/Unequal/Percentage splits via a Factory, per-user friend-balance-sheet updates on each expense; plus Part 2: the Simplify debt-reduction algorithm (DFS/backtracking, NP-hard)
+- [22. Builder Design Pattern](22-builder-design-pattern.md) — step-by-step object construction to avoid telescoping constructors, plus Director orchestration and the Builder vs. Decorator distinction

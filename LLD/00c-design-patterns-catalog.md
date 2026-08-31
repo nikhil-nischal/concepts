@@ -13,7 +13,7 @@
 - ⬜ **Singleton** — ensure a class has exactly one instance, with a global access point to it
 - ⬜ **Factory Method** — subclasses decide which concrete class to instantiate, behind a common creation method
 - ✅ [Factory vs Abstract Factory](05-factory-vs-abstract-factory-pattern.md) — centralize condition-based object creation; abstract factory adds a factory-of-factories layer for grouped product families
-- ⬜ **Builder** — construct a complex object step-by-step, separating construction from representation
+- ✅ [Builder](22-builder-design-pattern.md) — construct a complex object step-by-step via a Builder + optional Director, avoiding telescoping constructors
 - ⬜ **Prototype** — create new objects by cloning an existing instance instead of instantiating from scratch
 
 ## Structural — controls how classes/objects are arranged together
