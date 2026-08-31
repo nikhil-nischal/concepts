@@ -9,6 +9,9 @@
 - Core design challenge is the **split** abstraction (equal / unequal /
   percentage) and how one expense update correctly fans out into every
   affected user's **balance sheet**.
+- Part 2 (below) covers the follow-up interview question asked on top of
+  this design: the **Simplify** algorithm that collapses many pairwise
+  debts into the fewest possible settlement transactions.
 
 ## Key Concepts
 ### Requirements (from the happy path)
@@ -288,6 +291,211 @@ don't need to change.
 Because you can't owe yourself — the payer's own split is only added to
 their own total spend; only the other participants' splits create entries
 in the payer's and their own FriendBalance maps.
+
+</details>
+
+## Part 2 — Simplify Algorithm (Optimal Account Balancing)
+- Follow-up interview question on top of the base design: given the raw
+  debt transactions (who owes whom, how much), **reduce the number of
+  settlement transactions** needed to clear all debts.
+- Asked as its own DSA-flavored round at top product-based companies — as
+  much a backtracking/DFS problem as an LLD one.
+- Hard constraint: the amount each member ultimately owes/receives must
+  stay exactly the same — only the number and pairing of transactions
+  changes, never the totals.
+
+### The problem
+- Example: 3 roommates A, B, C with 4 raw transactions — A owes B ₹5, B
+  owes C ₹5, C owes A ₹10, A owes C ₹1.
+- By inspection, A→B and B→C can collapse into a direct A→C of ₹5 (B is
+  just a pass-through); combined with the existing C→A (₹10) and A→C (₹1),
+  the net effect is a single settlement: **C pays A ₹4**.
+- 4 transactions become 1 — same money owed overall, far fewer payments.
+
+```mermaid
+flowchart TB
+    subgraph Before["Before — 4 transactions"]
+        A1["A"] -->|5| B1["B"]
+        B1 -->|5| C1["C"]
+        C1 -->|10| A1
+        A1 -->|1| C1
+    end
+    subgraph After["After — 1 transaction"]
+        C2["C"] -->|4| A2["A"]
+    end
+```
+
+### Step 1 — net balance per member (incoming − outgoing)
+- For every member, compute `balance = total incoming − total outgoing`
+  across all their raw transactions.
+- Positive balance → a **receiver** (net owed money). Negative balance → a
+  **giver** (net owes money). Balance of exactly zero → already settled,
+  and **excluded** from the rest of the algorithm — it can never help
+  reduce transactions further.
+- Sanity check baked into the math: the sum of every member's net balance
+  is always zero — the system never creates or destroys money, it only
+  reduces how many transfers move it around.
+
+```mermaid
+flowchart LR
+    A["A: in 10 (from C), out 5+1=6 → balance +4 (receiver)"]
+    B["B: in 5 (from A), out 5 (to C) → balance 0 (drop — settled)"]
+    C["C: in 5+1=6 (from A,B), out 10 (to A) → balance -4 (giver)"]
+```
+
+### Step 2 — never split a payoff, always pay in full
+- Once reduced to a list of non-zero net balances, only the **positive vs.
+  negative pairings** matter — the original transaction graph can be
+  thrown away entirely.
+- Key rule: when a giver pays a receiver, **always settle with the full
+  remaining amount** on at least one side, never a partial/arbitrary
+  amount split across many people.
+- Why: paying arbitrary partial amounts to several people can actually
+  *increase* the transaction count beyond what was needed — always fully
+  clearing one side's balance keeps the count minimal to explore.
+- Effect of a full-amount payment between a giver and a receiver: the
+  smaller-magnitude side becomes exactly zero (done, drops out), and the
+  other side's balance is reduced by that amount (it may become the
+  opposite sign, flipping receiver ↔ giver, or hit zero too — a **perfect
+  match**).
+
+### Step 3 — DFS/backtracking over the balance list
+- Reframe as: given the list of non-zero net balances, repeatedly pick a
+  positive/negative pair and settle it fully, trying every possible
+  pairing (backtracking), and keep the settlement path with the fewest
+  transactions.
+- At each recursion step, the *current* index is matched in turn against
+  every later index; a pair can transact only when their **product is
+  negative** (opposite signs). After a match, the later index absorbs the
+  combined value (`current + next`) and the current index is considered
+  settled (recursion simply advances past it — it's never revisited).
+- Backtrack after each trial: restore the array before trying the next
+  candidate pairing, since a different pairing at this same step may lead
+  to fewer total transactions.
+- Optimization: if a pairing sums to exactly zero (**perfect match**, both
+  sides fully cleared), stop trying further pairings from this index right
+  away — a perfect match can't be beaten from this branch.
+- Classified as an **NP-hard** problem — the instructor estimates the
+  brute-force backtracking as roughly `O(n!)` in the number of non-zero
+  balances, since every member effectively gets tried against every other
+  in every order.
+
+```mermaid
+flowchart TB
+    Start["dfs(balances, currentIndex)"]
+    Start --> Base{"balances empty OR\ncurrentIndex == size?"}
+    Base -->|yes| Zero["return 0"]
+    Base -->|no| Loop["for transactionIndex in (currentIndex+1 .. end)"]
+    Loop --> Sign{"balances[currentIndex] * balances[transactionIndex] < 0?"}
+    Sign -->|no, same sign| Loop
+    Sign -->|yes, opposite signs| Settle["set balances[transactionIndex] += balances[currentIndex]\ncount = 1 + dfs(balances, currentIndex+1)\ntrack min(count)"]
+    Settle --> Backtrack["restore balances[transactionIndex]\n(undo the trial)"]
+    Backtrack --> Perfect{"sum was exactly 0?"}
+    Perfect -->|yes| Stop["perfect match — stop trying more pairs here"]
+    Perfect -->|no| Loop
+    Loop --> Done["return min transaction count found"]
+```
+
+```java
+Map<Integer, Integer> netBalance = new HashMap<>();
+for (int[] transaction : transactions) {
+    int from = transaction[0], to = transaction[1], amount = transaction[2];
+    netBalance.put(from, netBalance.getOrDefault(from, 0) - amount); // outgoing
+    netBalance.put(to, netBalance.getOrDefault(to, 0) + amount);     // incoming
+}
+
+List<Integer> balances = new ArrayList<>();
+for (int amount : netBalance.values()) {
+    if (amount != 0) balances.add(amount); // zero-balance members don't help — drop them
+}
+
+int minTransactions = dfs(balances, 0);
+
+int dfs(List<Integer> balances, int currentIndex) {
+    if (balances.size() == 0 || currentIndex == balances.size()) return 0;
+    if (balances.get(currentIndex) == 0) return dfs(balances, currentIndex + 1); // safety check
+
+    int currentVal = balances.get(currentIndex);
+    int minCount = Integer.MAX_VALUE;
+    for (int i = currentIndex + 1; i < balances.size(); i++) {
+        int nextVal = balances.get(i);
+        if (currentVal * nextVal < 0) { // opposite signs -> a settlement can happen
+            balances.set(i, currentVal + nextVal);
+            minCount = Math.min(minCount, 1 + dfs(balances, currentIndex + 1));
+            balances.set(i, nextVal); // backtrack
+
+            if (currentVal + nextVal == 0) break; // perfect match, can't do better from here
+        }
+    }
+    return minCount;
+}
+```
+
+## Example / Walkthrough — Simplify
+- Larger balance list (after dropping zero-balance members): `[70, 300,
+  -40, -100, -30, -200]` — receivers `70, 300`, givers `-40, -100, -30,
+  -200`. Sum is 0, as expected.
+- One branch: settle `70` fully against `-200` → `70` is done (index
+  advances past it), `-200` becomes `-200 + 70 = -130`. One transaction
+  used so far; recursion continues on the remaining balances.
+- A different branch from the same starting point: settle `70` fully
+  against `-40` instead → `-40` becomes `70 + (-40) = 30`. Also one
+  transaction, but leads down a different remaining state.
+- Backtracking tries both (and every other valid opposite-sign pairing)
+  and keeps whichever path bottoms out with the fewest total transactions.
+
+### Interview Q&A — Simplify
+<details>
+<summary>What is the goal of the Splitwise Simplify algorithm?</summary>
+
+Reduce the number of settlement transactions needed to clear all debts in
+the group — the amount each member ultimately owes or receives stays
+exactly the same, only how many payments it takes changes.
+
+</details>
+
+<details>
+<summary>Why can the original transaction graph be discarded once you start simplifying?</summary>
+
+Because only each member's **net balance** (incoming − outgoing) matters
+for settlement — two different transaction histories that produce the
+same net balances need the exact same simplified settlement.
+
+</details>
+
+<details>
+<summary>Why are members with a net balance of zero dropped before the algorithm runs?</summary>
+
+A zero balance means they neither owe nor are owed anything net — they
+can't take part in reducing any further transaction, so keeping them only
+adds wasted work.
+
+</details>
+
+<details>
+<summary>Why must a settlement always transfer the full remaining amount rather than a partial one?</summary>
+
+Because letting a giver split a payment across many receivers (or vice
+versa) can increase the total transaction count beyond the minimum —
+always fully clearing one side keeps the search space minimal.
+
+</details>
+
+<details>
+<summary>What algorithmic technique solves Simplify, and what's its complexity class?</summary>
+
+DFS with backtracking over the list of non-zero balances, trying every
+valid opposite-sign pairing and keeping the minimum transaction count; the
+problem is NP-hard, with the brute-force search roughly `O(n!)`.
+
+</details>
+
+<details>
+<summary>What's the early-exit optimization in the backtracking search?</summary>
+
+If a pairing sums to exactly zero (both sides land at zero — a perfect
+match), stop trying other pairings from that index immediately, since a
+perfect match can't be improved on from that branch.
 
 </details>
 
