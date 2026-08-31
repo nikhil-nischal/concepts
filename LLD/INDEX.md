@@ -21,3 +21,4 @@
 - [17. LLD of ATM](17-atm-lld.md) — State pattern for the operation flow + Chain of Responsibility for denomination-based cash withdrawal
 - [18. LLD of Chess Game (Mock Interview)](18-chess-game-lld.md) — Cell owns position not Piece, abstract Piece per type, move-as-validation vs move-as-mutation, plus interview-process lessons
 - [19. Composite Design Pattern](19-composite-design-pattern.md) — shared leaf/composite interface to model tree-shaped problems (file system, expression tree) without instanceof branching
+- [20. Adapter Design Pattern](20-adapter-design-pattern.md) — bridge an existing interface and an expected interface via both is-a and has-a, e.g. converting pounds to kg
