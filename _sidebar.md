@@ -37,6 +37,7 @@
   - [Roadmap](LLD/00-roadmap.md)
   - [00a. What is LLD](LLD/00a-what-is-lld.md)
   - [00b. Java Interfaces](LLD/00b-java-interfaces.md)
+  - [00c. Design Patterns Catalog](LLD/00c-design-patterns-catalog.md)
   - [01. SOLID Principles](LLD/01-solid-principles.md)
   - [01.1. LSP with Solution](LLD/01.1-lsp-solution.md)
   - [01.2. is-a vs has-a](LLD/01.2-is-a-vs-has-a.md)

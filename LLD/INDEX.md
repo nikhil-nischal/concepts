@@ -1,6 +1,7 @@
 - [00. Roadmap](00-roadmap.md) — planned topic order for LLD prep
 - [00a. What is LLD](00a-what-is-lld.md) — LLD vs HLD, creational/structural/behavioral patterns, is-a vs has-a
 - [00b. Java Interfaces](00b-java-interfaces.md) — static/default methods, achieving multiple inheritance
+- [00c. Design Patterns Catalog](00c-design-patterns-catalog.md) — checklist of all GoF patterns by category, which are covered vs. still to add
 - [01. SOLID Principles](01-solid-principles.md) — SRP, OCP, LSP, ISP, DIP with examples
 - [01.1. LSP with Solution](01.1-lsp-solution.md) — fixing an LSP violation via inheritance restructuring
 - [01.2. is-a vs has-a: How Each Looks in Code](01.2-is-a-vs-has-a.md) — extends/implements vs constructor-injected field, and when a class needs both
