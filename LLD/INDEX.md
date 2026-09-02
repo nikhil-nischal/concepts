@@ -24,6 +24,7 @@
 - [30. Flyweight Design Pattern](concepts/30-flyweight-design-pattern.md) — share intrinsic data across objects, pass extrinsic data per call, via a caching factory; robot army and word-processor character examples
 - [31. Command Design Pattern](concepts/31-command-design-pattern.md) — encapsulate a request as an object (receiver/command/invoker/client) to decouple caller from callee and enable undo/redo via a command-history stack
 - [33. Iterator Design Pattern](concepts/33-iterator-design-pattern.md) — traverse a collection via hasNext()/next() without exposing its internal data structure; how Java Collections itself uses it, plus a Library/Book worked example
+- [34. Mediator Design Pattern](concepts/34-mediator-design-pattern.md) — decouple peer objects so they only talk through a shared mediator, never directly; online auction bidding example, contrasted with Observer and Proxy
 
 ## Examples
 - [06. LLD of Parking Lot](examples/06-parking-lot-lld.md) — requirements-first design combining Strategy (find-spot, pricing) and Factory (manager, cost-computation) patterns
