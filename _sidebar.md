@@ -65,6 +65,7 @@
     - [38. Memento Design Pattern](LLD/concepts/38-memento-design-pattern.md)
     - [39. Template Method Design Pattern](LLD/concepts/39-template-method-design-pattern.md)
     - [40. Interpreter Design Pattern](LLD/concepts/40-interpreter-design-pattern.md)
+    - [41. All Behavioral Design Patterns — Recap](LLD/concepts/41-all-behavioral-design-patterns-recap.md)
   - Examples
     - [06. LLD of Parking Lot](LLD/examples/06-parking-lot-lld.md)
     - [07. LLD of Tic-Tac-Toe](LLD/examples/07-tic-tac-toe-lld.md)
