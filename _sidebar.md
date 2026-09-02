@@ -67,6 +67,7 @@
     - [18. LLD of Chess Game (Mock Interview)](LLD/examples/18-chess-game-lld.md)
     - [21. LLD of Splitwise](LLD/examples/21-splitwise-lld.md)
     - [24. LLD of Cricbuzz / CricInfo](LLD/examples/24-cricbuzz-lld.md)
+    - [29. LLD of Order/Inventory Management System](LLD/examples/29-inventory-management-system-lld.md)
 - AI
   - [01. 20 AI Concepts Explained in 40 Minutes](AI/01-20-ai-concepts-explained.md)
 - Frameworks

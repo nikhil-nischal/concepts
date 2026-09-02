@@ -33,3 +33,4 @@
 - [18. LLD of Chess Game (Mock Interview)](examples/18-chess-game-lld.md) — Cell owns position not Piece, abstract Piece per type, move-as-validation vs move-as-mutation, plus interview-process lessons
 - [21. LLD of Splitwise](examples/21-splitwise-lld.md) — Equal/Unequal/Percentage splits via a Factory, per-user friend-balance-sheet updates on each expense; plus Part 2: the Simplify debt-reduction algorithm (DFS/backtracking, NP-hard)
 - [24. LLD of Cricbuzz / CricInfo](examples/24-cricbuzz-lld.md) — Match/Innings/Over/Ball hierarchy, batting/bowling controllers, MatchType polymorphism, Observer-driven scorecard updates
+- [29. LLD of Order Management System / Inventory Management System](examples/29-inventory-management-system-lld.md) — category-priced products, multi-warehouse inventory with Strategy-based warehouse selection, cart-to-order-to-checkout flow with optimistic stock reservation
