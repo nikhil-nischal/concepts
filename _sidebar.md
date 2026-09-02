@@ -60,6 +60,7 @@
     - [31. Command Design Pattern](LLD/concepts/31-command-design-pattern.md)
     - [33. Iterator Design Pattern](LLD/concepts/33-iterator-design-pattern.md)
     - [34. Mediator Design Pattern](LLD/concepts/34-mediator-design-pattern.md)
+    - [36. Visitor Design Pattern](LLD/concepts/36-visitor-design-pattern.md)
   - Examples
     - [06. LLD of Parking Lot](LLD/examples/06-parking-lot-lld.md)
     - [07. LLD of Tic-Tac-Toe](LLD/examples/07-tic-tac-toe-lld.md)
