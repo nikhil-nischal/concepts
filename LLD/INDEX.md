@@ -23,6 +23,7 @@
 - [27. All Creational Design Patterns](concepts/27-all-creational-design-patterns.md) — Prototype and Singleton (eager/lazy/synchronized/double-checked locking) in depth, plus a recap of Factory/Abstract Factory/Builder; Part 2: the double-checked-locking reordering/L1-cache bugs and the volatile fix
 - [30. Flyweight Design Pattern](concepts/30-flyweight-design-pattern.md) — share intrinsic data across objects, pass extrinsic data per call, via a caching factory; robot army and word-processor character examples
 - [31. Command Design Pattern](concepts/31-command-design-pattern.md) — encapsulate a request as an object (receiver/command/invoker/client) to decouple caller from callee and enable undo/redo via a command-history stack
+- [33. Iterator Design Pattern](concepts/33-iterator-design-pattern.md) — traverse a collection via hasNext()/next() without exposing its internal data structure; how Java Collections itself uses it, plus a Library/Book worked example
 
 ## Examples
 - [06. LLD of Parking Lot](examples/06-parking-lot-lld.md) — requirements-first design combining Strategy (find-spot, pricing) and Factory (manager, cost-computation) patterns

@@ -58,6 +58,7 @@
     - [27. All Creational Design Patterns](LLD/concepts/27-all-creational-design-patterns.md)
     - [30. Flyweight Design Pattern](LLD/concepts/30-flyweight-design-pattern.md)
     - [31. Command Design Pattern](LLD/concepts/31-command-design-pattern.md)
+    - [33. Iterator Design Pattern](LLD/concepts/33-iterator-design-pattern.md)
   - Examples
     - [06. LLD of Parking Lot](LLD/examples/06-parking-lot-lld.md)
     - [07. LLD of Tic-Tac-Toe](LLD/examples/07-tic-tac-toe-lld.md)
