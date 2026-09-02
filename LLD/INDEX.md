@@ -21,6 +21,7 @@
 - [25. Facade Design Pattern](concepts/25-facade-design-pattern.md) — hide subsystem complexity behind one simplified interface; contrasted with Proxy (same interface, one object) and Adapter (solves incompatibility, not complexity)
 - [26. Bridge Design Pattern](concepts/26-bridge-design-pattern.md) — decouple an abstraction hierarchy from an implementation hierarchy so both can grow independently; near-identical to Strategy but different intent
 - [27. All Creational Design Patterns](concepts/27-all-creational-design-patterns.md) — Prototype and Singleton (eager/lazy/synchronized/double-checked locking) in depth, plus a recap of Factory/Abstract Factory/Builder; Part 2: the double-checked-locking reordering/L1-cache bugs and the volatile fix
+- [30. Flyweight Design Pattern](concepts/30-flyweight-design-pattern.md) — share intrinsic data across objects, pass extrinsic data per call, via a caching factory; robot army and word-processor character examples
 
 ## Examples
 - [06. LLD of Parking Lot](examples/06-parking-lot-lld.md) — requirements-first design combining Strategy (find-spot, pricing) and Factory (manager, cost-computation) patterns

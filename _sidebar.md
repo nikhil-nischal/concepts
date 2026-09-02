@@ -56,6 +56,7 @@
     - [25. Facade Design Pattern](LLD/concepts/25-facade-design-pattern.md)
     - [26. Bridge Design Pattern](LLD/concepts/26-bridge-design-pattern.md)
     - [27. All Creational Design Patterns](LLD/concepts/27-all-creational-design-patterns.md)
+    - [30. Flyweight Design Pattern](LLD/concepts/30-flyweight-design-pattern.md)
   - Examples
     - [06. LLD of Parking Lot](LLD/examples/06-parking-lot-lld.md)
     - [07. LLD of Tic-Tac-Toe](LLD/examples/07-tic-tac-toe-lld.md)
