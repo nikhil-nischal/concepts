@@ -79,6 +79,7 @@
     - [24. LLD of Cricbuzz / CricInfo](LLD/examples/24-cricbuzz-lld.md)
     - [29. LLD of Order/Inventory Management System](LLD/examples/29-inventory-management-system-lld.md)
     - [35. Apply Coupons on Shopping Cart](LLD/examples/35-shopping-cart-coupons-lld.md)
+    - [42. LLD of Payment Gateway](LLD/examples/42-payment-gateway-lld.md)
 - AI
   - [01. 20 AI Concepts Explained in 40 Minutes](AI/01-20-ai-concepts-explained.md)
 - Frameworks
