@@ -26,6 +26,7 @@
 - [33. Iterator Design Pattern](concepts/33-iterator-design-pattern.md) — traverse a collection via hasNext()/next() without exposing its internal data structure; how Java Collections itself uses it, plus a Library/Book worked example
 - [34. Mediator Design Pattern](concepts/34-mediator-design-pattern.md) — decouple peer objects so they only talk through a shared mediator, never directly; online auction bidding example, contrasted with Observer and Proxy
 - [36. Visitor Design Pattern](concepts/36-visitor-design-pattern.md) — add new operations to a class hierarchy without changing it, via double dispatch (Element.accept + Visitor.visit); contrasted with Strategy (algorithm vs. per-type operation)
+- [37. MVC Design Pattern](concepts/37-mvc-design-pattern.md) — application architecture (View/Controller/Model), why it's "architecture" more than "pattern", and how prior LLD case studies already follow this split
 
 ## Examples
 - [06. LLD of Parking Lot](examples/06-parking-lot-lld.md) — requirements-first design combining Strategy (find-spot, pricing) and Factory (manager, cost-computation) patterns
