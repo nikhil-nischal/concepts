@@ -38,3 +38,4 @@
 - [21. LLD of Splitwise](examples/21-splitwise-lld.md) — Equal/Unequal/Percentage splits via a Factory, per-user friend-balance-sheet updates on each expense; plus Part 2: the Simplify debt-reduction algorithm (DFS/backtracking, NP-hard)
 - [24. LLD of Cricbuzz / CricInfo](examples/24-cricbuzz-lld.md) — Match/Innings/Over/Ball hierarchy, batting/bowling controllers, MatchType polymorphism, Observer-driven scorecard updates
 - [29. LLD of Order Management System / Inventory Management System](examples/29-inventory-management-system-lld.md) — category-priced products, multi-warehouse inventory with Strategy-based warehouse selection, cart-to-order-to-checkout flow with optimistic stock reservation
+- [35. LLD: Apply Coupons on Shopping Cart Products](examples/35-shopping-cart-coupons-lld.md) — stack multiple coupons on a product via Decorator (percentage-off, type-eligible-off), worked ₹2646 example
