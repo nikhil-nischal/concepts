@@ -62,6 +62,7 @@
     - [34. Mediator Design Pattern](LLD/concepts/34-mediator-design-pattern.md)
     - [36. Visitor Design Pattern](LLD/concepts/36-visitor-design-pattern.md)
     - [37. MVC Design Pattern](LLD/concepts/37-mvc-design-pattern.md)
+    - [38. Memento Design Pattern](LLD/concepts/38-memento-design-pattern.md)
   - Examples
     - [06. LLD of Parking Lot](LLD/examples/06-parking-lot-lld.md)
     - [07. LLD of Tic-Tac-Toe](LLD/examples/07-tic-tac-toe-lld.md)
