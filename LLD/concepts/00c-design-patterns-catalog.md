@@ -22,24 +22,25 @@
 - ✅ [Composite](19-composite-design-pattern.md) — shared leaf/composite interface to model tree-shaped problems without instanceof branching
 - ✅ [Decorator](04-decorator-design-pattern.md) — add features by wrapping at runtime instead of subclassing per combination
 - ✅ [Facade](25-facade-design-pattern.md) — one simplified interface hiding a complex subsystem of classes
-- ⬜ **Flyweight** — share common state across many fine-grained objects to cut memory use
+- ✅ [Flyweight](30-flyweight-design-pattern.md) — share common intrinsic state across many fine-grained objects to cut memory use, extrinsic state passed per call
 - ✅ [Proxy](13-proxy-design-pattern.md) — centralize access validation/logging behind a stand-in that implements the same interface as the real object
 
 ## Behavioral — controls how objects communicate/interact once created
 - ✅ [Chain of Responsibility](10-chain-of-responsibility-pattern.md) — a request travels through a chain of receivers until one handles it
-- ⬜ **Command** — encapsulate a request as an object, enabling queuing, undo/redo, and logging of operations
-- ⬜ **Interpreter** — define a grammar and an interpreter that evaluates sentences in that grammar
-- ⬜ **Iterator** — access elements of a collection sequentially without exposing its underlying structure
-- ⬜ **Mediator** — centralize how a set of objects interact, so they don't reference each other directly
-- ⬜ **Memento** — capture and restore an object's internal state without violating encapsulation
+- ✅ [Command](31-command-design-pattern.md) — encapsulate a request as an object, enabling queuing, undo/redo (via a command-history stack), and logging of operations
+- ✅ [Interpreter](40-interpreter-design-pattern.md) — define a grammar (terminal/non-terminal expressions) and an interpreter that evaluates sentences in that grammar against a context
+- ✅ [Iterator](33-iterator-design-pattern.md) — access elements of a collection sequentially via hasNext()/next() without exposing its underlying structure
+- ✅ [Mediator](34-mediator-design-pattern.md) — centralize how a set of objects interact, so they don't reference each other directly
+- ✅ [Memento](38-memento-design-pattern.md) — capture and restore an object's internal state (Originator/Memento/Caretaker) without violating encapsulation
 - ✅ [Observer](03-observer-design-pattern.md) — auto-notify subscribers on state change
 - ✅ [State](../examples/16-vending-machine-lld.md) — one class per state, context delegates every action to its current state (canonical example: Vending Machine; reused in [ATM](../examples/17-atm-lld.md))
 - ✅ [Strategy](02-strategy-design-pattern.md) — swap out an algorithm/capability at runtime via composition
-- ⬜ **Template Method** — define an algorithm's skeleton in a base class, letting subclasses override specific steps
-- ⬜ **Visitor** — separate an operation from the object structure it operates on, so new operations don't touch existing classes
+- ✅ [Template Method](39-template-method-design-pattern.md) — define an algorithm's skeleton in a final base-class method, letting subclasses override specific steps
+- ✅ [Visitor](36-visitor-design-pattern.md) — separate an operation from the object structure it operates on via double dispatch, so new operations don't touch existing classes
 
 ## Other commonly-taught patterns (non-GoF)
 - ✅ [Null Object](15-null-object-pattern.md) — replace null with a default-behavior object to remove scattered null-checks
+- ✅ [MVC](37-mvc-design-pattern.md) — Model/View/Controller application architecture (more an architecture than a single-object pattern)
 
 ## Patterns combined in case-study LLDs
 - [Parking Lot](../examples/06-parking-lot-lld.md) — Strategy (find-spot, pricing) + Factory (manager, cost computation)

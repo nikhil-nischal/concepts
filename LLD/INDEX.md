@@ -29,6 +29,7 @@
 - [37. MVC Design Pattern](concepts/37-mvc-design-pattern.md) — application architecture (View/Controller/Model), why it's "architecture" more than "pattern", and how prior LLD case studies already follow this split
 - [38. Memento Design Pattern](concepts/38-memento-design-pattern.md) — snapshot/restore an object's state via Originator/Memento/Caretaker without exposing internals; Configuration example, contrasted with Command for undo
 - [39. Template Method Design Pattern](concepts/39-template-method-design-pattern.md) — fix a task's step order in a final base-class method while letting subclasses implement each step; payment-flow (pay-to-friend vs. pay-to-merchant) worked example
+- [40. Interpreter Design Pattern](concepts/40-interpreter-design-pattern.md) — evaluate an expression tree (terminal/non-terminal) against a supplied context; a*b and a*b+c*d worked examples, last of the GoF patterns in this series
 
 ## Examples
 - [06. LLD of Parking Lot](examples/06-parking-lot-lld.md) — requirements-first design combining Strategy (find-spot, pricing) and Factory (manager, cost-computation) patterns
